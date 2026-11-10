@@ -30,7 +30,7 @@ ByePass es una web para la comunidad de juegos de cartas y sus tiendas. Los juga
 
 | Pantalla | Archivo | Qué permite |
 | --- | --- | --- |
-| Portada | `web/index.html` | Presentación de ByePass, acceso a tiendas y a los rulings. El ingreso y el registro se abren en una ventana aparte. |
+| Portada | `web/index.html` | Presentación de ByePass, acceso a tiendas y a los rulings, y las últimas noticias de Pokémon TCG en español o en inglés. El ingreso y el registro se abren en una ventana aparte. |
 | Torneo en vivo | `web/timer-view.html` | Reloj de la ronda, mesas y rival, ranking del mes por categoría, sorteo, agenda de próximos torneos y minijuegos para la espera entre rondas. Se llega escaneando el QR de la tienda, sin cuenta. |
 | Muro | `web/muro.html` | Página personal: próximo torneo, resultados, rachas, insignias, tiendas que sigues y lo que está en vivo ahora. |
 | Cuenta | `web/cuenta.html` | Registro, ingreso, datos personales, ID de jugador en otros juegos, privacidad en las tablas públicas, mazos, contacto y borrado de la cuenta. |
@@ -137,6 +137,19 @@ En la vista del torneo, Mesas > Jugar mientras espero. Para jugar hay que tener 
   <img src="docs/capturas/final-escritorio.png" alt="Buscaminas en escritorio" width="44%">
 </p>
 
+### 8. Noticias de Pokémon TCG en la portada
+
+La portada muestra las últimas noticias del TCG en la sección «Lo último del TCG»: 6 en el computador y 3 en el celular, con un botón «Ver más». Cada noticia trae su fecha, su título y un resumen corto, y enlaza al artículo completo en PokéBeach.
+
+- **Español o inglés:** el botón Español / English cambia el idioma de todas las noticias y se recuerda para cada persona. Si una noticia todavía no tiene traducción, se muestra en inglés con la marca «Solo en inglés». La traducción la hace DeepL de forma automática, no es oficial, y ante cualquier duda vale el texto original.
+- **De dónde salen:** del RSS de [Front Page News de PokéBeach](https://www.pokebeach.com/forums/forums/front-page-news.18/index.rss), que trae solo noticias (revelaciones de cartas, expansiones, torneos) y no los hilos del foro.
+- **Cómo se actualizan:** la tarea de GitHub [`.github/workflows/noticias.yml`](.github/workflows/noticias.yml) corre `scripts/noticias.mjs` cada 3 horas. El script guarda las últimas 12 noticias en `web/noticias.json` y hace commit solo si algo cambió. Solo traduce las noticias nuevas y reutiliza las que ya tradujo, para no gastar la cuota gratuita de DeepL.
+- **Sin conexiones nuevas:** la página lee `noticias.json` como un archivo propio del sitio, así que la política de seguridad (CSP) no cambia y las visitas nunca se conectan a PokéBeach ni a DeepL.
+- **Clave de DeepL:** en GitHub es el secreto `DEEPL_API_KEY` del repo. En el PC va en `data/deepl.env` con la línea `DEEPL_API_KEY=...`, y `data/` no se sube. Sin clave, las noticias quedan en inglés.
+- **Actualizar a mano:** `npm run noticias` en el PC, o «Run workflow» en la pestaña Actions de GitHub.
+
+<p align="center"><img src="docs/capturas/noticias-escritorio.png" alt="Sección de noticias de Pokémon TCG en la portada, en español" width="80%"></p>
+
 ---
 
 ## Cómo ejecutarlo
@@ -177,6 +190,7 @@ Para detenerlo, presiona Ctrl+C y espera a que Firebase exporte los datos a `dat
 | `npm run verify:ui` | Hojas de estilo de las 20 páginas. |
 | `npm run verify:cartas` | Nombre, rareza Full Art e imagen de las cartas del memorice en TCGdex (requiere internet). |
 | `npm run verify` | Aislamiento, cabeceras, CRUD local y cuentas de prueba (con la web arrancada). |
+| `npm run noticias` | Lee el RSS de PokéBeach y actualiza `web/noticias.json`, con traducción si hay clave de DeepL (requiere internet). |
 
 `npm run verify` también compara la copia con los archivos originales. Si no tienes la carpeta del proyecto original junto a esta (`../timertorneosbyepass-main/`), esa parte falla. Lo mismo vale para `prepare.py`, que creó `web/` a partir del original.
 
@@ -187,7 +201,8 @@ Para detenerlo, presiona Ctrl+C y espera a que Firebase exporte los datos a `dat
 ```
 web/                 La aplicación modificada (lo que ve el usuario)
   paginas/           Una hoja CSS por pantalla
-scripts/             Servidor local, arranque, datos, APIs de juegos y pruebas
+scripts/             Servidor local, arranque, datos, APIs de juegos, noticias y pruebas
+.github/workflows/   Tarea automática que actualiza las noticias cada 3 horas
 functions/           Cloud Functions de reemplazo (solo emulador)
 rules/               Reglas candidatas de los laboratorios restrictivos
 database.rules.json  Reglas PERMISIVAS de la navegación local (no desplegar)
@@ -219,4 +234,5 @@ El informe completo está en [docs/ByePass_Informe_de_evolucion_y_pendientes.doc
 
 - **Proyecto original:** ByePass, de [nicolasvallejosrojas-hub](https://github.com/nicolasvallejosrojas-hub) ([byepass.cl](https://byepass.cl)). El código base y la idea son de su autor.
 - **Mod:** [CitriCool](https://github.com/CitriCool), con ayuda de asistentes de IA.
+- Las noticias vienen de [PokéBeach](https://www.pokebeach.com/), con un resumen corto y un enlace a cada artículo, y las traduce [DeepL](https://www.deepl.com/).
 - Las ilustraciones de cartas del memorice vienen de [TCGdex](https://tcgdex.dev). Pokémon y sus nombres pertenecen a sus respectivos titulares. Este proyecto no está afiliado a ellos.
