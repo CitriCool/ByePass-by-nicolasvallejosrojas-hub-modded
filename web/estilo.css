@@ -1,0 +1,284 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..700&family=Newsreader:opsz,wght@6..72,300&display=swap');
+@import url('tokens.css?v=2efd744ba33e');
+
+/* Componentes funcionales compartidos: tokens.css define la identidad;
+   sistema.css define los controles; paginas/ contiene las composiciones. */
+html,body{margin:0;}
+/* El tracking de esta letra se cierra a medida que crece: el cuerpo va casi
+   en cero y los títulos, apretados. */
+body{background:var(--pagina);color:var(--texto);font-family:var(--fuente);
+     -webkit-font-smoothing:antialiased;letter-spacing:-.01em;
+     font-optical-sizing:auto;-webkit-tap-highlight-color:transparent;}
+h1,h2,h3{letter-spacing:-.021em;}
+
+/* Los límites se marcan cambiando el fondo, no con líneas de 1 px: las
+   hairlines desaparecen en proyección. */
+
+/* Lo que el navegador dibuja solo —la selección de texto, el cursor de
+   escritura, las barras de desplazamiento, las casillas, el subrayado— salía
+   con los colores de fábrica: azul de selección, casilla azul, barra gris
+   clara sobre una página ciruela. Son las piezas que nadie diseña, y por eso
+   delatan cuando nadie las diseñó. */
+::selection{background:var(--accion);color:var(--sobre-accion);}
+/* color-scheme le avisa al navegador que la página es oscura: sin eso, el
+   ícono del campo de fecha salía casi negro sobre --campo y el calendario
+   nativo se abría en blanco. */
+html{caret-color:var(--accion);accent-color:var(--accion);color-scheme:var(--esquema);
+     scrollbar-color:var(--sup-hover) var(--pagina);}
+a{text-underline-offset:.2em;}
+
+/* =========================================================
+   2. Tipografía
+   ========================================================= */
+.rotulo{font-size:var(--t1);letter-spacing:.08em;text-transform:uppercase;
+        color:var(--rotulo);font-weight:600;}
+.muted{color:var(--apagado);font-size:var(--t2);}
+.ok{color:var(--ok);} .err{color:var(--negativo);} .warnc{color:var(--accion-texto);}
+
+/* Todo número que cambia en su lugar va tabular, o baila al contar */
+.num{font-variant-numeric:tabular-nums;}
+
+/* =========================================================
+   3. Botones y píldoras
+   ========================================================= */
+/* El botón responde al apretarlo, no al soltarlo: se hunde un 3 % al tiro.
+   Es lo que hace que la pantalla se sienta escuchando. */
+.btn{border:none;background:var(--sup-alta);color:var(--texto);border-radius:var(--radio);
+     padding:12px 20px;font-family:inherit;font-size:var(--t3);font-weight:500;cursor:pointer;
+     white-space:nowrap;letter-spacing:inherit;touch-action:manipulation;
+     transition:transform 160ms cubic-bezier(.23,1,.32,1),background-color 150ms ease;}
+.btn:active:not(:disabled){transform:scale(.97);}
+.btn.primario{background:var(--accion);color:var(--sobre-accion);font-weight:600;}
+.btn.chico{padding:7px 13px;font-size:var(--t2);border-radius:var(--radio-chico);}
+.btn:disabled{opacity:.4;cursor:default;}
+/* El hover solo donde hay mouse: en el teléfono el toque lo deja pegado. */
+@media (hover:hover){
+  .btn:hover{background:var(--sup-hover);}
+  .btn.primario:hover{background:var(--accion-clara);}
+  .btn.peligro:hover{background:var(--alerta);}
+}
+
+/* Píldora: pestañas, rondas, presets. Misma pieza en las dos páginas. */
+/* =========================================================
+   4. Campos
+   ========================================================= */
+input,select,textarea{background:var(--relleno);border:none;border-radius:var(--radio-chico);
+  color:var(--texto);padding:10px 12px;font-family:inherit;font-size:var(--t3);
+  box-sizing:border-box;outline:none;}
+input:focus,select:focus,textarea:focus{box-shadow:inset 0 0 0 2px var(--accion);}
+
+/* El anillo de foco por defecto del navegador es naranja y no pertenece a
+   esta paleta. Se reemplaza por uno del sistema, con separación para que se
+   lea también sobre el amarillo de un control activo. */
+:focus-visible{outline:2px solid var(--accion);outline-offset:2px;}
+button:focus-visible,a:focus-visible{outline:2px solid var(--accion);outline-offset:2px;}
+input::placeholder,textarea::placeholder{color:var(--rotulo);}
+
+/* =========================================================
+   5. Superficies
+   ========================================================= */
+.card{background:var(--sup);border-radius:var(--radio);padding:var(--e4);
+      margin-bottom:var(--e3);}
+.row{display:flex;gap:var(--e3);flex-wrap:wrap;align-items:center;}
+
+/* Aviso: una línea, sin icono. El color vive en la SUPERFICIE, teñida con el
+   tono semántico. Antes era un borde lateral de 3 px, que es el recurso más
+   reconocible de interfaz generada a destajo y además no aporta nada que el
+   fondo no diga mejor. Los tres tintes pasan AA con el texto encima. */
+.aviso{background:var(--aviso);border-radius:var(--radio);
+  padding:11px 14px;font-size:var(--t2);line-height:1.5;}
+.aviso.accion{background:var(--aviso-accion);}
+.aviso.mal{background:var(--aviso-mal);}
+
+/* Isla oscura: lo que muestra la pantalla de la tienda —el timer, la vitrina
+   de la cuenta, el lienzo del panel— es oscuro en toda paleta. Adentro se
+   invierten los tokens de texto, así cualquier pieza del sistema se lee
+   encima sin tener que saber dónde está. El fondo lo pone cada una. */
+.isla{color:var(--sobre-lienzo);
+  --texto:var(--sobre-lienzo);--apagado:var(--sobre-lienzo-2);--rotulo:var(--sobre-lienzo-2);
+  --accion-texto:var(--accion);--divider:rgba(255,255,255,.14);--relleno:rgba(255,255,255,.12);
+  --sup:rgba(255,255,255,.07);--sup-alta:rgba(255,255,255,.13);}
+
+/* Barra translúcida, como las de iOS: el contenido pasa por debajo y se ve
+   borroso. Quien pidió menos transparencia en su sistema la ve sólida. */
+.vidrio{background:var(--vidrio);-webkit-backdrop-filter:blur(20px) saturate(180%);
+  backdrop-filter:blur(20px) saturate(180%);box-shadow:inset 0 -1px 0 var(--divider);}
+@media (prefers-reduced-transparency:reduce){
+  .vidrio{background:var(--campo);-webkit-backdrop-filter:none;backdrop-filter:none;}
+}
+
+/* Estado vacío. Se olvidan siempre y en esta app son frecuentes, porque una
+   tienda nueva empieza con todo en blanco. */
+.vacio{padding:var(--e6) var(--e3);text-align:center;}
+.vacio b{font-size:var(--t4);font-weight:600;display:block;margin-bottom:var(--e1);}
+.vacio div{font-size:var(--t2);color:var(--apagado);line-height:1.5;}
+
+/* Lo elegido (pestaña, píldora, preset, número) va en tinta: fondo --texto y letra --pagina, escritos
+   directo (no con una variable intermedia, que no seguiría a una .isla ni a la paleta de una tienda).
+   Así el coral queda solo para la acción (la Regla de Una Sola Acción); lo hecho y lo encendido, en --ok
+   (el medidor va en tinta mientras falta algo y pasa entero a --ok al completarse).
+   Medidor de contraseña: seis tramos, uno por requisito, y debajo (.falta)
+   SOLO lo que falta. Lo usan la cuenta y la portada. */
+.medidor{display:flex;gap:4px;}
+.medidor i{flex:1;height:4px;border-radius:var(--radio-marca);background:var(--sup-alta);}
+.medidor i.si{background:var(--texto);}
+.medidor.lista i{background:var(--ok);}
+.falta b{color:var(--texto);font-weight:600;}
+.falta.ok{color:var(--ok);}
+
+/* =========================================================
+   6. Rejilla de calendario
+   Estaba duplicada en las dos páginas con valores distintos. Ahora es una
+   sola, y cada página solo ajusta el alto de la celda con --cal-alto.
+   ========================================================= */
+.calGrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:var(--e1);}
+.calDow{font-size:var(--t1);letter-spacing:.08em;color:var(--rotulo);font-weight:600;
+        text-align:center;padding:2px 0 6px;}
+.calDia{min-height:var(--cal-alto,68px);background:var(--campo);border-radius:var(--radio-chico);
+        padding:var(--e1);display:flex;flex-direction:column;gap:2px;overflow:hidden;}
+.calDia.fuera{opacity:.3;}
+.calDia.hoy{background:var(--sup-alta);box-shadow:inset 0 0 0 2px var(--accion);}
+.calNum{font-size:var(--t2);font-weight:600;color:var(--rotulo);font-variant-numeric:tabular-nums;}
+.calDia.hoy .calNum{color:var(--accion-texto);}
+.calEv{font-size:var(--t1);line-height:1.3;background:var(--accion);color:var(--sobre-accion);
+  border-radius:var(--radio-marca);padding:1px 4px;font-weight:600;white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis;cursor:pointer;}
+.calEv:hover{background:var(--accion-clara);}
+.calEv.pasado{background:var(--sup-alta);color:var(--apagado);font-weight:400;}
+/* En el celular la celda mide unos 37 px: el título no cabe y cortarlo a dos
+   letras no dice nada. Queda solo la hora, entera; el evento sin hora es una
+   barra del mismo color. El detalle está en la lista de abajo. */
+@media (max-width:620px){
+  .calEv{padding:1px;text-overflow:clip;font-variant-numeric:tabular-nums;letter-spacing:-.02em;text-align:center;}
+  .calEv .calTit{display:none;}
+  .calEv.todoDia{height:6px;padding:0;}
+}
+#calNav{display:flex;align-items:center;gap:var(--e2);margin-bottom:var(--e3);}
+#calNav button{border:none;background:var(--sup-alta);color:var(--texto);
+  border-radius:var(--radio-chico);padding:7px 13px;font-family:inherit;font-size:var(--t2);
+  cursor:pointer;}
+#calNav button:hover{background:var(--sup-hover);}
+#calNav button:disabled{opacity:.4;cursor:default;}
+#calMes{font-family:var(--fuente-reloj);font-weight:300;font-size:var(--d3);flex:1;
+        text-transform:capitalize;}
+
+/* =========================================================
+   7. Ruleta de sorteos
+   También estaba duplicada. El tamaño lo pone cada página con --rueda.
+   ========================================================= */
+#rWrap{position:relative;width:var(--rueda,340px);max-width:100%;}
+#rCanvas{width:100%;height:auto;display:block;}
+#rPin{position:absolute;top:-2px;left:50%;transform:translateX(-50%);
+  width:0;height:0;border-left:11px solid transparent;border-right:11px solid transparent;
+  border-top:20px solid var(--accion);filter:drop-shadow(0 2px 4px rgba(0,0,0,.55));}
+#rWinner{text-align:center;margin-top:var(--e3);min-height:2.6em;}
+#rWinner .lbl{font-size:var(--t1);letter-spacing:.12em;color:var(--rotulo);font-weight:600;}
+#rWinner .who{font-family:var(--fuente-reloj);font-weight:300;font-size:var(--d3);
+  color:var(--accion-texto);line-height:1.2;margin-top:var(--e1);}
+
+/* =========================================================
+   8. Posiciones y clasificación
+   ========================================================= */
+.fpos{min-width:28px;text-align:center;font-size:var(--t3);font-weight:700;color:var(--rotulo);
+      font-variant-numeric:tabular-nums;}
+.fpos.pod1{color:var(--podio1-texto);} .fpos.pod2{color:var(--podio2-texto);} .fpos.pod3{color:var(--podio3-texto);}
+.fname{font-size:var(--t4);font-weight:500;line-height:1.25;}
+.fmeta{font-size:var(--t2);color:var(--apagado);margin-top:3px;font-variant-numeric:tabular-nums;}
+.fpts{font-size:var(--t5);font-weight:600;font-variant-numeric:tabular-nums;}
+
+/* =========================================================
+   9. El reloj
+   El único lugar donde una serif de despliegue funciona: un número enorme y
+   solo. El respaldo semitransparente va siempre, porque la tienda puede poner
+   una foto ruidosa de fondo y el número no puede depender de eso.
+   ========================================================= */
+/* Sin caja de fondo: el recuadro oscuro detrás del número se veía pegado.
+   La protección sobre fondos ruidosos ahora la dan tres sombras en capas —
+   una dura y pegada al trazo, una media y un halo amplio— que oscurecen lo
+   que haya detrás sin dibujar ningún borde. */
+.reloj{font-family:var(--fuente-reloj);font-weight:300;line-height:.95;
+  font-variant-numeric:tabular-nums;text-align:center;user-select:none;
+  text-shadow:0 1px 2px rgba(0,0,0,.92), 0 3px 10px rgba(0,0,0,.75),
+              0 0 36px rgba(0,0,0,.65);}
+.reloj.pausado{opacity:.5;}              /* se lee "detenido" sin leer la palabra */
+.reloj.porvencer{color:var(--accion) !important;}
+@keyframes pulso{0%,100%{opacity:1}50%{opacity:.45}}
+.reloj.pulsing{animation:pulso 1s ease-in-out infinite;}
+
+/* =========================================================
+   10. Movimiento reducido
+   El pulso de los últimos diez segundos es una animación infinita, que es
+   justo el caso que molesta a quien tiene sensibilidad vestibular. Acá NO se
+   apaga el aviso: se cambia el pulso por un realce sostenido, para que el
+   estado se siga leyendo sin que nada se mueva.
+   ========================================================= */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;
+    transition-duration:.001ms !important;scroll-behavior:auto !important;}
+  .reloj.pulsing{animation:none;}
+  .reloj.porvencer{text-decoration:underline;text-decoration-thickness:.06em;
+    text-underline-offset:.12em;}
+}
+
+/* --- interruptor --- */
+/* El de iOS: pista en píldora y perilla blanca redonda. Apagado, la pista es
+   --sup-hover, que se separa de la fila --sup; con --sup-alta daba 1,2:1 y
+   el interruptor se leía como un hueco suelto. */
+.sw{appearance:none;-webkit-appearance:none;width:51px;height:31px;border-radius:999px;
+  background:var(--sup-hover);position:relative;flex:none;cursor:pointer;margin:0;
+  transition:background-color 200ms ease;}
+.sw::after{content:"";position:absolute;left:2px;top:2px;width:27px;height:27px;
+  border-radius:50%;background:#fff;box-shadow:0 3px 8px rgba(0,0,0,.15),0 1px 1px rgba(0,0,0,.16);
+  transition:transform 250ms cubic-bezier(.23,1,.32,1);}
+.sw:checked{background:var(--ok);}
+.sw:checked::after{transform:translateX(20px);}
+.sw:focus-visible{outline:2px solid var(--accion);outline-offset:2px;}
+
+/* ------------------------------------------------------------
+   Insignias. Las dibuja insignias.js; las usan el muro y el panel.
+   Permanentes: medalla redonda. De tienda: parche cuadrado con la sigla.
+   El anillo es el nivel (bronce, plata, oro) en las que tienen niveles.
+   ------------------------------------------------------------ */
+.med,.par{--s:64px;position:relative;width:var(--s);height:var(--s);display:grid;place-items:center;flex:none;
+  color:var(--tinta,#fff);background:linear-gradient(145deg,var(--c1),var(--c2));
+  box-shadow:inset 0 0 0 calc(var(--s)*.05) rgba(255,255,255,.32),0 8px 16px -10px var(--c2);
+  transition:transform 160ms ease;}
+.med{border-radius:50%;}
+.par{border-radius:calc(var(--s)*.28);--tinta:#fff;}
+.med svg,.par svg{width:44%;height:44%;}
+.par svg{margin-top:-10%;}
+.med .beta{font-family:var(--fuente-reloj);font-size:calc(var(--s)*.56);line-height:1;margin-top:-6%;}
+.par em{position:absolute;bottom:calc(var(--s)*-.09);left:50%;transform:translateX(-50%);font-style:normal;font-weight:800;
+  font-size:max(9px,calc(var(--s)*.16));letter-spacing:.06em;line-height:1.35;background:var(--sup);color:var(--c2);
+  padding:0 calc(var(--s)*.09);border-radius:999px;box-shadow:0 0 0 2px var(--c2);white-space:nowrap;}
+.par.evento::before{content:"";position:absolute;inset:calc(var(--s)*.1);border-radius:calc(var(--s)*.2);
+  border:1.5px dashed rgba(255,255,255,.55);}
+.nivel.n-bronce{--anillo:#C07A3A;} .nivel.n-plata{--anillo:#9AA6B8;} .nivel.n-oro{--anillo:#E0A800;}
+.med.nivel,.par.nivel{box-shadow:0 0 0 calc(var(--s)*.06) var(--fondo-ins,var(--sup)),0 0 0 calc(var(--s)*.11) var(--anillo),
+  inset 0 0 0 calc(var(--s)*.05) rgba(255,255,255,.32),0 8px 16px -10px var(--c2);}
+.med.no,.par.no{background:var(--sup-alta);color:var(--rotulo);box-shadow:inset 0 0 0 2px var(--divider);}
+.par.no em{color:var(--rotulo);box-shadow:0 0 0 2px var(--divider);}
+.cand{position:absolute;right:-4px;top:-4px;width:24px;height:24px;border-radius:50%;background:var(--sup);
+  display:grid;place-items:center;color:var(--rotulo);box-shadow:0 0 0 2px var(--sup),inset 0 0 0 1px var(--divider);}
+.cand svg{width:12px;height:12px;margin:0;}
+/* La ficha: insignia, nombre y lo que dice debajo. Es un botón: abre el detalle. */
+.ins{display:flex;flex-direction:column;align-items:center;text-align:center;gap:5px;position:relative;
+  background:none;border:none;padding:4px 2px;font:inherit;color:inherit;cursor:pointer;border-radius:var(--radio);}
+.ins:focus-visible{outline:2px solid var(--accion);outline-offset:2px;}
+.ins b{font-size:var(--t3);line-height:1.2;color:var(--texto);margin-top:6px;}
+.ins small{font-size:var(--t2);color:var(--apagado);line-height:1.35;max-width:14em;}
+.ins small.raro{color:var(--rotulo);font-size:var(--t1);letter-spacing:.02em;}
+.ins.no b{color:var(--apagado);font-weight:600;}
+.ins .prog{width:74px;height:4px;border-radius:var(--radio-marca);background:var(--sup-alta);overflow:hidden;margin-top:3px;}
+.ins .prog i{display:block;height:100%;background:var(--ok);}
+.ins .nueva{position:absolute;top:-6px;left:calc(50% + 12px);background:var(--accion);color:var(--sobre-accion);z-index:1;
+  font-size:var(--t1);font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 7px;border-radius:999px;}
+@media (hover:hover){ .ins:hover .med:not(.no),.ins:hover .par:not(.no){transform:translateY(-2px);} }
+
+/* =========================================================
+   En línea: el punto verde y cuántos hay (presencia.js).
+   ========================================================= */
+.enlinea{display:inline-flex;align-items:center;gap:7px;font-size:var(--t2);color:var(--apagado);white-space:nowrap;
+  font-variant-numeric:tabular-nums;}
+.enlinea::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--ok);flex:none;
+  box-shadow:0 0 0 3px color-mix(in srgb, var(--ok) 22%, transparent);}

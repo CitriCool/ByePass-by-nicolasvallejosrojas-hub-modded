@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<!-- ▌ÍNDICE de muro.html (detalle y números de línea en MAPA-CODIGO.md, en la raíz del proyecto)
+      1. Estilos del muro
+      2. Diálogos de insignias
+      3. Módulos que usa el muro
+      4. Arranque y variables
+      5. Pestañas
+      6. Qué filas del historial son mías
+      7. Rachas contra cada rival
+      8. Inicio: publicaciones
+      9. Mi perfil
+     10. Insignias
+     11. Perfil de otro jugador
+     12. Mis tiendas (columna)
+     13. En vivo
+     14. Seguir y ordenar tiendas
+     15. Próximo torneo
+     16. Buscador y salir
+     17. Confirmar el correo
+     18. Arranque con la sesión
+-->
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="tema.js?v=2efd744ba33e"></script>
+<title>ByePass — Inicio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="estilo.css?v=2efd744ba33e">
+<!-- ▌BLOQUE 1 · Estilos del muro — Rejilla de tres columnas, perfil, publicaciones, en vivo e insignias. -->
+
+<link rel="stylesheet" href="/paginas/muro.css?v=2efd744ba33e">
+<link rel="stylesheet" href="/sistema.css?v=2efd744ba33e">
+<script src="/sistema.js?v=2efd744ba33e" defer></script>
+</head>
+<body data-pagina="muro">
+
+<header class="barra vidrio">
+  <div class="dentro">
+    <a class="logo bp-brand" href="muro.html" aria-label="ByePass, inicio"><span class="bp-symbol" aria-hidden="true"><svg viewBox="-4 -1.5 44 44" aria-hidden="true"><g fill="var(--bp-logo-fondo,var(--pagina))" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="17" y="9" width="19" height="27" rx="3.6" transform="rotate(-42 18 38)"/><rect x="17" y="9" width="19" height="27" rx="3.6" transform="rotate(-28 18 38)"/><rect x="17" y="9" width="19" height="27" rx="3.6" transform="rotate(-14 18 38)"/><g transform="rotate(4 18 38)"><rect x="17" y="9" width="19" height="27" rx="3.6"/><path fill="none" stroke-width="1.9" stroke-linecap="round" d="M22.6 15.5v13h4.9a3.3 3.3 0 0 0 0-6.6h-4.9h4.2a3.2 3.2 0 0 0 0-6.4z"/></g></g></svg></span><span class="bp-word" aria-hidden="true">ye<span>Pass</span></span></a>
+    <input id="buscar" type="search" placeholder="Buscar un jugador en el historial" aria-label="Buscar un jugador en el historial">
+    <div class="yo">
+      <span id="miNombre"></span>
+      <button id="btnSalir">Salir</button>
+    </div>
+  </div>
+</header>
+
+<nav class="pestanas" aria-label="Secciones">
+  <div class="dentro">
+    <button data-tab="inicio" class="on">Inicio</button>
+    <button data-tab="perfil">Mi perfil</button>
+    <button data-tab="vivo">En vivo</button>
+  </div>
+</nav>
+
+<div class="hoja">
+
+  <!-- ================= columna izquierda ================= -->
+  <aside>
+    <div class="bloque" id="bFicha">
+      <div class="yoficha">
+        <div class="avatar" id="avatar">·</div>
+        <div>
+          <div class="nom" id="fichaNom">—</div>
+          <div class="sub" id="fichaRecord">Sin torneos todavía</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bloque">
+      <ul class="menu">
+        <li><a href="tienda.html" id="aTiendas">Tiendas</a></li>
+        <li class="oculto" id="liPanel"><a href="admin.html" id="aPanel">Panel del organizador</a></li>
+        <li class="oculto" id="liPedir"><a href="cuenta.html#tienda" id="aPedir">Pedir una tienda</a></li>
+        <li class="oculto" id="liHerr"><a href="herramientas.html" id="aHerr">Herramientas de administrador</a></li>
+        <li><a href="mazos.html" id="aMazos">Mis mazos</a></li>
+        <li class="oculto" id="liRulings"><a href="rulings.html" id="aRulings">Rulings</a></li>
+        <li><a href="cuenta.html#ajustes" id="aCuenta">Ajustes</a></li>
+        <li><button type="button" id="bTema" aria-pressed="false"></button></li>
+        <li><a href="cuenta.html#sugerencias">Enviar una sugerencia</a></li>
+      </ul>
+    </div>
+
+    <div class="bloque">
+      <h2 class="conBoton">Tiendas <button type="button" id="bOrdenar" hidden>Ordenar</button></h2>
+      <div class="cuerpo junto" id="tienda"></div>
+    </div>
+
+    <div class="bloque" id="bProximo">
+      <h2>Próximo torneo</h2>
+      <div class="cuerpo" id="proximo">
+        <div class="rotulito">Cargando…</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ================= columna central ================= -->
+  <main>
+    <div class="aviso accion oculto" id="avisoCorreo" role="status"></div>
+    <section id="tabInicio" aria-labelledby="hInicio">
+      <h1 class="solo-lector" id="hInicio">Inicio</h1>
+      <div id="muro" aria-live="polite"></div>
+    </section>
+
+    <section id="tabPerfil" class="oculto" aria-labelledby="hPerfil">
+      <div class="bloque">
+        <div class="cabPerfil">
+          <div class="avatar grande" id="pfAvatar" aria-hidden="true">·</div>
+          <div class="quienSoy">
+            <h1 class="nomPerfil" id="hPerfil">Mi perfil</h1>
+            <div class="idLinea" id="pfIdLinea"></div>
+            <div class="vitrina" id="pfVitrina"></div>
+          </div>
+          <a class="btn" id="aAjustes" href="cuenta.html#ajustes">Ajustes de la cuenta</a>
+        </div>
+        <dl class="ficha" id="pfFicha"></dl>
+      </div>
+      <div class="bloque" id="bInsignias">
+        <h2 id="hInsignias">Insignias</h2>
+        <div class="cuerpo junto">
+          <div class="insCab"><div class="seg" role="tablist" aria-label="Tipo de insignias">
+            <button role="tab" aria-selected="true" data-grupo="perm">Permanentes</button>
+            <button role="tab" aria-selected="false" data-grupo="tiendas">De tiendas</button></div>
+            <p class="insNota" id="insNota">Toca una que hayas ganado para destacarla en tu vitrina u ocultarla: las ocultas no las ven los demás.</p></div>
+          <div id="insPerm"></div>
+          <div id="insTiendas" hidden></div>
+        </div>
+      </div>
+      <div class="bloque">
+        <h2>Mis resultados</h2>
+        <div class="cuerpo junto" id="misResultados"></div>
+      </div>
+      <div class="bloque">
+        <h2>Rachas</h2>
+        <div class="cuerpo junto" id="misRachas"></div>
+        <label class="cuerpo filaSw"><span>Que otros jugadores vean mis rachas
+          <small id="swRachasTxt">Las ven al tocar tu nombre en un torneo. Solo en las tiendas con las que compartes tu ID: así saben cuál fila es la tuya.</small></span>
+          <input type="checkbox" role="switch" class="sw" id="swRachas"></label>
+      </div>
+      <div class="bloque">
+        <h2>Tiendas que sigo</h2>
+        <div class="cuerpo junto" id="pfTiendas"></div>
+      </div>
+    </section>
+
+    <!-- El perfil de otro jugador: se abre al tocar su nombre en un torneo. -->
+    <section id="tabJugador" class="oculto" aria-labelledby="hJugador">
+      <div class="bloque">
+        <div class="cabPerfil">
+          <div class="avatar grande" id="jgAvatar" aria-hidden="true">·</div>
+          <div class="quienSoy">
+            <h1 class="nomPerfil" id="hJugador">Jugador</h1>
+            <div class="idLinea">En los torneos archivados de tus tiendas.</div>
+            <div class="vitrina" id="jgVitrina"></div>
+          </div>
+          <button class="btn" id="jgVolver">Volver</button>
+        </div>
+        <dl class="ficha" id="jgFicha"></dl>
+      </div>
+      <div class="bloque">
+        <h2>Insignias</h2>
+        <div class="cuerpo junto" id="jgInsignias"></div>
+      </div>
+      <div class="bloque">
+        <h2>Resultados</h2>
+        <div class="cuerpo junto" id="jgResultados"></div>
+      </div>
+      <div class="bloque">
+        <h2>Rachas</h2>
+        <div class="cuerpo junto" id="jgRachas"></div>
+      </div>
+    </section>
+
+    <section id="tabVivo" class="oculto" aria-labelledby="hVivo">
+      <h1 class="solo-lector" id="hVivo">En vivo</h1>
+      <div class="seg" id="vivoElegir" role="group" aria-label="Tienda en vivo" hidden></div>
+      <div class="bloque">
+        <h2>Ahora</h2>
+        <div class="cuerpo" id="vivoGrande" aria-live="polite"></div>
+      </div>
+      <div class="bloque oculto" id="bRonda">
+        <h2 id="hRonda">La ronda</h2>
+        <div class="cuerpo junto" id="vivoRonda"></div>
+      </div>
+      <div class="bloque oculto" id="bPosic">
+        <h2>Cómo va la tabla</h2>
+        <div class="cuerpo junto" id="vivoTabla"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ================= columna derecha ================= -->
+  <aside>
+    <div class="bloque" id="bVivoChico">
+      <h2>En vivo ahora</h2>
+      <div class="cuerpo" id="vivoChico" aria-live="polite">
+        <div class="vivo"><span class="punto"></span> Conectando…</div>
+      </div>
+    </div>
+    <p class="legal"><a href="cuenta.html#sugerencias">Sugerencias</a> · <a href="terminos.html">Términos</a> ·
+      <a href="privacidad.html">Privacidad</a> · ByePass © 2026</p>
+  </aside>
+
+</div>
+
+<!-- ▌BLOQUE 2 · Diálogos de insignias — Detalle de una insignia y celebración al ganar una. -->
+<!-- El detalle de una insignia y la celebración cuando se gana una. -->
+<dialog class="hojaIns" id="dlgIns" aria-labelledby="dlgTitulo"><div id="dlgCuerpo"></div></dialog>
+<dialog class="celebra" id="dlgNueva" aria-labelledby="celTitulo"><div class="rayos"></div><div id="celCuerpo"></div></dialog>
+
+<script src="config.js?v=2efd744ba33e"></script>
+<!-- ▌BLOQUE 3 · Módulos que usa el muro — Imports de Firebase y módulos compartidos. -->
+<script type="module">
+import { avisarError } from "./errores.js?v=2efd744ba33e";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getDatabase, connectDatabaseEmulator, ref, onValue, get, set, update, serverTimestamp, query, limitToLast }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+import { getAuth, connectAuthEmulator, signOut, onAuthStateChanged, sendEmailVerification }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { estaVigente, urlGoogle, fechaLegible, cuantoFalta, ordenar } from "./agenda.js?v=2efd744ba33e";
+import { TIENDA, nombreTienda, iniciales, COLOR_TIENDA } from "./sala.js?v=2efd744ba33e";
+import { nombreMes, claveJugador, porCategoria, CATEGORIAS } from "./clasificacion.js?v=2efd744ba33e";
+import { estoyEnLinea } from "./presencia.js?v=2efd744ba33e";
+import { perfilCompleto } from "./registro.js?v=2efd744ba33e";
+import { leerHistorial } from "./historial.js?v=2efd744ba33e";
+import { vigilar } from "./mantenimiento.js?v=2efd744ba33e";
+import { permanentes, deTienda, medalla, parche, colorTienda, fechaLarga, norm } from "./insignias.js?v=2efd744ba33e";
+
+const $ = id => document.getElementById(id);
+/* El muro es el inicio de cada persona y no depende de una tienda. El ?sala= solo cuenta con #jugador=
+   (la búsqueda de jugadores del directorio): es la tienda donde buscar a esa persona. Cualquier otra
+   sala se ignora y la dirección queda sin ella. Hasta el 19-10-2026 el muro abría siempre una tienda
+   (la del enlace o la favorita) y su «En vivo» era el de esa tienda aunque uno no jugara ahí. */
+const MIRA = new URLSearchParams(location.search).get("sala") && /^#jugador=/.test(location.hash) ? TIENDA : null;
+if (location.search.includes("sala=")){ const u0 = new URL(location.href); u0.searchParams.delete("sala"); history.replaceState(null, "", u0); }
+
+/* ▌BLOQUE 4 · Arranque y variables ══════════════════════════════════════════════
+   Firebase, enlaces con ?emu y ?sala, perfil pedido por #jugador, estado global. */
+const app  = initializeApp(FIREBASE_CONFIG);
+const db   = getDatabase(app);
+const auth = getAuth(app);
+auth.languageCode = "es";   // el correo de confirmación, en español
+if (typeof EMULADOR !== "undefined" && EMULADOR){
+  connectAuthEmulator(auth, "http://" + EMULADOR.host + ":" + EMULADOR.auth, { disableWarnings: true });
+  connectDatabaseEmulator(db, EMULADOR.host, EMULADOR.db);
+}
+vigilar(db, auth);   // la pantalla de mantenimiento
+estoyEnLinea(db, "muro", MIRA || undefined);
+/* muro.html?sala=X#jugador=<nombre> abre el perfil de ese jugador (lo usa la
+   búsqueda de jugadores del directorio). Se lee antes de que verTab limpie el #. */
+let JUG_PEDIDO = (/^#jugador=(.+)$/.exec(location.hash) || [])[1];
+try { JUG_PEDIDO = JUG_PEDIDO && decodeURIComponent(JUG_PEDIDO); } catch(e){ JUG_PEDIDO = null; }
+
+const qs   = (typeof EMULADOR !== "undefined" && EMULADOR) ? "?emu=1" : "";
+/* El ?emu=1 viaja en los enlaces: si se pierde, el jugador saltaría a la base real sin enterarse. */
+$("aTiendas").href = "tienda.html" + qs;
+/* El perfil público de una tienda. */
+const aTienda = x => "tienda.html" + (qs ? qs + "&" : "?") + "sala=" + encodeURIComponent(x);
+$("aCuenta").href = "cuenta.html" + qs + "#ajustes";
+$("aAjustes").href = "cuenta.html" + qs + "#ajustes";
+$("aPanel").href = "admin.html" + qs;
+$("aPedir").href = "cuenta.html" + qs + "#tienda";
+$("aHerr").href = "herramientas.html" + qs;
+$("aMazos").href = "mazos.html" + qs; $("aRulings").href = "rulings.html" + qs;
+/* Modo noche (tema.js): el botón dice lo que hace */
+const pintarTema = () => { const n = temaNoche(); $("bTema").innerHTML = (n ? ICONO_SOL : ICONO_LUNA) + (n ? "Modo día" : "Modo noche"); $("bTema").setAttribute("aria-pressed", n); };
+$("bTema").onclick = () => cambiarTema(); addEventListener("tema", pintarTema); pintarTema();
+
+let usuario = null, perfil = null, HIST = null, filtro = "";
+let TIENDAS = null, errTienda = "";
+
+/* ▌BLOQUE 5 · Pestañas ══════════════════════════════════════════════════════════
+   Inicio, Mi perfil, En vivo y el perfil de otro jugador. */
+/* ------------------------------------------------------------
+   Pestañas
+   ------------------------------------------------------------ */
+const TABS = { inicio:"tabInicio", perfil:"tabPerfil", vivo:"tabVivo", jugador:"tabJugador" };
+let JUGADOR = null;   // el nombre (normalizado) del jugador cuyo perfil se mira
+function verTab(t){
+  if (!TABS[t] || (t === "jugador" && !JUGADOR)) t = "inicio";
+  Object.entries(TABS).forEach(([k, id]) => $(id).classList.toggle("oculto", k !== t));
+  document.querySelectorAll(".pestanas button").forEach(b =>
+    b.classList.toggle("on", b.dataset.tab === t));
+  /* El resumen de la columna derecha es el mismo que abre la pestaña En vivo.
+     Con la pestaña abierta quedaban las dos tarjetas iguales lado a lado, que
+     se lee como un error de la página. */
+  $("bVivoChico").classList.toggle("oculto", t === "vivo");
+  /* Lo mismo con la ficha de la izquierda en Mi perfil: la cabecera grande ya
+     dice nombre y récord. */
+  $("bFicha").classList.toggle("oculto", t === "perfil");
+  document.querySelector(".hoja").classList.toggle("sinDerecha", t === "vivo");
+  if (location.hash.slice(1) !== t) history.replaceState(null, "", "#" + t);
+}
+document.querySelectorAll("[data-tab]").forEach(b => b.onclick = () => verTab(b.dataset.tab));
+/* Un enlace #jugador=<nombre> abierto con el muro ya cargado solo cambia el #:
+   sin esto caía en Inicio. */
+addEventListener("hashchange", () => {
+  const m = /^#jugador=(.+)$/.exec(location.hash);
+  if (m && HIST) try { return verJugador(decodeURIComponent(m[1])); } catch(e){ console.warn("No se pudo completar una operación opcional", e); }
+  verTab(location.hash.slice(1));
+});
+
+/* ------------------------------------------------------------
+   Récord del jugador, calculado sobre los torneos archivados
+   ------------------------------------------------------------
+   El historial guarda los nombres tal como venian en el archivo del torneo, asi que
+   el cruce es por nombre normalizado. Por eso el registro pide escribir el
+   nombre igual que como se inscribe en la tienda. La normalización (norm) es
+   la de insignias.js: la misma que usa el directorio de jugadores. */
+
+/* ▌BLOQUE 6 · Qué filas del historial son mías ══════════════════════════════════
+   Una fila es mía si tiene mi uid; si no tiene uid, si el nombre calza con el de mi perfil. Junta
+   los torneos de mis tiendas (las que sigo, organizo o miro). deNombre: el perfil de otra persona
+   por su clave (c:…), su cuenta (u:…) o, en enlaces viejos, su nombre. */
+/* Una fila es mía si la tienda la marcó con mi uid —eso ocurre solo si le
+   compartí mi ID de jugador— y si no, por nombre. El nombre sigue siendo el
+   respaldo y no un residuo: cubre los torneos archivados antes de que
+   existiera el enlace, y a quien nunca quiso compartir el ID.
+
+   La fila marcada con el uid de OTRO no se reclama por nombre: si hay dos
+   jugadores que se llaman igual, la que tiene dueño ya está resuelta. */
+const esMia = p => {
+  if (!p) return false;
+  if (p.uid) return !!usuario && p.uid === usuario.uid;
+  const yo = perfil ? norm(perfil.nombre) : "";
+  return !!yo && norm(p.name) === yo;
+};
+
+/* Los torneos de mis tiendas: las que sigo, las que organizo y la que estoy
+   mirando. El muro, los perfiles y las rachas leen todos de acá. Antes el muro
+   juntaba las tiendas y el perfil miraba solo la de ?sala=: abierto sin sala,
+   el muro mostraba los torneos de la tienda que organizo y el perfil de esos
+   mismos jugadores salía vacío («Jugador», sin resultados ni rachas). */
+function torneosDeMisTiendas(){
+  const out = [];
+  misSalas().forEach(s => {
+    cargarTienda(s);
+    const h = s === MIRA && !(TD[s] && TD[s].hist) ? HIST : TD[s] && TD[s].hist;
+    Object.values(h || {}).forEach(t => out.push({ t, sala: s }));
+  });
+  return out;
+}
+
+function filasDe(esDe){
+  if (!HIST) return [];
+  const out = [];
+  torneosDeMisTiendas().forEach(({ t }) => {
+    const fila = (t.standings || []).find(esDe);
+    if (fila) out.push({ torneo: t, fila });
+  });
+  return out.sort((a, b) => (b.torneo.fecha || "").localeCompare(a.torneo.fecha || ""));
+}
+const miosDelHistorial = () => filasDe(esMia);
+/* Otro jugador, por su nombre. Los reservados no tienen perfil: pidieron no
+   salir con su nombre, y juntar sus torneos sería desarmar eso. */
+/* n puede ser la clave de la persona (c:…), su cuenta (u:…) o, en un enlace viejo, su nombre. */
+const deNombre = n => p => !!p && !p.reservado && (claveJugador(p) === n || (!!p.uid && "u:" + p.uid === n) || norm(p.name) === n);
+
+/* ▌BLOQUE 7 · Rachas contra cada rival ══════════════════════════════════════════
+   Con las partidas archivadas calcula victorias, derrotas y la racha más reciente contra cada
+   rival. */
+/* ------------------------------------------------------------
+   Rachas contra cada rival
+   ------------------------------------------------------------
+   Salen de las partidas que el panel archiva con cada torneo desde el 25-09
+   ([ronda, a, b, g], con a y b el puesto en la tabla final). La racha es la
+   seguidilla más reciente de resultados iguales contra el mismo rival; un
+   empate o una doble derrota la cortan. Desde dos seguidas cuenta. */
+function rachasDe(esDe){
+  if (!HIST) return null;
+  const riv = {};
+  let hayPartidas = false;
+  torneosDeMisTiendas().map(x => x.t)
+    .sort((a, b) => (a.fecha || "").localeCompare(b.fecha || "") || (a.creado || 0) - (b.creado || 0))
+    .forEach(t => {
+      const st = t.standings || [], yo = st.findIndex(esDe);
+      if (yo < 0 || !t.partidas) return;
+      hayPartidas = true;
+      Object.values(t.partidas).sort((x, y) => x[0] - y[0]).forEach(([, a, b, g]) => {
+        if (a !== yo && b !== yo) return;
+        const otro = st[a === yo ? b : a];
+        if (!otro) return;
+        const clave = claveJugador(otro);
+        const x = riv[clave] ??= { clave, w: 0, l: 0, e: 0, racha: null, n: 0 };
+        x.nombre = otro.name; x.reservado = !!otro.reservado;
+        const r = g === 0 || g === 3 ? "e" : (g === 1) === (a === yo) ? "w" : "l";
+        x[r]++;
+        if (r === "e"){ x.racha = null; x.n = 0; }
+        else if (x.racha === r) x.n++;
+        else { x.racha = r; x.n = 1; }
+      });
+    });
+  const lista = Object.values(riv).filter(x => x.n >= 2)
+    .sort((a, b) => b.n - a.n || (a.racha === "w" ? -1 : 1) - (b.racha === "w" ? -1 : 1) || a.nombre.localeCompare(b.nombre));
+  return { hayPartidas, lista };
+}
+
+function rachasHtml(r, propias){
+  if (!r) return '<div class="vacio">Cargando…</div>';
+  if (!r.hayPartidas) return '<div class="vacio">Las rachas salen de las partidas de cada torneo, que la tienda ' +
+    "guarda desde el 25 de septiembre de 2026.<br>Aparecen con el próximo torneo archivado.</div>";
+  if (!r.lista.length) return '<div class="vacio">' + (propias ? "No estás" : "No está") + " en racha contra nadie: " +
+    "cuenta desde dos victorias o dos derrotas seguidas contra el mismo rival.</div>";
+  return '<table class="tabla"><tbody>' + r.lista.map(x =>
+    "<tr><td>" + (x.reservado ? esc(x.nombre) : '<a href="#jugador" data-jug="' + esc(x.clave) + '">' + esc(x.nombre) + "</a>") +
+    '<div class="rec">cara a cara ' + x.w + "-" + x.l + "-" + x.e + "</div></td>" +
+    '<td class="res"><span class="racha ' + x.racha + '">' + x.n + (x.racha === "w" ? " victorias" : " derrotas") +
+    "</span><div class=\"rec\">seguidas</div></td></tr>").join("") + "</tbody></table>";
+}
+
+function pintarFicha(){
+  const nom = (perfil && perfil.nombre) || (usuario && usuario.displayName) || "";
+  $("fichaNom").textContent = nom || "—";
+  $("miNombre").textContent = nom || (usuario ? usuario.email : "");
+  $("avatar").textContent = (nom.trim()[0] || "·").toUpperCase();
+
+  const mios = miosDelHistorial();
+  if (!mios.length){
+    $("fichaRecord").textContent = HIST === null ? "Cargando…" : "Sin torneos todavía";
+    return;
+  }
+  let w = 0, l = 0, e = 0;
+  mios.forEach(m => { w += +m.fila.w || 0; l += +m.fila.l || 0; e += +m.fila.t || 0; });
+  $("fichaRecord").textContent =
+    mios.length + (mios.length === 1 ? " torneo" : " torneos") + " · " + w + "-" + l + "-" + e;
+}
+
+/* ▌BLOQUE 8 · Inicio: publicaciones ═════════════════════════════════════════════
+   Las publicaciones de mis tiendas (posts/) y su último torneo archivado, del más nuevo al más
+   viejo. */
+/* ------------------------------------------------------------
+   El muro: un torneo archivado es una publicación
+   ------------------------------------------------------------ */
+function pintarMuro(){
+  const cont = $("muro");
+  if (HIST === null){ cont.innerHTML = '<div class="bloque"><div class="vacio">Cargando…</div></div>'; return; }
+
+  /* Los torneos de mis tiendas (las que sigo, las que organizo y la que estoy
+     mirando). Sin búsqueda va SOLO el más reciente: el historial entero vive
+     en el perfil de cada tienda. Buscando a un jugador, van todos donde sale. */
+  const todos = torneosDeMisTiendas()
+    .sort((a, b) => String(b.t.fecha || "").localeCompare(String(a.t.fecha || "")) || (b.t.creado || 0) - (a.t.creado || 0))
+    .filter(({ t }) => !filtro || (t.standings || []).some(p => norm(p.name).includes(filtro)));
+  const torneos = filtro ? todos : todos.slice(0, 1);
+  const nomT = s => nombreTienda(TD[s] && TD[s].tienda && TD[s].tienda.perfil, s);
+  escucharPosts();
+  const posts = filtro ? [] : listaPosts();
+
+  if (!torneos.length && !posts.length){
+    cont.innerHTML = '<div class="bloque"><div class="vacio">' +
+      (filtro
+        ? "Nadie con ese nombre aparece en los torneos archivados."
+        : "Todavía no hay publicaciones ni torneos archivados en tus tiendas.<br>Cuando una tienda publique algo o cierre una fecha, va a aparecer acá.") +
+      "</div></div>";
+    return;
+  }
+
+  const tarjetaTorneo = ({ t, sala }) => {
+    const secs = porCategoria(t.standings || []);
+    const mia = (t.standings || []).find(esMia);
+    /* Si el jugador quedó fuera del top 4 (de su categoría, si el torneo las tuvo) igual se muestra
+       su fila, porque es lo que viene a buscar: en qué puesto quedó. */
+    const filas = secs.flatMap(sec => {
+      const yo = sec.filas.find(esMia);
+      return (sec.nombre ? [{ titulo: sec.nombre }] : []).concat(sec.filas.slice(0, 4), yo && yo.place > 4 ? [yo] : []);
+    });
+    return '<article class="post">' +
+      '<div class="cab"><div><div class="quien">' + esc(t.nombre || "Torneo") + '</div>' +
+      '<div class="cuando">' + esc(nomT(sala)) + " · " + esc(fechaLegible(t.fecha)) + " · " +
+      (t.jugadores || 0) + " jugadores · " + (t.rondas || 0) + " rondas</div></div></div>" +
+      (mia ? '<div class="texto">Quedaste <b>' + mia.place + "º</b>" + (secs.length > 1 && mia.cat != null ? " en " + CATEGORIAS[mia.cat] : "") + " con " +
+             (mia.pts || 0) + " puntos y un récord de " +
+             (mia.w || 0) + "-" + (mia.l || 0) + "-" + (mia.t || 0) + ".</div>" : "") +
+      '<table class="tabla"><caption>Clasificación final</caption><tbody>' +
+      filas.map(p => p.titulo ? '<tr><td colspan="3" style="font-size:var(--t1);letter-spacing:.12em;font-weight:600;color:var(--rotulo);padding-top:10px">' + esc(p.titulo.toUpperCase()) + "</td></tr>" :
+        '<tr' + (esMia(p) ? ' class="yo-fila"' : "") + '>' +
+        '<td class="pos">' + p.place + "º</td>" +
+        "<td>" + (p.reservado ? esc(esMia(p) ? "Tú · reservado" : p.name)
+                 : '<a href="#jugador" data-jug="' + esc(claveJugador(p)) + '">' + esc(p.name) + "</a>") + "</td>" +
+        '<td class="pts">' + (p.pts || 0) + " pts · " +
+        (p.w || 0) + "-" + (p.l || 0) + "-" + (p.t || 0) + "</td></tr>").join("") +
+      "</tbody></table>" +
+      '<div class="pie">' + (filtro ? "Publicado por el organizador de la tienda." :
+        'Es el más reciente. <a href="' + aTienda(sala) + '#torneos">Ver todos los torneos de ' + esc(nomT(sala)) + "</a>") +
+      "</div></article>";
+  };
+  /* Publicaciones y el último torneo, del más nuevo al más viejo. */
+  cont.innerHTML = torneos.map(x => ({ k: x.t.creado || Date.parse(x.t.fecha || "") || 0, h: tarjetaTorneo(x) }))
+    .concat(posts.map(x => ({ k: x.p.creado || 0, h: tarjetaPost(x) })))
+    .sort((a, b) => b.k - a.k).map(x => x.h).join("");
+}
+
+/* ------------------------------------------------------------
+   Publicaciones de las tiendas: posts/<tienda>/<id> = { texto, enlace?, creado }, las escribe la tienda en su
+   panel. Las de mis tiendas (las 10 últimas de cada una); si no sigo ni organizo ninguna, las de todas.
+   ponytail: sin tiendas seguidas se lee posts/ entero; con muchas tiendas, un índice de las recientes.
+   ------------------------------------------------------------ */
+const POSTS = {}, offPosts = {};
+let POSTS_TODAS = null;
+function escucharPosts(){
+  if (TIENDAS === null) return;
+  const salas = misSalas();
+  if (!salas.length){
+    if (POSTS_TODAS === null){ POSTS_TODAS = {}; onValue(ref(db, "posts"), s => { POSTS_TODAS = s.val() || {}; pintarMuro(); }, () => {}); }
+    return;
+  }
+  salas.forEach(t => { if (!offPosts[t]) offPosts[t] = onValue(query(ref(db, "posts/" + t), limitToLast(10)), s => { POSTS[t] = s.val() || {}; pintarMuro(); }, () => { POSTS[t] = {}; }); });
+}
+function listaPosts(){
+  const salas = misSalas(), fuente = salas.length ? Object.fromEntries(salas.map(t => [t, POSTS[t]])) : (POSTS_TODAS || {});
+  return Object.entries(fuente).flatMap(([t, ps]) => Object.entries(ps || {}).map(([id, p]) => ({ t, id, p })))
+    .filter(x => x.p && typeof x.p.texto === "string").sort((a, b) => (b.p.creado || 0) - (a.p.creado || 0)).slice(0, 20);
+}
+const haceCuanto = ms => { const m = Math.round((Date.now() - ms) / 60000);
+  return m < 1 ? "recién" : m < 60 ? "hace " + m + " min" : m < 1440 ? "hace " + Math.round(m / 60) + " h" : m < 2880 ? "ayer"
+    : new Date(ms).toLocaleDateString("es-CL", { day: "numeric", month: "short" }); };
+function tarjetaPost({ t, p }){
+  const perf = (TD[t] && TD[t].tienda && TD[t].tienda.perfil) || PERF_T[t] || null, n = nombreTienda(perf, t);
+  return '<article class="post"><div class="cab"><span class="sig" style="--c:' + esc((perf && perf.color) || COLOR_TIENDA) + '" aria-hidden="true">' +
+    esc(iniciales(n)) + '</span><div><div class="quien"><a href="' + aTienda(t) + '">' + esc(n) + '</a></div><div class="cuando">' +
+    esc(haceCuanto(p.creado || 0)) + "</div></div></div>" +
+    '<div class="texto">' + esc(p.texto).replace(/\n/g, "<br>") + "</div>" +
+    (/^https:\/\/\S+$/.test(p.enlace || "") ? '<div class="pie"><a href="' + esc(p.enlace) + '" target="_blank" rel="noopener">Ver más</a></div>' : "") +
+    "</article>";
+}
+
+/* ▌BLOQUE 9 · Mi perfil ═════════════════════════════════════════════════════════
+   Ficha, récord y resultados propios. */
+/* ------------------------------------------------------------
+   Mi perfil y mis resultados
+   ------------------------------------------------------------ */
+function pintarPerfil(){
+  const p = perfil || {};
+  const nom = p.nombre || (usuario && usuario.displayName) || "";
+  $("hPerfil").textContent  = nom || "Mi perfil";
+  $("pfAvatar").textContent = (nom.trim()[0] || "·").toUpperCase();
+  /* El correo y la fecha de nacimiento no van acá: son datos privados de la
+     cuenta, no parte de lo que el jugador es en la tienda. Viven en ajustes. */
+  $("pfIdLinea").textContent = p.playerId
+    ? "ID de jugador " + p.playerId
+    : "Sin ID de jugador. Agrégalo en los ajustes y tus resultados entran solos.";
+
+  const mios = miosDelHistorial();
+  $("pfFicha").innerHTML = fichaHtml(mios);
+  $("misResultados").innerHTML = resultadosHtml(mios,
+    '<div class="vacio">Todavía no apareces en ningún torneo archivado.<br>' +
+    "Si la tienda te inscribió con otro nombre, síguela y comparte tu ID: " +
+    "desde ahí tus resultados entran solos.</div>");
+  $("misRachas").innerHTML = rachasHtml(rachasDe(esMia), true);
+  pintarInsigniasPropias();
+}
+
+function fichaHtml(mios){
+  let w = 0, l = 0, t = 0, mejor = null;
+  mios.forEach(m => {
+    w += +m.fila.w || 0; l += +m.fila.l || 0; t += +m.fila.t || 0;
+    if (!mejor || m.fila.place < mejor.fila.place) mejor = m;
+  });
+  const jugadas = w + l + t;
+  const dato = (dt, dd) => "<div><dt>" + dt + "</dt><dd>" + dd + "</dd></div>";
+  /* El porcentaje cuenta el empate como media victoria: es la cuenta que ya
+     usa el panel del organizador, y dos cifras distintas para lo mismo serían
+     peores que cualquiera de las dos. */
+  return dato("Torneos", HIST === null ? "…" : mios.length) +
+    dato("Récord", jugadas ? w + "-" + l + "-" + t : "—") +
+    dato("Mejor puesto", mejor ? mejor.fila.place + "º" : "—") +
+    dato("Victorias", jugadas ? Math.round((w + t / 2) / jugadas * 100) + "%" : "—");
+}
+
+function resultadosHtml(mios, vacio){
+  const podio = n => n >= 1 && n <= 3 ? " p" + n : "";
+  return HIST === null
+    ? '<div class="vacio">Cargando…</div>'
+    : mios.length
+    ? '<table class="tabla"><tbody>' + mios.map(m =>
+        '<tr><td class="pos' + podio(m.fila.place) + '">' + m.fila.place + "º</td>" +
+        "<td>" + esc(m.torneo.nombre) +
+        '<div class="rec">' + esc(fechaLegible(m.torneo.fecha)) +
+        (m.torneo.jugadores ? " · de " + m.torneo.jugadores + " jugadores" : "") + "</div></td>" +
+        '<td class="pts">' + (m.fila.w || 0) + "-" + (m.fila.l || 0) + "-" + (m.fila.t || 0) +
+        '<div class="rec">' + (m.fila.pts || 0) + " pts</div></td></tr>").join("") +
+      "</tbody></table>"
+    : vacio;
+}
+
+/* ▌BLOQUE 10 · Insignias ════════════════════════════════════════════════════════
+   Carga historial, puntos y tienda de cada tienda leída; calcula insignias permanentes y de tienda
+   con insignias.js, vitrina, ocultas, detalle y celebración de las nuevas. */
+/* ------------------------------------------------------------
+   Insignias
+   ------------------------------------------------------------
+   El catálogo y las cuentas viven en insignias.js (también las usa el panel).
+   Acá se juntan los datos —el historial de cada tienda que se lee, sus
+   puntos y sus insignias— y se dibujan.
+
+   Tiendas que se leen: la que se está mirando y las que sigue el jugador,
+   más las que aparezcan en la vitrina de otro. Las permanentes cuentan todas
+   esas juntas; una tienda que nadie sigue no suma, porque no hay cómo leer
+   el historial de todas.
+   ------------------------------------------------------------ */
+/* El orden de registro: la posición de su hora de alta entre todas. */
+let ALTAS = null;
+let TESTERS = {};   // beta/testers/<uid>: entró con código de invitación
+function numeroDe(uid){
+  if (!uid || !ALTAS || !ALTAS[uid]) return null;
+  return Object.entries(ALTAS).sort((a, b) => a[1] - b[1] || a[0].localeCompare(b[0]))
+    .findIndex(([u]) => u === uid) + 1;
+}
+
+const TD = {};   // sala -> { hist, cfg, tienda }; cada uno undefined mientras llega
+function cargarTienda(sala){
+  if (!sala || TD[sala]) return;
+  const x = TD[sala] = { hist: undefined, cfg: undefined, tienda: undefined, agenda: undefined };
+  const listo = (k, v) => { x[k] = v; repintarInsignias(); };
+  leerHistorial(db, sala, h => listo("hist", h), () => listo("hist", {}));
+  get(ref(db, "salas/" + sala + "/config")).then(s => listo("cfg", s.val()), () => listo("cfg", null));
+  onValue(ref(db, "tiendas/" + sala), s => listo("tienda", s.val() || {}), () => listo("tienda", {}));
+  onValue(ref(db, "salas/" + sala + "/agenda"), s => listo("agenda", s.val() || {}), () => listo("agenda", {}));
+}
+const cargada = s => !!TD[s] && TD[s].hist !== undefined && TD[s].cfg !== undefined && TD[s].tienda !== undefined;
+let ORGANIZA = {};   // organiza/<uid>: las tiendas que organizo
+const misSalas = () => [...new Set([MIRA, ...Object.keys(TIENDAS || {}), ...Object.keys(ORGANIZA)])].filter(Boolean);
+let pintura = 0;
+function repintarInsignias(){
+  cancelAnimationFrame(pintura);
+  /* pintarPerfil ya incluye las insignias propias; va porque mis resultados
+     también suman los torneos de cada tienda que termina de llegar. */
+  pintura = requestAnimationFrame(() => { pintarFicha(); pintarPerfil(); pintarJugador(); pintarTienda(); pintarMuro(); pintarProximo(); });
+}
+
+/* Todas las de un jugador en las tiendas dadas. El uid da la Beta tester y
+   el Aniversario; sin él, esas dos no se saben. */
+function insigniasDe(esDe, uid, salas){
+  const listas = salas.filter(cargada);
+  const perm = permanentes({ tiendas: Object.fromEntries(listas.map(s => [s, TD[s].hist])), esDe,
+                             alta: uid && ALTAS ? ALTAS[uid] || null : null, numero: numeroDe(uid),
+                             tester: !!(uid && TESTERS[uid]) });
+  const grupos = listas.map(sala => {
+    const t = TD[sala], perfilT = (t.tienda && t.tienda.perfil) || null, nombre = nombreTienda(perfilT, sala);
+    const color = (perfilT && perfilT.color) || COLOR_TIENDA;
+    return { sala, nombre, color, items: deTienda({ sala, hist: t.hist, cfg: t.cfg, tienda: t.tienda, esDe,
+                                                    color, sigla: iniciales(nombre) }) };
+  });
+  const todas = perm.concat(...grupos.map(g => g.items));
+  return { perm, grupos, todas, porClave: Object.fromEntries(todas.map(i => [i.key, i])) };
+}
+
+const forma = (it, s) => it.tipo === "tienda"
+  ? parche(it.ico, it.color, it.sigla, { s, ok: it.ok, anillo: it.anillo, evento: it.evento })
+  : medalla(it.ico, it.tono, { s, ok: it.ok, anillo: it.anillo });
+function fichaIns(it){
+  return '<button type="button" class="ins' + (it.ok ? "" : " no") + (it.oculta ? " oculta" : "") + '" data-ins="' + esc(it.key) + '" aria-label="' +
+    esc(it.titulo + (it.ok ? ", ganada" + (it.oculta ? ", oculta a los demás. " : ". ") : ", por ganar. ") + it.texto) + '">' + forma(it, 64) +
+    (it.oculta ? '<span class="etqOculta">Oculta</span>' : it.ok && NUEVAS.has(it.marca) ? '<span class="nueva">Nueva</span>' : "") +
+    "<b>" + esc(it.titulo) + "</b><small>" + esc(it.texto) + "</small>" +
+    (it.prog ? '<span class="prog"><i style="width:' + Math.round(Math.min(it.prog.v, it.prog.meta) / it.prog.meta * 100) +
+               '%"></i></span><small>' + esc(it.prog.txt) + "</small>" : "") +
+    (it.ok && it.rareza ? '<small class="raro">' + esc(it.rareza) + "</small>" : "") + "</button>";
+}
+const grilla = items => '<div class="insignias">' + items.map(fichaIns).join("") + "</div>";
+const ganadasPrimero = items => items.slice().sort((a, b) => b.ok - a.ok);
+
+/* La vitrina: hasta tres, elegidas por el jugador (perfilPublico/<uid>/vitrina).
+   Solo se muestran las que de verdad tiene: la lista la escribe él, las
+   insignias no. */
+let VITRINA = [];
+/* Las que oculté (perfilPublico/<uid>/ocultas): los demás no las ven en mi
+   perfil ni en mi vitrina. Yo sí, apagadas, para poder volver a mostrarlas. */
+let OCULTAS = {};
+const marcarOcultas = items => items.map(i => i.ok && OCULTAS[i.key] ? { ...i, oculta: true } : i);
+function pintarVitrina(cont, claves, porClave, propia){
+  const its = (claves || []).map(k => porClave[k]).filter(i => i && i.ok).slice(0, 3);
+  cont.innerHTML = its.map(i => '<button type="button" data-ins="' + esc(i.key) + '" aria-label="' + esc(i.titulo) + '">' +
+    forma(i, 40) + "</button>").join("") +
+    (propia ? "<small>" + (its.length ? "Tu vitrina: la ven los demás en tu perfil." : "Toca una insignia para ponerla en tu vitrina.") + "</small>" : "");
+}
+
+let INS_MIAS = null;
+function pintarInsigniasPropias(){
+  if (!usuario) return;
+  const salas = misSalas();
+  salas.forEach(cargarTienda);
+  if (HIST === null || TIENDAS === null || ALTAS === null || !salas.every(cargada)){
+    $("insPerm").innerHTML = '<div class="vacio">Cargando…</div>';
+    return;
+  }
+  const r = INS_MIAS = insigniasDe(esMia, usuario.uid, salas);
+  revisarNuevas(r);
+  $("hInsignias").textContent = "Insignias · " + r.todas.filter(i => i.ok).length + " ganadas";
+  const ok = marcarOcultas(r.perm.filter(i => i.ok)), por = r.perm.filter(i => !i.ok);
+  const nOcultas = r.todas.filter(i => i.ok && OCULTAS[i.key]).length;
+  $("insNota").textContent = nOcultas
+    ? (nOcultas === 1 ? "Tienes 1 oculta" : "Tienes " + nOcultas + " ocultas") + ": los demás no la" + (nOcultas === 1 ? "" : "s") +
+      " ven. Toca una para mostrarla de nuevo, destacarla u ocultarla."
+    : "Toca una que hayas ganado para destacarla en tu vitrina u ocultarla: las ocultas no las ven los demás.";
+  $("insPerm").innerHTML = (ok.length ? '<div class="insGrupo"><h3>Ganadas</h3>' + grilla(ok) + "</div>" : "") +
+    (por.length ? '<div class="insGrupo"><h3>Por ganar</h3>' + grilla(por) + "</div>" : "");
+  $("insTiendas").innerHTML = r.grupos.map(g => {
+    const items = marcarOcultas(ganadasPrimero(g.items)), n = items.filter(i => i.ok).length;
+    return '<div class="insGrupo"><div class="tiendaCab"><span class="logoT" style="background:' + esc(colorTienda(g.color)[1]) +
+      '">' + esc(iniciales(g.nombre)) + "</span><div><b>" + esc(g.nombre) + "</b><small>" + n + " de " + items.length +
+      " ganadas" + (g.sala === MIRA ? " · la que estás mirando" : "") + "</small></div></div>" +
+      (items.length ? grilla(items) : '<div class="vacio">Esta tienda no tiene insignias activas.</div>') + "</div>";
+  }).join("");
+  pintarVitrina($("pfVitrina"), VITRINA, r.porClave, true);
+}
+function elegirGrupo(g){
+  document.querySelectorAll("[data-grupo]").forEach(b => b.setAttribute("aria-selected", String(b.dataset.grupo === g)));
+  $("insPerm").hidden = g !== "perm";
+  $("insTiendas").hidden = g !== "tiendas";
+}
+document.querySelectorAll("[data-grupo]").forEach(b => b.onclick = () => elegirGrupo(b.dataset.grupo));
+
+/* El detalle, al tocar una insignia: la mía (con la vitrina) o la de otro. */
+let DETALLE = null;
+function abrirDetalle(it, propia){
+  DETALLE = it;
+  const tienda = it.tipo === "tienda" ? nombreTienda(((TD[it.sala] || {}).tienda || {}).perfil || null, it.sala) : "";
+  const fila = (k, v) => v ? "<div>" + k + "<b>" + esc(v) + "</b></div>" : "";
+  const vigentes = VITRINA.filter(k => INS_MIAS && INS_MIAS.porClave[k] && INS_MIAS.porClave[k].ok);
+  $("dlgCuerpo").innerHTML = '<div class="asa"></div>' + forma(it, 104) +
+    '<h3 id="dlgTitulo">' + esc(it.titulo) + '</h3><div class="de">' +
+    (it.tipo === "tienda" ? esc(tienda) + (it.evento ? " · insignia de evento" : " · insignia de tienda")
+                          : "Insignia permanente" + (propia ? " · es de tu cuenta" : "")) + "</div>" +
+    '<div class="datosIns">' +
+      (it.ok ? fila("Ganada", it.mes ? it.mes.map(nombreMes).join(", ") : fechaLarga(it.fecha)) + fila("Logro", it.texto) : "") +
+      fila("Cómo se gana", it.como) + fila(it.ok ? "Siguiente nivel" : "Llevas", it.prog && it.prog.txt) +
+      fila("Cuántos", it.rareza) + "</div>" +
+    (propia && it.ok && !OCULTAS[it.key] ? '<button class="btn primario" id="dlgVitrina">' +
+      (vigentes.includes(it.key) ? "Quitar de mi vitrina" : "Destacar en mi vitrina") + "</button>" : "") +
+    (propia && it.ok ? '<button class="btn" id="dlgOcultar">' +
+      (OCULTAS[it.key] ? "Mostrarla a los demás" : "Ocultarla a los demás") + "</button>" : "") +
+    '<button class="btn" id="dlgCerrar">Cerrar</button><div class="msg" id="dlgMsg" role="status"></div>';
+  $("dlgCerrar").onclick = () => $("dlgIns").close();
+  if ($("dlgVitrina")) $("dlgVitrina").onclick = async () => {
+    let v = vigentes.slice();
+    if (v.includes(it.key)) v = v.filter(k => k !== it.key);
+    else if (v.length >= 3){ $("dlgMsg").textContent = "Tu vitrina ya tiene 3. Quita una primero."; return; }
+    else v.push(it.key);
+    try {
+      await set(ref(db, "perfilPublico/" + usuario.uid + "/vitrina"), v);
+      VITRINA = v; $("dlgIns").close(); pintarInsigniasPropias();
+    } catch(e){ $("dlgMsg").textContent = "No se pudo guardar. Revisa la conexión."; }
+  };
+  /* Ocultarla la saca también de la vitrina, en la misma escritura. */
+  if ($("dlgOcultar")) $("dlgOcultar").onclick = async () => {
+    const ocultar = !OCULTAS[it.key], base = "perfilPublico/" + usuario.uid;
+    const rutas = { [base + "/ocultas/" + it.key]: ocultar || null };
+    if (ocultar && vigentes.includes(it.key)) rutas[base + "/vitrina"] = vigentes.filter(k => k !== it.key);
+    try {
+      await update(ref(db), rutas);
+      if (ocultar) OCULTAS[it.key] = true; else delete OCULTAS[it.key];
+      if (rutas[base + "/vitrina"]) VITRINA = rutas[base + "/vitrina"];
+      $("dlgIns").close(); pintarInsigniasPropias();
+    } catch(e){ $("dlgMsg").textContent = "No se pudo guardar. Revisa la conexión."; }
+  };
+  try { $("dlgIns").showModal(); } catch(e){ console.warn("No se pudo completar una operación opcional", e); }
+}
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-ins]");
+  if (!b) return;
+  const propia = !!b.closest("#tabPerfil"), fuente = propia ? INS_MIAS : INS_OTRO;
+  const it = fuente && fuente.porClave[b.dataset.ins];
+  if (it) abrirDetalle(it, propia);
+});
+/* Tocar fuera de la tarjeta la cierra. */
+$("dlgIns").addEventListener("click", e => {
+  const r = $("dlgIns").getBoundingClientRect();
+  if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) $("dlgIns").close();
+});
+
+/* Las que se ganaron desde la última vez: dicen «Nueva» en esta sesión y se
+   celebran una vez. La marca lleva el nivel, así que subir de bronce a plata
+   también se celebra. Lo ya visto se guarda en este navegador, nada más.
+
+   Lo visto solo crece: antes se reemplazaba por lo calculado en el primer
+   dibujo, que a veces llega incompleto (las tiendas que organizo y
+   beta/testers cargan después), y lo que faltaba se volvía a celebrar en la
+   sesión siguiente. Lo que aparece tarde se celebra en la misma sesión. */
+const NUEVAS = new Set();
+let VISTAS = null;
+function revisarNuevas(r){
+  if (!usuario) return;
+  const k = "insignias2-" + usuario.uid;
+  if (!VISTAS){ try { VISTAS = new Set(JSON.parse(localStorage.getItem(k)) || []); } catch(e){ VISTAS = new Set(); } }
+  const nuevas = r.todas.filter(i => i.ok && !VISTAS.has(i.marca));
+  if (!nuevas.length) return;
+  nuevas.forEach(i => { VISTAS.add(i.marca); NUEVAS.add(i.marca); });
+  try { localStorage.setItem(k, JSON.stringify([...VISTAS])); } catch(e){ console.warn("No se pudo completar una operación opcional", e); }
+  if (!$("dlgNueva").open) celebrar(nuevas);
+}
+function celebrar(nuevas){
+  const it = nuevas[0], otras = nuevas.length - 1, d = $("dlgNueva");
+  const origen = it.tipo === "tienda" ? nombreTienda(((TD[it.sala] || {}).tienda || {}).perfil || null, it.sala) : "Permanente";
+  $("celCuerpo").innerHTML = forma(it, 132) +
+    '<div class="rot">' + (nuevas.length > 1 ? "Insignias nuevas" : "Insignia nueva") + " · " + esc(origen) + "</div>" +
+    '<h2 id="celTitulo">' + esc(it.titulo) + "</h2><p>" + esc(it.texto) + "." +
+    (otras ? " Y " + otras + (otras === 1 ? " más te espera" : " más te esperan") + " en tu perfil." : "") + "</p>" +
+    '<div class="acc"><button class="btn primario" id="celVer">Ver mis insignias</button>' +
+    '<button class="btn" id="celSeguir">Seguir</button></div>';
+  $("celVer").onclick = () => {
+    d.close(); verTab("perfil"); elegirGrupo(it.tipo === "tienda" ? "tiendas" : "perm");
+    $("bInsignias").scrollIntoView({ block: "start" });
+  };
+  $("celSeguir").onclick = () => d.close();
+  try { d.showModal(); } catch(e){ console.warn("No se pudo completar una operación opcional", e); }
+}
+
+/* ▌BLOQUE 11 · Perfil de otro jugador ═══════════════════════════════════════════
+   verJugador / pintarJugador: los torneos de un jugador por su nombre, sus insignias y rachas si
+   las hace públicas. */
+/* ------------------------------------------------------------
+   El perfil de otro jugador
+   ------------------------------------------------------------
+   Todo sale del historial, que ya es público. Las rachas, además, solo si él
+   lo pidió (perfilPublico/<uid>/rachas), y eso solo se puede saber de quien la
+   tienda marcó con su uid: el que compartió su ID. */
+const PUBLICAS = {};   // uid -> lo que muestra ({ rachas, vitrina }); null mientras se pregunta
+let INS_OTRO = null;
+function verJugador(n){
+  /* Mi propio nombre abre Mi perfil, que tiene más. */
+  if (filasDe(deNombre(n)).some(m => esMia(m.fila))) return verTab("perfil");
+  JUGADOR = n; verTab("jugador"); pintarJugador(); scrollTo(0, 0);
+}
+function pintarJugador(){
+  if (!JUGADOR) return;
+  const esDe = deNombre(JUGADOR), filas = filasDe(esDe);
+  const nom = filas.length ? filas[0].fila.name : "Jugador";
+  $("hJugador").textContent = nom;
+  $("jgAvatar").textContent = (nom.trim()[0] || "·").toUpperCase();
+  $("jgFicha").innerHTML = fichaHtml(filas);
+  $("jgResultados").innerHTML = resultadosHtml(filas, '<div class="vacio">No aparece en los torneos archivados.</div>');
+  const uid = (filas.find(m => m.fila.uid) || { fila: {} }).fila.uid;
+  if (uid && !(uid in PUBLICAS)){
+    PUBLICAS[uid] = null;
+    get(ref(db, "perfilPublico/" + uid)).then(s => PUBLICAS[uid] = s.val() || {}, () => PUBLICAS[uid] = {}).then(pintarJugador);
+  }
+  const pub = uid ? PUBLICAS[uid] : {};
+  /* Sus insignias, con las tiendas que se leen acá más las de su vitrina. La
+     Beta tester y el Aniversario, solo si la tienda lo marcó con su uid. */
+  const ocultas = (pub && pub.ocultas) || {};
+  const vitrina = Object.values((pub && pub.vitrina) || {}).filter(k => !ocultas[k]);
+  const salas = [...new Set(misSalas().concat(vitrina.filter(k => /^[te]:/.test(k)).map(k => k.split(":")[1])))];
+  salas.forEach(cargarTienda);
+  if (pub === null || ALTAS === null || !salas.every(cargada)){
+    $("jgInsignias").innerHTML = '<div class="vacio">Cargando…</div>';
+    $("jgVitrina").innerHTML = "";
+  } else {
+    const r = INS_OTRO = insigniasDe(esDe, uid, salas), todas = r.todas.filter(i => i.ok);
+    const ganadas = todas.filter(i => !ocultas[i.key]);
+    $("jgInsignias").innerHTML = ganadas.length ? '<div class="insGrupo">' + grilla(ganadas) + "</div>"
+      : '<div class="vacio">' + esc(nom) + (todas.length ? " no muestra sus insignias." : " todavía no tiene insignias.") + "</div>";
+    pintarVitrina($("jgVitrina"), vitrina, r.porClave, false);
+  }
+  $("jgRachas").innerHTML = uid && pub === null ? '<div class="vacio">Cargando…</div>'
+    : uid && pub.rachas === true ? rachasHtml(rachasDe(esDe), false)
+    : '<div class="vacio">' + esc(nom) + " no muestra sus rachas.</div>";
+}
+document.addEventListener("click", e => {
+  const a = e.target.closest("[data-jug]");
+  if (a){ e.preventDefault(); verJugador(a.dataset.jug); }
+});
+$("jgVolver").onclick = () => verTab("inicio");
+
+/* Mostrar mis rachas: un nodo que cualquiera con cuenta puede leer, porque el
+   perfil (usuarios/<uid>) es privado. */
+$("swRachas").onchange = async e => {
+  const v = e.target.checked;
+  try { await set(ref(db, "perfilPublico/" + usuario.uid + "/rachas"), v); }
+  catch(err){ e.target.checked = !v; $("swRachasTxt").textContent = "No se pudo guardar. Revisa la conexión."; }
+};
+
+/* ▌BLOQUE 12 · Mis tiendas (columna) ════════════════════════════════════════════
+   Las tiendas que sigo, con su logo. */
+/* Las tiendas que sigue el jugador, todas, con la actual marcada. Antes era
+   una lista de "otras tiendas" metida debajo del botón de seguir. */
+/* La sala no guarda un nombre propio: lo único que existe es el identificador
+   que el organizador escribió, ya pasado a minúsculas y sin tildes. Se muestra
+   legible («cafe-norte» → «Sala Cafe norte») y con «Sala» delante, para no
+   hacerlo pasar por el nombre de la tienda. El arreglo de fondo es que el
+   organizador pueda ponerle nombre en el panel. */
+/* Desde el 25-09 las tiendas tienen nombre propio (tiendas/<id>/perfil). Se
+   pide una vez por tienda seguida; sin perfil, el nombre sale del id. */
+const PERFILES = {};
+function pintarMisTiendas(){
+  const t = TIENDAS || {};
+  Object.keys(t).filter(x => !(x in PERFILES)).forEach(x => {
+    PERFILES[x] = null;
+    get(ref(db, "tiendas/" + x + "/perfil")).then(s => { PERFILES[x] = s.val(); pintarMisTiendas(); }).catch(e => console.warn("Operación secundaria sin confirmar", e));
+  });
+  const nom = x => nombreTienda(PERFILES[x], x);
+  /* Favoritas arriba; después la que estás mirando y el resto por nombre. */
+  const salas = Object.keys(t).sort((a, b) => (!!t[b].favorita - !!t[a].favorita) ||
+    (a === MIRA ? -1 : b === MIRA ? 1 : nom(a).localeCompare(nom(b))));
+  $("pfTiendas").innerHTML = TIENDAS === null
+    ? '<div class="vacio">Cargando…</div>'
+    : salas.length
+    /* El estado de la tienda actual no se repite: ya lo dice el bloque
+       Tiendas, junto a sus botones. */
+    ? '<table class="tabla"><tbody>' + salas.map(x =>
+        '<tr><td><a href="' + aTienda(x) + '">' + esc(nom(x)) + "</a>" +
+        (x === MIRA ? '<div class="rec">la que estás mirando</div>' : "") + "</td>" +
+        '<td class="res">' + (x === MIRA ? "" : t[x].compartirId ? "compartes tu ID" : "sin ID compartido") + "</td>" +
+        '<td class="res" style="width:36px"><button class="estrella' + (t[x].favorita ? " on" : "") + '" data-fav="' +
+        esc(x) + '" aria-pressed="' + !!t[x].favorita + '" aria-label="Favorita: ' + esc(nom(x)) + '"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5l2.6 5.3 5.9.9-4.2 4.1 1 5.8L12 16.9l-5.3 2.7 1-5.8-4.2-4.1 5.9-.9z"/></svg></button></td></tr>').join("") +
+        "</tbody></table>"
+    : '<div class="vacio">No sigues ninguna tienda todavía.<br>' +
+      'Síguela desde el bloque Tiendas, o <a href="' + "tienda.html" + qs + '">busca una</a>.</div>';
+  $("pfTiendas").querySelectorAll("[data-fav]").forEach(b => b.onclick = () => conAviso(() =>
+    update(ref(db, "usuarios/" + usuario.uid + "/tiendas/" + b.dataset.fav), { favorita: !t[b.dataset.fav].favorita })));
+}
+
+/* ▌BLOQUE 13 · En vivo ══════════════════════════════════════════════════════════
+   Todas las tiendas con el timer en uso: mi mesa donde juego y, en la pestaña, la tienda que elijo
+   con su ronda y su tabla. */
+/* ------------------------------------------------------------
+   En vivo
+   ------------------------------------------------------------
+   Sale de dos fuentes que ya existían y que esta pantalla no estaba mirando.
+   timer/state dice si el reloj corre; pairings trae la ronda emparejada
+   entera —mesa, rival y récord de cada uno—, que es exactamente lo mismo que
+   se ve en la pantalla proyectada de la tienda.
+
+   La partida propia se destaca arriba y el resto de la ronda va abajo: sirve
+   para mirar cómo le está yendo a los demás, que es para lo que la gente abre
+   esto entre ronda y ronda.
+   ------------------------------------------------------------ */
+const rec = r => r ? r.w + "-" + r.l + "-" + r.t + " · " + (r.pts || 0) + " pts" : "";
+
+/* La ronda vigente es la última publicada: el torneo se republica completo cada
+   vez, así que la de más abajo del arreglo es siempre la de ahora. */
+const rondaActual = P => (P && P.rounds && P.rounds.length) ? P.rounds[P.rounds.length - 1] : null;
+
+/* Mi partida de esta ronda. Cruza por nombre, igual que el historial, y con el
+   mismo límite: si la tienda me inscribió con otro nombre, no me encuentro. */
+function miPartida(P){
+  const r = rondaActual(P), yo = perfil ? norm(perfil.nombre) : "";
+  if (!r || !yo) return null;
+  for (const m of (r.matches || [])){
+    const soy1 = norm(m.p1) === yo, soy2 = m.p2 && norm(m.p2) === yo;
+    if (!soy1 && !soy2) continue;
+    return { mesa:m.table, bye:!m.p2,
+             rival: soy1 ? m.p2 : m.p1,
+             mio:   soy1 ? m.p1rec : m.p2rec,
+             suyo:  soy1 ? m.p2rec : m.p1rec,
+             resultado: m.result };
+  }
+  return null;
+}
+
+/* `angosto` es la columna derecha, de 196 px: ahí el récord del rival parte
+   "4 pts" en dos líneas y no aporta lo suficiente para pagar eso. */
+function miMesaHtml(mp, angosto){
+  return '<div class="miMesa">' +
+    (mp.bye
+      ? '<div class="mesa">Bye</div>' +
+        '<div class="rival">Esta ronda descansas: cuenta como victoria.</div>'
+      : '<div class="mesa">Mesa ' + mp.mesa + "</div>" +
+        '<div class="rival">contra <b>' + esc(mp.rival) + "</b>" +
+        (mp.suyo && !angosto ? " · " + rec(mp.suyo) : "") + "</div>") +
+    '<div class="rival">Vas ' + rec(mp.mio) +
+    (mp.resultado ? " · " + esc(mp.resultado) : "") + "</div></div>";
+}
+
+/* Todas las tiendas con el timer usado en las últimas 3 horas (o corriendo), no solo las que sigo: el muro
+   no es de una tienda. De cada tienda se escucha timer/state (unos 200 bytes); las mesas (pairings, unos
+   15 KB por ronda) solo de las que están en vivo, y llegan una vez por publicación, no por segundo.
+   ponytail: un oyente por tienda y solo su timer 1; con cientos de tiendas, un índice de salas activas. */
+const RECIENTE = 3 * 3600e3;
+const EST = {}, PAIRS = {}, PERF_T = {}, offPair = {};
+let VIVO_SEL = null, desfase = 0;
+const ahoraSrv = () => Date.now() + desfase;
+function escucharVivo(){
+  onValue(ref(db, ".info/serverTimeOffset"), s => desfase = s.val() || 0);
+  onValue(ref(db, "tiendas"), s => {
+    const ts = s.val() || {};
+    Object.keys(ts).forEach(t => {
+      PERF_T[t] = ts[t] && ts[t].perfil;
+      if (t in EST) return;
+      EST[t] = null;
+      onValue(ref(db, "salas/" + t + "/timer/state"), x => { EST[t] = x.val(); cambioVivo(); }, () => {});
+    });
+    cambioVivo();
+  }, () => pintarVivo());
+}
+const corre = t => !!(EST[t] && !EST[t].paused && EST[t].endTime);
+const enVivo = t => !!EST[t] && (corre(t) || ahoraSrv() - (EST[t].updatedAt || 0) < RECIENTE);
+function vivas(){
+  const mias = new Set(misSalas());
+  return Object.keys(EST).filter(enVivo).sort((a, b) => (corre(b) - corre(a)) || (mias.has(b) - mias.has(a)) ||
+    ((EST[b].updatedAt || 0) - (EST[a].updatedAt || 0)));
+}
+/* Las mesas solo de las que están en vivo: al dejar de estarlo se suelta su oyente. */
+function cambioVivo(){
+  const v = new Set(vivas());
+  v.forEach(t => { if (!offPair[t]) offPair[t] = onValue(ref(db, "salas/" + t + "/pairings"), s => { PAIRS[t] = s.val(); pintarVivo(); }, () => {}); });
+  Object.keys(offPair).forEach(t => { if (!v.has(t)){ offPair[t](); delete offPair[t]; delete PAIRS[t]; } });
+  pintarVivo();
+}
+const nomTienda = t => nombreTienda((TD[t] && TD[t].tienda && TD[t].tienda.perfil) || PERF_T[t], t);
+const alTimerDe = t => "timer-view.html" + (qs ? qs + "&" : "?") + "sala=" + encodeURIComponent(t);
+function estadoDe(t){
+  const E = EST[t], P = PAIRS[t], r = rondaActual(P);
+  const hayTimer = !!(E && (E.endTime || E.remaining != null)), corriendo = corre(t);
+  /* "results" quiere decir que la ronda ya tiene todos los resultados cargados; mientras falte uno sigue en curso. */
+  const enCurso = !!r && P.phase !== "results";
+  const nomR = r ? r.etiqueta || "Ronda " + r.number : "";   // las del top cut traen su nombre
+  const linea = r ? nomR + (enCurso ? " · en curso" : " · resultados") : corriendo ? "Ronda en curso" : hayTimer ? "Timer en pausa" : "Timer usado hace poco";
+  return { P, r, hayTimer, corriendo, enCurso, nomR, linea, mp: miPartida(P) };
+}
+
+function pintarVivo(){
+  const ts = vivas(), yo = perfil ? norm(perfil.nombre) : "";
+
+  /* ---- columna derecha: una fila por tienda en vivo, y mi mesa donde esté jugando ---- */
+  $("vivoChico").innerHTML = ts.length
+    ? ts.slice(0, 5).map(t => { const x = estadoDe(t);
+        return '<a class="vivoT" href="' + alTimerDe(t) + '"><div class="vivo"><span class="punto' + (x.corriendo || x.enCurso ? " si" : "") +
+          '"></span><b>' + esc(nomTienda(t)) + '</b></div><div class="vivoSub">' + esc(x.linea) + "</div>" + (x.mp ? miMesaHtml(x.mp, true) : "") + "</a>"; }).join("") +
+      '<div style="margin-top:var(--e2)"><button class="btn ancho" id="bVerVivo">' + (ts.length > 5 ? "Ver las " + ts.length + " tiendas" : "Ver la ronda y la tabla") + "</button></div>"
+    : '<div class="vivo"><span class="punto"></span>No hay nada corriendo ahora</div>';
+  if ($("bVerVivo")) $("bVerVivo").onclick = () => verTab("vivo");
+
+  /* ---- pestaña: elijo la tienda (por defecto, donde juego; si no, una que sigo; si no, la primera) ---- */
+  if (!ts.includes(VIVO_SEL)) VIVO_SEL = ts.find(t => estadoDe(t).mp) || ts.find(t => misSalas().includes(t)) || ts[0] || null;
+  $("vivoElegir").hidden = ts.length < 2;
+  $("vivoElegir").innerHTML = ts.length < 2 ? "" : ts.map(t => '<button type="button" data-vsel="' + esc(t) + '" aria-pressed="' + (t === VIVO_SEL) + '">' +
+    esc(nomTienda(t)) + "</button>").join("");
+  $("vivoElegir").querySelectorAll("[data-vsel]").forEach(b => b.onclick = () => { VIVO_SEL = b.dataset.vsel; pintarVivo(); });
+
+  const t = VIVO_SEL, x = t ? estadoDe(t) : null, P = x && x.P, r = x && x.r, mp = x && x.mp;
+  $("vivoGrande").innerHTML = !t
+    ? '<div class="vacio">No hay ningún torneo en curso.<br>Cuando una tienda use su timer o publique los emparejamientos, aparece acá.</div>'
+    : '<div style="font-weight:700">' + esc(nomTienda(t)) + (r ? " · " + esc(P.name || "Torneo") : "") + "</div>" +
+      '<div style="font-size:var(--t2);color:var(--apagado);margin-top:2px">' + esc(r ? x.nomR + (x.enCurso ? " · en curso" : " · resultados publicados") : x.linea) + "</div>" +
+      (r ? (mp ? miMesaHtml(mp)
+               : '<div class="vivo" style="margin-top:var(--e2)">' + (yo ? "No apareces en esta ronda." : "Completa tu nombre en la cuenta para encontrar tu mesa.") + "</div>") : "") +
+      '<p style="margin:var(--e3) 0 0;color:var(--apagado);font-size:var(--t2)">' +
+      (x.corriendo ? "El reloj está corriendo." : x.hayTimer ? "El reloj está en pausa." : "El reloj no está corriendo.") + "</p>" +
+      '<div style="margin-top:var(--e2)"><a class="btn primario" href="' + alTimerDe(t) + '">Ver el reloj en vivo</a></div>';
+
+  /* ---- la ronda completa, para mirar al resto ---- */
+  $("bRonda").classList.toggle("oculto", !r);
+  if (r){
+    $("hRonda").textContent = x.nomR;
+    $("vivoRonda").innerHTML = '<table class="tabla"><tbody>' +
+      (r.matches || []).map(m => {
+        const mia = yo && (norm(m.p1) === yo || (m.p2 && norm(m.p2) === yo));
+        return "<tr" + (mia ? ' class="yo-fila"' : "") + ">" +
+          '<td class="mesa">' + (m.table || "—") + "</td><td>" +
+          "<div>" + esc(m.p1) + '</div><div class="rec">' + rec(m.p1rec) + "</div>" +
+          (m.p2 ? '<div style="margin-top:var(--e1)">' + esc(m.p2) + "</div>" +
+                  '<div class="rec">' + rec(m.p2rec) + "</div>"
+                : "") +
+          '</td><td class="res">' + esc(m.result || "") + "</td></tr>";
+      }).join("") + "</tbody></table>";
+  }
+
+  /* ---- cómo va la tabla: con varias categorías, las primeras 4 de cada una; mi fila siempre ---- */
+  const tabla = (P && P.standings) || [];
+  $("bPosic").classList.toggle("oculto", !tabla.length);
+  if (tabla.length){
+    const secs = porCategoria(tabla), tope = secs.length > 1 ? 4 : 8;
+    const filas = secs.flatMap(sec => {
+      const yo = sec.filas.find(esMia);
+      return (sec.nombre ? [{ titulo: sec.nombre }] : []).concat(sec.filas.slice(0, tope), yo && yo.place > tope ? [yo] : []);
+    });
+    $("vivoTabla").innerHTML = '<table class="tabla"><tbody>' + filas.map(p => p.titulo ? '<tr><td colspan="3" style="font-size:var(--t1);letter-spacing:.12em;font-weight:600;color:var(--rotulo);padding-top:10px">' + esc(p.titulo) + "</td></tr>" :
+      "<tr" + (esMia(p) ? ' class="yo-fila"' : "") + ">" +
+      '<td class="pos">' + p.place + "º</td><td>" + esc(p.name) + "</td>" +
+      '<td class="pts">' + rec(p) + "</td></tr>").join("") + "</tbody></table>";
+  }
+}
+
+/* ▌BLOQUE 14 · Seguir y ordenar tiendas ═════════════════════════════════════════
+   Seguir, dejar de seguir y el orden de mis tiendas (usuarios/<uid>/tiendas). */
+/* ------------------------------------------------------------
+   Tiendas: las que sigo, en el orden que elijo
+   ------------------------------------------------------------
+   El cuadro es para llegar rápido a cada tienda. Compartir el ID y dejar de
+   seguir viven en Ajustes → Privacidad (cuenta.html): son decisiones sobre
+   mis datos, no atajos. Seguir sigue acá: es la invitación de la tienda que
+   abrió este enlace.
+
+   El orden es usuarios/<uid>/tiendas/<id>/orden. Las que no tienen van al
+   final: primero la favorita, después por nombre.
+   ------------------------------------------------------------ */
+const refTienda = () => ref(db, "usuarios/" + usuario.uid + "/tiendas/" + MIRA);
+let ordenando = false;
+
+async function conAviso(f){
+  errTienda = "";
+  try { await f(); }
+  catch(e){
+    /* El caso real: las reglas todavía no están publicadas en la consola. Sin
+       este aviso el botón parece no hacer nada. */
+    errTienda = "No se pudo guardar. Revisa la conexión.";
+    pintarTienda();
+  }
+}
+
+const seguir = () => conAviso(() => set(refTienda(), { desde: Date.now(), compartirId: false }));
+
+const perfilT = s => TD[s] && TD[s].tienda && TD[s].tienda.perfil;
+function misTiendasOrden(){
+  const t = TIENDAS || {}, nom = s => nombreTienda(perfilT(s), s);
+  return Object.keys(t).sort((a, b) => (t[a].orden ?? 999) - (t[b].orden ?? 999) ||
+    (!!t[b].favorita - !!t[a].favorita) || nom(a).localeCompare(nom(b)));
+}
+/* Subir o bajar una: se reescribe el orden de todas, en una sola escritura. */
+async function mover(id, paso){
+  const ids = misTiendasOrden(), i = ids.indexOf(id), j = i + paso;
+  if (i < 0 || j < 0 || j >= ids.length) return;
+  [ids[i], ids[j]] = [ids[j], ids[i]];
+  const rutas = {};
+  ids.forEach((s, k) => { rutas["usuarios/" + usuario.uid + "/tiendas/" + s + "/orden"] = k; TIENDAS[s].orden = k; });
+  pintarTienda();
+  /* El foco se queda en la misma flecha, para seguir moviéndola con el teclado. */
+  const b = $("tienda").querySelector("[data-" + (paso < 0 ? "sube" : "baja") + '="' + CSS.escape(id) + '"]');
+  (b && !b.disabled ? b : $("bOrdenar")).focus();
+  await conAviso(() => update(ref(db), rutas));
+}
+
+function pintarTienda(){
+  const t = TIENDAS || {}, ids = misTiendasOrden();
+  const org = usuario && MIRA && TD[MIRA] && TD[MIRA].tienda && (TD[MIRA].tienda.miembros || {})[usuario.uid];
+  let h = "";
+  if (TIENDAS === null){
+    h = '<div class="mtPie">Cargando…</div>';
+  } else {
+    /* La tienda de este enlace, si no la sigo ni la organizo. */
+    const esta = MIRA && perfilT(MIRA);
+    if (esta && !t[MIRA] && !org)
+      h += '<div class="mtPie"><b>' + esc(nombreTienda(esta, MIRA)) + "</b>: síguela para tenerla a mano y que tus resultados lleguen a tu perfil." +
+           '<button class="btn primario ancho" id="bSeguir" style="margin-top:var(--e2)">Seguir</button></div>';
+    h += ids.map((s, i) => {
+      const p = perfilT(s), n = nombreTienda(p, s);
+      const cuerpo = '<span class="sig" style="--c:' + esc((p && p.color) || COLOR_TIENDA) + '" aria-hidden="true">' + esc(iniciales(n)) + "</span>" +
+        '<span class="nom">' + esc(n) + "</span>" + (t[s].favorita ? '<span class="fav" title="Favorita" aria-label="favorita">★</span>' : "");
+      return ordenando
+        ? '<div class="mt">' + cuerpo + '<span class="flechas">' +
+          '<button data-sube="' + esc(s) + '" aria-label="Subir ' + esc(n) + '"' + (i ? "" : " disabled") + ">↑</button>" +
+          '<button data-baja="' + esc(s) + '" aria-label="Bajar ' + esc(n) + '"' + (i < ids.length - 1 ? "" : " disabled") + ">↓</button></span></div>"
+        : '<a class="mt" href="' + aTienda(s) + '">' + cuerpo + "</a>";
+    }).join("");
+    if (!ids.length && !h) h = '<div class="mtPie">Todavía no sigues ninguna tienda. <a href="' + $("aTiendas").href + '">Busca la tuya</a>.</div>';
+    else if (ids.length) h += '<div class="mtPie">Compartir tu ID o dejar de seguir: en <a href="' +
+      "cuenta.html" + qs + '#privacidad">Ajustes → Privacidad</a>.</div>';
+  }
+  if (errTienda) h += '<div class="aviso mal" style="margin:0 var(--e3) var(--e3)">' + esc(errTienda) + "</div>";
+  /* Repintar no le quita la flecha a quien ordena con el teclado (también
+     cuando el repintado lo dispara la base, al guardarse el orden). */
+  const f = $("tienda").contains(document.activeElement) ? document.activeElement.dataset : {};
+  const foco = f.sube ? ["sube", f.sube] : f.baja ? ["baja", f.baja] : null;
+  $("tienda").innerHTML = h;
+  $("bOrdenar").hidden = ids.length < 2;
+  $("bOrdenar").textContent = ordenando ? "Listo" : "Ordenar";
+  pintarMisTiendas();
+  if ($("bSeguir")) $("bSeguir").onclick = seguir;
+  $("tienda").querySelectorAll("[data-sube]").forEach(b => b.onclick = () => mover(b.dataset.sube, -1));
+  $("tienda").querySelectorAll("[data-baja]").forEach(b => b.onclick = () => mover(b.dataset.baja, 1));
+  if (foco){ const b = $("tienda").querySelector("[data-" + foco[0] + '="' + CSS.escape(foco[1]) + '"]'); (b && !b.disabled ? b : $("bOrdenar")).focus(); }
+}
+$("bOrdenar").onclick = () => { ordenando = !ordenando; pintarTienda(); };
+
+/* ▌BLOQUE 15 · Próximo torneo ═══════════════════════════════════════════════════
+   El siguiente evento de mis tiendas. */
+/* ------------------------------------------------------------
+   Próximo torneo, de la agenda
+   ------------------------------------------------------------ */
+/* La fecha más cercana de todas mis tiendas, no solo la que estoy mirando.
+   Se repinta cada minuto: cuando un torneo termina, pasa al siguiente sin
+   recargar, y el «en 2 días» se mantiene al día. */
+function pintarProximo(){
+  if (TIENDAS === null) return;
+  const salas = misSalas(), eventos = [];
+  salas.forEach(s => Object.entries((TD[s] && TD[s].agenda) || {}).forEach(([id, e]) => eventos.push(Object.assign({ id, sala: s }, e))));
+  const ev = ordenar(eventos).find(e => estaVigente(e));
+  if (!ev && !salas.every(s => TD[s] && TD[s].agenda !== undefined)) return;   // todavía llegando
+  if (!ev){
+    $("proximo").innerHTML = '<div style="font-size:var(--t2);color:var(--apagado)">' +
+      "No hay fechas anunciadas todavía.</div>";
+    return;
+  }
+  $("proximo").innerHTML =
+    "<div style=\"font-weight:700\">" + (ev.juego ? '<span style="color:var(--franja)">' + esc(ev.juego) + "</span> · " : "") + (ev.tipo ? '<span style="color:var(--franja)">' + esc(ev.tipo) + "</span> · " : "") + esc(ev.titulo) + "</div>" +
+    '<div style="font-size:var(--t2);color:var(--apagado);margin-top:2px">' +
+    esc(nombreTienda(TD[ev.sala] && TD[ev.sala].tienda && TD[ev.sala].tienda.perfil, ev.sala)) + "<br>" +
+    esc(fechaLegible(ev.fecha)) + (ev.hora ? " · " + esc(ev.hora) : "") +
+    (ev.lugar ? "<br>" + esc(ev.lugar) : "") + "</div>" +
+    '<div class="rotulito" style="margin-top:var(--e3)">Comienza en</div>' +
+    '<div class="cuenta">' + esc(cuantoFalta(ev)) + "</div>" +
+    '<a class="btn ancho" target="_blank" rel="noopener" href="' + urlGoogle(ev) + '">Agregar a mi calendario</a>';
+}
+
+/* ▌BLOQUE 16 · Buscador y salir ═════════════════════════════════════════════════
+   Filtra las publicaciones por nombre. */
+/* ------------------------------------------------------------
+   Buscador
+   ------------------------------------------------------------ */
+let tBusca = null;
+$("buscar").oninput = e => {
+  clearTimeout(tBusca);
+  const v = norm(e.target.value);
+  tBusca = setTimeout(() => { filtro = v; verTab("inicio"); pintarMuro(); }, 250);
+};
+
+$("btnSalir").onclick = () => signOut(auth);
+
+/* ▌BLOQUE 17 · Confirmar el correo ══════════════════════════════════════════════
+   Aviso para confirmar el correo; se revisa solo al volver a la pestaña. */
+/* ------------------------------------------------------------
+   Correo sin confirmar
+   ------------------------------------------------------------
+   Recuperar la contraseña depende de que el correo sea de verdad de quien se
+   registró. No se bloquea nada: se avisa hasta que lo confirme. Las cuentas
+   de antes del 25-09 también lo ven, y piden el enlace desde acá. */
+function pintarCorreo(msg){
+  const a = $("avisoCorreo");
+  a.classList.toggle("oculto", usuario.emailVerified);
+  if (usuario.emailVerified) return;
+  let mandado = false;
+  try { mandado = sessionStorage.getItem("correoMandado") === "1"; } catch(e){ console.warn("No se pudo completar una operación opcional", e); }
+  a.innerHTML = "<b>Confirma tu correo.</b> Es la única forma de recuperar tu cuenta si olvidas la contraseña. " +
+    (mandado ? "Te mandamos un enlace a <b>" + esc(usuario.email) + "</b>: tócalo. Revisa también spam."
+             : "Pide el enlace y te llega a <b>" + esc(usuario.email) + "</b>.") +
+    '<div class="acc"><button class="btn" id="bCorreo">' + (mandado ? "Mandarlo de nuevo" : "Mandarme el enlace") + "</button>" +
+    '<button class="btn" id="bYaConfirme">Ya lo confirmé</button></div>' +
+    (msg ? '<div style="margin-top:var(--e2)">' + esc(msg) + "</div>" : "");
+  $("bCorreo").onclick = async () => {
+    try {
+      await sendEmailVerification(usuario);
+      try { sessionStorage.setItem("correoMandado", "1"); } catch(e){ console.warn("No se pudo completar una operación opcional", e); }
+      pintarCorreo("Listo: revisa " + usuario.email + ", también en spam.");
+    } catch(e){
+      pintarCorreo(e.code === "auth/too-many-requests"
+        ? "Ya te mandamos varios seguidos. Espera unos minutos y revisa spam."
+        : "No se pudo mandar. Revisa la conexión y vuelve a intentar.");
+    }
+  };
+  $("bYaConfirme").onclick = async () => {
+    try { await usuario.reload(); } catch(e){ console.warn("No se pudo completar una operación opcional", e); }
+    pintarCorreo("Todavía no aparece confirmado. Toca el enlace del correo y vuelve a probar.");
+  };
+}
+/* Al volver del correo a esta pestaña, se revisa solo. */
+async function revisarCorreo(){
+  if (!usuario || usuario.emailVerified) return;
+  try { await usuario.reload(); } catch(e){ console.warn("No se pudo completar una operación opcional", e); }
+  pintarCorreo();
+}
+document.addEventListener("visibilitychange", () => { if (!document.hidden) revisarCorreo(); });
+
+/* ▌BLOQUE 18 · Arranque con la sesión ═══════════════════════════════════════════
+   Lee el perfil del usuario y arranca todo lo anterior. */
+/* ------------------------------------------------------------
+   Sesión y datos
+   ------------------------------------------------------------ */
+onAuthStateChanged(auth, async u => {
+  if (!u){
+    /* Sin sesión esta pantalla no tiene nada que mostrar: es el muro de
+       alguien. Se vuelve a la portada, que sí funciona sin cuenta. */
+    location.replace("cuenta.html" + qs);
+    return;
+  }
+  usuario = u;
+  pintarCorreo(); revisarCorreo();
+  try { perfil = (await get(ref(db, "usuarios/" + u.uid))).val(); }
+  catch(e){ location.replace("cuenta.html" + qs + "#ajustes"); return; }
+  if (!perfilCompleto(perfil)){ location.replace("cuenta.html" + qs + "#ajustes"); return; }
+  pintarFicha(); pintarPerfil();
+  /* Quien organiza alguna tienda, o administra el sitio, llega a eso desde el menú. */
+  get(ref(db, "organiza/" + u.uid)).then(s => {
+    ORGANIZA = s.val() || {};
+    $("liPanel").classList.toggle("oculto", !s.exists());
+    /* Quien no organiza ninguna, la pide desde su cuenta. */
+    $("liPedir").classList.toggle("oculto", s.exists());
+    repintarInsignias();
+  }, () => {});
+  Promise.all([get(ref(db, "admins/" + u.uid)).then(s => s.val() === true, () => false), get(ref(db, "sistema/rulingsAbierto")).then(s => s.val() === true, () => false)])
+    .then(([admin, rulings]) => { $("liHerr").classList.toggle("oculto", !admin); $("liRulings").classList.toggle("oculto", !admin && !rulings); });
+  /* El orden de registro. Quien no tiene alta la pide acá, con la hora del
+     servidor: las cuentas nuevas al llegar desde el registro, y las de antes
+     del 26-09 la primera vez que abren el muro. */
+  let pidioAlta = false;
+  onValue(ref(db, "altas"), s => {
+    ALTAS = s.val() || {};
+    if (!ALTAS[u.uid] && !pidioAlta){ pidioAlta = true; set(ref(db, "altas/" + u.uid), serverTimestamp()).catch(e => avisarError(e)); }
+    repintarInsignias();
+  }, () => { ALTAS = {}; repintarInsignias(); });
+  /* Quienes entraron con un código de la beta: también son Beta tester. */
+  onValue(ref(db, "beta/testers"), s => { TESTERS = s.val() || {}; repintarInsignias(); }, () => {});
+  /* Lo que muestro a los demás: si mis rachas son públicas, mi vitrina y las
+     insignias que oculto. */
+  get(ref(db, "perfilPublico/" + u.uid)).then(s => {
+    const v = s.val() || {};
+    $("swRachas").checked = v.rachas === true;
+    VITRINA = Object.values(v.vitrina || {});
+    OCULTAS = v.ocultas || {};
+    repintarInsignias();
+  }, () => {});
+
+  onValue(ref(db, "usuarios/" + u.uid + "/tiendas"), s => {
+    TIENDAS = s.val() || {};
+    pintarTienda(); repintarInsignias(); cambioVivo();
+  }, () => { TIENDAS = {}; pintarTienda(); repintarInsignias(); });
+
+  /* El historial de la tienda del enlace, si vino una (para encontrar al jugador pedido); las demás
+     llegan por cargarTienda. */
+  const conHist = h => {
+    HIST = h;
+    pintarFicha(); pintarMuro(); pintarPerfil(); pintarJugador();
+    if (JUG_PEDIDO){ const n = JUG_PEDIDO; JUG_PEDIDO = null; verJugador(n); }
+  };
+  if (MIRA) leerHistorial(db, MIRA, conHist, () => { HIST = {}; pintarMuro(); });
+  else conHist({});
+
+  escucharVivo();
+  setInterval(() => { pintarProximo(); cambioVivo(); }, 60000);   // lo «reciente» de En vivo vence con el tiempo
+});
+
+verTab(location.hash.slice(1) || "inicio");
+</script>
+</body>
+</html>

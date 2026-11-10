@@ -1,0 +1,26 @@
+[
+  {
+    "nombre": "Snivy",
+    "imagen": "https://assets.tcgdex.net/en/sv/sv10.5b/001/low.webp"
+  },
+  {
+    "nombre": "Foongus",
+    "imagen": "https://assets.tcgdex.net/en/sv/sv10.5b/010/low.webp"
+  },
+  {
+    "nombre": "Volcarona",
+    "imagen": "https://assets.tcgdex.net/en/sv/sv10.5b/100/low.webp"
+  },
+  {
+    "nombre": "Panpour",
+    "imagen": "https://assets.tcgdex.net/en/sv/sv10.5b/101/low.webp"
+  },
+  {
+    "nombre": "Simipour",
+    "imagen": "https://assets.tcgdex.net/en/sv/sv10.5b/102/low.webp"
+  },
+  {
+    "nombre": "Tympole",
+    "imagen": "https://assets.tcgdex.net/en/sv/sv10.5b/103/low.webp"
+  }
+]

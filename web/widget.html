@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<!-- ▌ÍNDICE de widget.html (detalle y números de línea en MAPA-CODIGO.md, en la raíz del proyecto)
+      1. Estilos
+      2. Script
+-->
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#243B60">
+<meta name="robots" content="noindex">
+<title>Torneos — ByePass</title>
+<link rel="stylesheet" href="estilo.css?v=2efd744ba33e">
+<!-- ▌BLOQUE 1 · Estilos -->
+
+<link rel="stylesheet" href="/paginas/widget.css?v=2efd744ba33e">
+<link rel="stylesheet" href="/sistema.css?v=2efd744ba33e">
+<script src="/tema.js?v=2efd744ba33e"></script>
+<script src="/sistema.js?v=2efd744ba33e" defer></script>
+</head>
+<body data-pagina="widget">
+<main class="w" aria-live="polite">
+  <div class="cab"><span class="logoT" id="logo" aria-hidden="true"></span><div><b id="nombre">Cargando…</b><small id="sub"></small></div></div>
+  <section id="secAgenda"><h2 class="tit">Próximos torneos</h2><div class="grupo" id="agenda"></div></section>
+  <section id="secRanking"><h2 class="tit" id="titRanking">Ranking del mes</h2><div class="grupo" id="ranking"></div></section>
+  <div class="pie"><a id="pie" target="_blank" rel="noopener">Ver todo en <span class="marca">Bye<span>Pass</span></span></a></div>
+</main>
+
+<script src="config.js?v=2efd744ba33e"></script>
+<!-- ▌BLOQUE 2 · Script — Lee una vez la agenda y el historial de la tienda, arma el ranking del mes y suelta
+     la conexión. -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getDatabase, connectDatabaseEmulator, ref, get, goOffline } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+import { TIENDA, nombreTienda, iniciales } from "./sala.js?v=2efd744ba33e";
+import { estaVigente, urlGoogle, ordenar } from "./agenda.js?v=2efd744ba33e";
+import { clasificarPorCategoria, mesesDe, nombreMes, PUNTOS_DEF, deTimer } from "./clasificacion.js?v=2efd744ba33e";
+import { historialUnaVez } from "./historial.js?v=2efd744ba33e";
+import { contarVisita } from "./presencia.js?v=2efd744ba33e";
+
+const $ = id => document.getElementById(id);
+const db = getDatabase(initializeApp(FIREBASE_CONFIG));
+const EMU = typeof EMULADOR !== "undefined" && EMULADOR;
+if (EMU) connectDatabaseEmulator(db, EMULADOR.host, EMULADOR.db);
+const ver = new URLSearchParams(location.search).get("ver");
+$("secAgenda").hidden = ver === "ranking";
+$("secRanking").hidden = ver === "agenda";
+$("pie").href = "tienda.html?" + (EMU ? "emu=1&" : "") + "sala=" + encodeURIComponent(TIENDA);
+const MES = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+
+async function cargar(){
+  if (!TIENDA || TIENDA === "principal"){ $("nombre").textContent = "Falta la tienda en el enlace."; return; }
+  const leer = r => get(ref(db, r)).then(s => s.val(), () => null);
+  const [tienda, agenda, config, hist] = await Promise.all([leer("tiendas/" + TIENDA), leer("salas/" + TIENDA + "/agenda"),
+    leer("salas/" + TIENDA + "/config"), historialUnaVez(db, TIENDA)]);
+  const perfil = tienda && tienda.perfil;
+  if (!perfil){ $("nombre").textContent = "Esta tienda no está en ByePass."; $("secAgenda").hidden = $("secRanking").hidden = true; return; }
+  const nom = nombreTienda(perfil, TIENDA);
+  document.title = "Torneos de " + nom + " — ByePass";
+  $("nombre").textContent = nom;
+  $("sub").textContent = [perfil.comuna, "Torneos y ranking"].filter(Boolean).join(" · ");
+  $("logo").textContent = iniciales(nom);
+  if (perfil.color) $("logo").style.setProperty("--c", perfil.color);
+
+  const prox = ordenar(Object.entries(agenda || {}).map(([id, e]) => ({ id, ...e })).filter(e => e && e.titulo && e.fecha && estaVigente(e))).slice(0, 4);
+  $("agenda").innerHTML = prox.length ? prox.map(e => {
+    const [, m, d] = e.fecha.split("-");
+    return '<a class="fila" href="' + esc(urlGoogle(e)) + '" target="_blank" rel="noopener" title="Agregar a mi calendario">' +
+      '<div class="fecha"><div class="d">' + (+d) + '</div><div class="m">' + MES[+m - 1] + "</div></div>" +
+      '<div class="txt"><b>' + (e.juego ? '<span class="chipJuego">' + esc(e.juego) + "</span>" : "") + (e.tipo ? '<span class="chipJuego">' + esc(e.tipo) + "</span>" : "") + esc(e.titulo) + "</b><small>" +
+      esc([e.hora ? e.hora + " h" : "Todo el día", e.lugar || ""].filter(Boolean).join(" · ")) + "</small></div></a>"; }).join("")
+    : '<div class="vacio">No hay fechas anunciadas.</div>';
+
+  /* El ranking del mes en curso; si este mes no hubo torneos, el último que tuvo. */
+  /* La tabla del timer 1, o la de &timer=N si la tienda pegó ese código. */
+  const torneos = deTimer(Object.values(hist || {}), +new URLSearchParams(location.search).get("timer") || 1);
+  const cfg = config && Array.isArray(config.puntos) ? { puntos: config.puntos, resto: config.resto ?? 1 } : PUNTOS_DEF;
+  const mes = mesesDe(torneos)[0];
+  if (!mes){ $("ranking").innerHTML = '<div class="vacio">Todavía no hay torneos archivados.</div>'; }
+  else {
+    $("titRanking").textContent = "Ranking de " + nombreMes(mes);
+    /* Con categorías, las 3 primeras de cada una; si no, las 8 primeras. */
+    const secs = clasificarPorCategoria(torneos, mes, cfg), tope = secs.length > 1 ? 3 : 8;
+    $("ranking").innerHTML = secs.map(sec =>
+      (sec.nombre ? '<div style="margin:10px 0 4px;font-size:12px;letter-spacing:.12em;font-weight:600;opacity:.7">' + esc(sec.nombre.toUpperCase()) + "</div>" : "") +
+      sec.filas.slice(0, tope).map((f, i) =>
+      '<div class="fila"><span class="pos' + (i === 0 ? " p1" : "") + '">' + (i + 1) + '</span><div class="txt"><b>' +
+      esc(f.reservado ? "Jugador reservado" : f.name) + "</b><small>" + f.torneos + (f.torneos === 1 ? " torneo" : " torneos") +
+      '</small></div><span class="pts">' + f.pts + "<small>pts</small></span></div>").join("")).join("");
+  }
+  await contarVisita(db, "widget", TIENDA);
+}
+cargar().catch(() => { $("nombre").textContent = "No se pudo cargar. Prueba de nuevo más tarde."; })
+  .finally(() => { try { goOffline(db); } catch(e){ console.warn("No se pudo completar una operación opcional", e); } });
+</script>
+</body>
+</html>

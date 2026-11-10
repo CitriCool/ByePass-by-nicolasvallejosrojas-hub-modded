@@ -1,0 +1,35 @@
+{
+  "database": {
+    "rules": "rules/sistema.rules.json"
+  },
+  "emulators": {
+    "auth": {
+      "host": "127.0.0.1",
+      "port": 9093
+    },
+    "database": {
+      "host": "127.0.0.1",
+      "port": 9003
+    },
+    "ui": {
+      "enabled": false
+    },
+    "hub": {
+      "host": "127.0.0.1",
+      "port": 4403
+    },
+    "logging": {
+      "host": "127.0.0.1",
+      "port": 4503
+    },
+    "singleProjectMode": true,
+    "functions": {
+      "host": "127.0.0.1",
+      "port": 5003
+    }
+  },
+  "functions": {
+    "source": "functions",
+    "codebase": "local"
+  }
+}

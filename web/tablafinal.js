@@ -1,0 +1,129 @@
+/* ▌ÍNDICE de tablafinal.js (detalle y números de línea en MAPA-CODIGO.md, en la raíz del proyecto)
+    1. Tabla como imagen
+*/
+/* ============================================================
+   tablafinal.js — la tabla final como imagen para compartir
+   ------------------------------------------------------------
+   Versión actual: v=4   (subir el ?v= al tocar este archivo)
+
+   La dibuja en un canvas con las letras y los colores de la tele (lienzo
+   oscuro por defecto, o el fondo que la tienda eligió: fondoimg.js; Inter, Newsreader) y la entrega como PNG: en el celular abre el
+   menú de compartir (WhatsApp, Instagram…); en el computador se descarga.
+   No sube nada a ningún lado: la imagen queda solo en el aparato.
+
+   La usan el panel de la tienda (desde archivo y torneo de la página) y la sala de
+   invitado. Los nombres llegan ya resueltos: quien pidió no salir con su
+   nombre viene como «Jugador reservado».
+   ============================================================ */
+
+/* ▌BLOQUE 1 · Tabla como imagen ═════════════════════════════════════════════════
+   Dibuja la tabla en un canvas, sobre el fondo elegido (fondoimg.js), y la comparte o descarga. */
+import { paletaDe, pintarFondo, cargarImagen } from "./fondoimg.js?v=2efd744ba33e";
+const W = 1080, PAD = 72, FILA = 66, CAB = 330, PIE = 170;
+
+/* Corta con «…» lo que no cabe en el ancho dado. */
+export function cabe(g, txt, ancho){
+  if (g.measureText(txt).width <= ancho) return txt;
+  while (txt.length > 1 && g.measureText(txt + "…").width > ancho) txt = txt.slice(0, -1);
+  return txt + "…";
+}
+const fechaLarga = iso => {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || "");
+  if (!m) return "";
+  const MES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+  return (+m[3]) + " de " + MES[+m[2] - 1] + " de " + m[1];
+};
+
+const NOM_CAT = ["Junior", "Senior", "Masters"];     // cat: 0, 1, 2 (igual que clasificacion.js)
+
+/* filas: [{ puesto, nombre, w, l, t, pts, etapa?, cat? }] en orden. Con varias categorías (cat), un
+   título antes de cada una y cada una con su propio puesto. */
+/* estilo: el fondo elegido (fondoimg.js); puede venir como promesa. Sin él, el lienzo oscuro de siempre. */
+export async function dibujarTabla({ torneo, fecha, tienda, filas, estilo }){
+  estilo = await estilo; const C = paletaDe(estilo);   // colores del texto y las filas según el fondo
+  await Promise.all(["700 56px Inter", "600 30px Inter", "400 26px Inter", "300 60px Newsreader"].map(f => document.fonts.load(f).catch(e => console.warn("Operación secundaria sin confirmar", e))));
+  const hayCats = filas.some(f => f.cat != null && f.cat !== filas[0].cat);
+  const lineas = [];
+  filas.forEach((f, i) => {
+    if (hayCats && (i === 0 || f.cat !== filas[i - 1].cat)) lineas.push({ titulo: NOM_CAT[f.cat] || "Sin categoría" });
+    lineas.push(f);
+  });
+  const H = CAB + lineas.length * FILA + PIE;
+  const cv = document.createElement("canvas");
+  cv.width = W; cv.height = H;
+  const g = cv.getContext("2d");
+  pintarFondo(g, W, H, estilo, await cargarImagen(estilo && estilo.fondo));
+
+  /* cabecera: tienda, torneo, fecha y cuántos */
+  g.textBaseline = "alphabetic";
+  g.fillStyle = C.suave; g.font = "600 24px Inter";
+  g.fillText(cabe(g, (tienda || "Tabla final").toUpperCase(), W - 2 * PAD), PAD, 110);
+  g.fillStyle = C.texto; g.font = "700 60px Inter";
+  g.fillText(cabe(g, torneo || "Torneo", W - 2 * PAD), PAD, 184);
+  g.fillStyle = C.suave; g.font = "400 28px Inter";
+  g.fillText([fechaLarga(fecha), filas.length + (filas.length === 1 ? " jugador" : " jugadores")].filter(Boolean).join(" · "), PAD, 232);
+
+  /* títulos de columna */
+  const xPts = W - PAD, xRec = W - PAD - 150, xNom = PAD + 84;
+  g.font = "600 22px Inter"; g.fillStyle = C.suave;
+  g.textAlign = "left"; g.fillText("#", PAD, CAB - 26); g.fillText("JUGADOR", xNom, CAB - 26);
+  g.textAlign = "right"; g.fillText("V-D-E", xRec, CAB - 26); g.fillText("PTS", xPts, CAB - 26);
+
+  lineas.forEach((f, i) => {
+    const y = CAB + i * FILA, base = y + FILA / 2 + 10, podio = f.puesto <= 3;
+    if (f.titulo){
+      g.textAlign = "left"; g.font = "700 24px Inter"; g.fillStyle = C.ambar;
+      g.fillText(f.titulo.toUpperCase(), PAD, base);
+      return;
+    }
+    if (podio){ g.fillStyle = f.puesto === 1 ? "rgba(244,91,69,.22)" : C.fila; g.beginPath(); g.roundRect(PAD - 20, y + 4, W - 2 * PAD + 40, FILA - 8, 14); g.fill(); }
+    else if (i){ g.fillStyle = C.linea; g.fillRect(PAD - 20, y, W - 2 * PAD + 40, 1); }
+    g.textAlign = "left";
+    g.fillStyle = f.puesto === 1 ? C.coral : podio ? C.ambar : C.suave; g.font = "700 30px Inter";
+    g.fillText(String(f.puesto), PAD, base);
+    g.fillStyle = C.texto; g.font = (podio ? "700" : "400") + " 30px Inter";
+    /* «Cayó en semifinal» → «Semifinal»: el puesto ya dice que cayó. */
+    const etapa = f.etapa && f.etapa !== "Sigue en el corte" ? f.etapa.replace(/^Cayó en /, "") : "";
+    const anchoNom = xRec - 150 - xNom - (etapa ? 190 : 0);
+    const nom = cabe(g, f.nombre || "?", anchoNom);
+    g.fillText(nom, xNom, base);
+    if (etapa){
+      const x = xNom + g.measureText(nom).width + 20;
+      g.font = "600 20px Inter"; g.fillStyle = f.etapa === "Campeón" ? C.coral : C.suave;
+      g.fillText(cabe(g, etapa.toUpperCase(), 180), x, base - 2);
+    }
+    g.textAlign = "right"; g.font = "400 28px Inter"; g.fillStyle = C.suave;
+    g.fillText(f.w + "-" + f.l + "-" + f.t, xRec, base);
+    g.font = "700 30px Inter"; g.fillStyle = C.texto;
+    g.fillText(String(f.pts), xPts, base);
+  });
+
+  /* pie: la marca */
+  const yPie = CAB + lineas.length * FILA + 96;
+  g.textAlign = "left"; g.font = "300 56px Newsreader";
+  g.fillStyle = C.texto; g.fillText("Bye", PAD, yPie);
+  const wBye = g.measureText("Bye").width;
+  g.fillStyle = C.coral; g.fillText("Pass", PAD + wBye, yPie);
+  g.textAlign = "right"; g.font = "600 26px Inter"; g.fillStyle = C.suave;
+  g.fillText("byepass.cl", W - PAD, yPie - 6);
+  return cv;
+}
+
+/* Compartir en el celular; descargar en el computador. La usan también otras imágenes (calendarioimg.js). */
+export async function entregarImagen(cv, nombreBase, titulo){
+  const blob = await new Promise(r => cv.toBlob(r, "image/png"));
+  const nombre = nombreBase.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "")
+    .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 60) + ".png";
+  const archivo = new File([blob], nombre, { type: "image/png" });
+  if (matchMedia("(pointer: coarse)").matches && navigator.canShare && navigator.canShare({ files: [archivo] })){
+    try { await navigator.share({ files: [archivo], title: titulo }); return; }
+    catch(e){ if (e.name === "AbortError") return; }
+  }
+  const url = URL.createObjectURL(blob), a = document.createElement("a");
+  a.href = url; a.download = nombre; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 5000);
+}
+
+export async function entregarTabla(datos){
+  return entregarImagen(await dibujarTabla(datos), "tabla-" + (datos.torneo || "torneo"), datos.torneo || "Tabla final");
+}

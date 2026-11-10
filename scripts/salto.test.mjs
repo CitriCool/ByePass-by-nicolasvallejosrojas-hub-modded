@@ -1,0 +1,11 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {crearSalto,precision,altura,impulsar,verSalto} from './salto-motor.mjs';
+test('Inicio y captura aun no otorgan altura',()=>{const p=crearSalto('u',{},0);assert.equal(verSalto(p).altura,0);impulsar(p,'u',0,p.inicioPaso+2160);assert.equal(verSalto(p).altura,0);});
+test('El centro da precision maxima y los extremos no',()=>{assert.equal(precision(2160,0),100);assert.equal(precision(0,0),0);assert.equal(precision(5000,0),0);});
+test('Cuatro acciones perfectas terminan con 100 metros',()=>{const p=crearSalto('u',{},0);for(let i=0;i<4;i++)impulsar(p,'u',i,p.inicioPaso+2160);assert.equal(p.terminada,true);assert.equal(verSalto(p).altura,10000);assert.equal(verSalto(p,80000).duracion,p.duracion);});
+test('No acepta acciones previas al inicio ni de otra cuenta',()=>{const p=crearSalto('u',{},0);assert.throws(()=>impulsar(p,'otro',0,3000));assert.throws(()=>impulsar(p,'u',0,0));assert.equal(p.secuencia,0);});
+test('Acciones duplicadas y fuera de orden se rechazan en el motor',()=>{const p=crearSalto('u',{},0);impulsar(p,'u',0,3000);assert.throws(()=>impulsar(p,'u',0,5000));assert.throws(()=>impulsar(p,'u',3,5000));});
+test('Acciones tardias valen cero, pero permiten completar la partida',()=>{const p=crearSalto('u',{},0);for(let i=0;i<4;i++)impulsar(p,'u',i,p.inicioPaso+3200);assert.equal(p.terminada,true);assert.equal(verSalto(p).altura,100);});
+test('Una partida vencida o completa no recibe mas impulsos',()=>{const p=crearSalto('u',{},0);assert.throws(()=>impulsar(p,'u',0,90001));for(let i=0;i<4;i++)impulsar(p,'u',i,p.inicioPaso+2160);assert.throws(()=>impulsar(p,'u',4,20000));});
+test('Altura se calcula con precisiones y no con campos enviados por el cliente',()=>{assert.equal(altura([100,100,100,100]),10000);assert.equal(altura([0,0,0,0]),100);});

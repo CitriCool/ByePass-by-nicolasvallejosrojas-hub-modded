@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<!-- ▌ÍNDICE de admin.html (detalle y números de línea en MAPA-CODIGO.md, en la raíz del proyecto)
+      1. Estilos del panel
+      2. Pantallas de entrada
+      3. Cabecera de la tienda y pestañas
+      4. Pestaña Timer (marcado)
+      5. Pestaña Emparejamientos (marcado)
+      6. Pestaña Sorteo (marcado)
+      7. Pestaña Calendario (marcado)
+      8. Pestaña Tienda (marcado)
+      9. Pestaña Estadísticas (marcado)
+     10. Módulos que usa el panel
+     11. Arranque: Firebase, sala y utilidades
+     12. Login, tienda y rol
+     13. Varios timers por tienda
+     14. La tienda: perfil, miembros y permisos
+     15. Insignias de la tienda
+     16. Cambio de pestaña
+     17. Estado del timer
+     18. Publicación a Firebase
+     19. Reloj
+     20. Sonido
+     21. Fondo, escala y presets
+     22. Cajas de imagen sobre el lienzo
+     23. Hoja de ajustes e imágenes
+     24. Arranque de la interfaz
+     25. El torneo leído del archivo
+     26. Vista previa y publicación de emparejamientos
+     27. Vigilancia de la carpeta
+     28. Reparto de premios y ronda en el lienzo
+     29. Historial, puntos, enlace de ID y archivar
+     30. Torneo de la página
+     31. Base de jugadores de la tienda
+     32. Ruleta de sorteos
+     33. Calendario: agenda y plantillas
+     34. Calendario: guardar una fecha y sus cupos
+     35. Inscritos de un evento
+     36. Calendario: rejilla y lista
+     37. Paleta del sistema
+     38. Estadísticas de la tienda
+     39. Widget para la web de la tienda
+     40. Rifas
+     41. Llamada, staff y chat
+     42. Conexión
+     43. Fondo de las imágenes para compartir
+-->
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Panel del organizador</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="estilo.css?v=2efd744ba33e">
+<!-- ▌BLOQUE 1 · Estilos del panel — Acomodo propio del panel: lienzo del timer, rail de apariencia,
+     emparejamientos (desde archivo y torneo de la página), ruleta, calendario y QR. Colores, tipografía y
+     componentes comunes vienen de estilo.css. -->
+
+<link rel="stylesheet" href="/paginas/admin.css?v=2efd744ba33e">
+<link rel="stylesheet" href="/sistema.css?v=2efd744ba33e">
+<script src="/tema.js?v=2efd744ba33e"></script>
+<script src="/sistema.js?v=2efd744ba33e" defer></script>
+</head>
+<body data-pagina="admin">
+<header class="bp-app-header"><a class="bp-brand" href="index.html" aria-label="ByePass, inicio"><span class="bp-symbol" aria-hidden="true"><svg viewBox="-4 -1.5 44 44" aria-hidden="true"><g fill="var(--bp-logo-fondo,var(--pagina))" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="17" y="9" width="19" height="27" rx="3.6" transform="rotate(-42 18 38)"/><rect x="17" y="9" width="19" height="27" rx="3.6" transform="rotate(-28 18 38)"/><rect x="17" y="9" width="19" height="27" rx="3.6" transform="rotate(-14 18 38)"/><g transform="rotate(4 18 38)"><rect x="17" y="9" width="19" height="27" rx="3.6"/><path fill="none" stroke-width="1.9" stroke-linecap="round" d="M22.6 15.5v13h4.9a3.3 3.3 0 0 0 0-6.6h-4.9h4.2a3.2 3.2 0 0 0 0-6.4z"/></g></g></svg></span><span class="bp-word" aria-hidden="true">ye<span>Pass</span></span></a><p>Tu comunidad. Tu torneo.</p></header>
+<h1>Panel del organizador</h1>
+
+<!-- ▌BLOQUE 2 · Pantallas de entrada — Lo que se ve antes de organizar: iniciar sesión, elegir tienda (o
+     abrir el timer personal / pedir una tienda), aceptar una invitación a organizar y el aviso de sala de
+     invitado vencida. -->
+<!-- ============ Login ============ -->
+<div class="card" id="loginCard">
+  <div class="muted" style="margin-bottom:8px">Inicia sesión para controlar el timer y publicar emparejamientos.</div>
+  <div class="row">
+    <input id="email" type="email" placeholder="correo" autocomplete="username">
+    <input id="pass" type="password" placeholder="contraseña" autocomplete="current-password">
+    <button id="loginBtn">Entrar</button>
+  </div>
+  <div id="loginMsg" class="muted" style="margin-top:8px"></div>
+  <div class="muted" style="margin-top:8px"><a href="cuenta.html#olvide" id="aOlvide">¿Olvidaste tu contraseña?</a></div>
+  <div class="muted" style="margin-top:8px">¿No tienes cuenta? <a href="cuenta.html#crear" id="aCrearCuenta">Créala en Mi cuenta</a>
+    y vuelve a abrir el enlace que te mandaron.</div>
+  <div class="muted" style="margin-top:8px">¿Tu tienda todavía no está en ByePass? <a href="cuenta.html#tienda" id="aPedirTienda">Pide su cuenta</a>:
+    el panel se abre cuando la aprobamos.</div>
+</div>
+
+<!-- ============ Elegir tienda ============
+     Una cuenta por persona, y la persona organiza una o varias tiendas.
+     Lo que se publica queda en la tienda elegida. -->
+<div class="card" id="elegirCard" style="display:none">
+  <h2 class="h2p" id="elegirTit">¿Para qué tienda organizas hoy?</h2>
+  <div class="muted" id="elegirSub">Todo lo que publiques —timer, mesas, resultados— queda en la tienda que elijas.</div>
+  <div id="elegirAviso" class="aviso accion" style="margin-top:10px" hidden></div>
+  <div id="elegirLista"></div>
+  <!-- El timer personal de cualquier cuenta (desde el 30-09-2026). -->
+  <div class="crear" id="miTimerBloque">
+    <div class="muted"><b>Mi timer</b> · para torneos entre amigos o en tu casa: reloj en la tele, mesas, sorteo y la tabla
+      final como imagen. Los torneos no se guardan ni suman a una clasificación: eso es de las tiendas.</div>
+    <div class="row" style="margin-top:10px"><button class="sec" id="miTimerIr">Abrir mi timer</button><span id="miTimerMsg" class="muted"></span></div>
+  </div>
+  <!-- Pedir una tienda se hace en Tu cuenta (desde el 28-09-2026): acá solo se
+       lleva a la solicitud, o se dice en qué va la que ya se mandó. -->
+  <div class="crear" id="pedirBloque" hidden>
+    <div id="pedirTxt" class="muted"></div>
+    <div class="row" style="margin-top:10px"><button id="pedirIr"></button></div>
+  </div>
+  <div class="row" style="margin-top:12px"><button class="small sec herr" hidden>Herramientas de administrador</button>
+    <span style="flex:1"></span><button class="small sec" id="logoutBtn2">Salir</button></div>
+</div>
+
+<!-- ============ Invitación a organizar ============ -->
+<div class="card" id="unirseCard" style="display:none">
+  <div id="unirseTxt"></div>
+  <div class="row" style="margin-top:12px"><button id="unirseSi">Aceptar y organizar</button>
+    <button class="sec" id="unirseNo">Ir a mis tiendas</button></div>
+  <div id="unirseMsg" class="muted" style="margin-top:8px"></div>
+</div>
+
+<!-- ============ Sala de invitado vencida o ajena ============ -->
+<div class="card" id="invCard" style="display:none">
+  <h2 class="h2p" id="invTit">Esta sala de invitado ya no está</h2>
+  <div class="muted" id="invTxt">Las salas de invitado duran 24 horas y después se borran solas.</div>
+  <div class="row" style="margin-top:12px"><a class="btn" href="invitado.html">Abrir una sala nueva</a>
+    <a class="btn sec" href="cuenta.html#crear">Crear una cuenta</a></div>
+</div>
+
+<!-- ▌BLOQUE 3 · Cabecera de la tienda y pestañas — La tienda que se organiza (nombre, timer elegido, salir),
+     el aviso de la sala de invitado, la barra de pestañas y el aviso de «sin señal». -->
+<div id="all" style="display:none">
+
+<!-- ============ La tienda que se está organizando ============ -->
+<div class="card" id="salaCard">
+  <div class="row">
+    <span id="salaLogo"></span>
+    <div style="font-size:var(--t3)"><b id="salaName"></b> <span id="salaRol" class="muted"></span></div>
+    <select id="timerSel" aria-label="Timer de la tienda" style="font-size:var(--t2);padding:6px 10px"></select>
+    <span id="salaMsg" class="muted"></span>
+    <span style="flex:1"></span>
+    <button class="small sec herr" hidden>Herramientas de administrador</button>
+    <button id="cambiarTienda" class="small sec">Cambiar de tienda</button>
+    <button id="logoutBtn" class="small sec">Salir</button>
+  </div>
+</div>
+
+<!-- Solo en la sala de invitado: cuánto le queda y qué gana con una cuenta. -->
+<div class="card" id="invBanner" hidden>
+  <div class="row" style="align-items:center">
+    <div style="flex:1;min-width:220px"><b>Sala de invitado</b> · <span id="invQueda"></span>
+      <div class="muted">Con una cuenta guardas tus torneos, suman a la clasificación del mes y tienes calendario,
+        estadísticas, tu logo, imágenes de fondo y cajas en la tele.</div></div>
+    <a class="btn" href="cuenta.html#crear">Crear mi cuenta</a>
+  </div>
+</div>
+
+<nav id="tabs" aria-label="Secciones del panel">
+  <button id="tabT" class="on">Timer</button>
+  <button id="tabP">Emparejamientos</button>
+  <button id="tabS">Sorteo</button>
+  <button id="tabC">Calendario</button>
+  <button id="tabO">Tienda</button>
+  <button id="tabE">Estadísticas</button>
+  <button id="tabM">Chat<span class="insig" id="chatBadge" hidden></span></button>
+</nav>
+
+<!-- El reloj a mano en las otras pestañas: publicando emparejamientos o girando
+     el sorteo no hay que volver al Timer para pausar la ronda. -->
+<div id="franja" class="vidrio" role="region" aria-label="Reloj de la ronda" hidden>
+  <span id="fClock">32:00</span>
+  <span id="fRonda"></span>
+  <span style="flex:1"></span>
+  <button class="tbtn" id="fToggle">Iniciar</button>
+  <button class="tbtn" id="fExtra">Tiempo extra a una mesa</button>
+</div>
+
+<main>
+<!-- Sin señal: el panel sigue (Firebase guarda lo escrito y lo manda al volver), pero cerrar la pestaña lo perdería. -->
+<div id="sinRed" class="aviso" role="status" hidden></div>
+
+<!-- ▌BLOQUE 4 · Pestaña Timer (marcado) — Dos modos: «En vivo» (consola: reloj del panel, Iniciar/Reiniciar,
+     tiempos y tiempo extra por mesa, y al lado lo que ve la sala) y «Diseñar la pantalla» (el lienzo grande
+     con la vista computador/celular y la hoja de apariencia: logo, fondos, colores, sonido y paleta). Antes
+     de <main>, la franja del reloj que se ve en las otras pestañas. -->
+<!-- ============================================================
+     TIMER
+     ============================================================ -->
+<div class="panel" id="panelT">
+<div id="timerLayout">
+<div class="card" id="tCard">
+
+  <!-- Barra del organizador, fuera del lienzo. Dos modos: «En vivo» para correr
+       la ronda y «Diseñar la pantalla» para la apariencia, que se toca una vez y
+       no tiene por qué ocupar la pantalla durante el torneo. -->
+  <div class="barra">
+    <div class="seg" role="group" aria-label="Qué hacer en esta pestaña">
+      <button id="modoVivo" class="on" aria-pressed="true">En vivo</button>
+      <button id="modoDiseno" aria-pressed="false">Diseñar la pantalla</button>
+    </div>
+    <span style="flex:1"></span>
+    <span id="syncMsg" class="muted"></span>
+    <button class="tbtn" id="btnFull">Pantalla completa</button>
+  </div>
+
+  <!-- Lo que cambia el diseño espera confirmación; el tiempo no. -->
+  <div id="pendiente" class="aviso accion" hidden>
+    <span id="pendienteTxt">Hay cambios de diseño sin publicar.</span>
+    <button class="tbtn" id="btnPublicar">Publicar a los jugadores</button>
+    <button class="tbtn" id="btnDescartar">Descartar</button>
+  </div>
+  <div id="pendienteAviso" role="status" aria-live="polite"></div>
+
+  <div id="tGrid">
+    <!-- La consola: el reloj del panel a tamaño de lectura (no una miniatura del
+         lienzo), los mandos y el tiempo extra. En pantalla completa los mandos
+         vuelven al lienzo, como antes. -->
+    <section id="consola" aria-label="Control de la ronda">
+      <div id="pRonda"></div>
+      <div id="pClock" role="button" tabindex="0" title="Clic para cambiar el tiempo"
+           aria-label="Tiempo de la ronda. Clic para cambiarlo">32:00</div>
+      <input id="clockEdit" type="text" aria-label="Tiempo de la ronda, en minutos o mm:ss">
+      <div id="mandos">
+        <div id="pBotones">
+          <button class="mainbtn" id="toggleBtn">Iniciar</button>
+          <button class="greybtn" id="resetBtn">Reiniciar</button>
+        </div>
+        <div id="presets"></div>
+      </div>
+      <div id="extraMesa">
+        <b>Tiempo extra por mesa</b>
+        <label style="margin:0">Mesa <input type="number" id="exMesa" min="1" max="999" inputmode="numeric"></label>
+        <select id="exMin" aria-label="Minutos extra">
+          <option value="1">+1 min</option><option value="2">+2 min</option><option value="3" selected>+3 min</option>
+          <option value="5">+5 min</option><option value="10">+10 min</option>
+        </select>
+        <button class="tbtn" id="exAgregar">Sumar</button>
+        <span id="exLista" style="display:contents"></span>
+      </div>
+      <div class="hint" style="margin-top:0">Para una consulta larga al juez: la tele y los celulares muestran cuánto le queda a esa mesa. Reiniciar el reloj lo borra.</div>
+      <div id="llamadaBox">
+        <b>Llamada a mesas</b>
+        <span id="llamadaTiempo" aria-live="off">--:--</span>
+        <button class="tbtn" id="llamadaIr">Iniciar llamada</button>
+        <button class="tbtn" id="llamadaFin" hidden>Reiniciar</button>
+      </div>
+      <div class="hint" style="margin-top:0">Cuenta cuánto lleva la llamada a los jugadores; la tele también lo muestra. Se apaga sola al iniciar la ronda.</div>
+    </section>
+
+    <!-- Lo que ve la sala. En «Diseñar la pantalla» ocupa todo el ancho y suma
+         la vista computador/celular y las cajitas. -->
+    <section id="monitor" aria-label="Lo que ve la sala">
+      <div class="barra" id="vistaBarra">
+        <div class="seg" role="group" aria-label="Vista del lienzo">
+          <button id="btnDesktop">Computador</button>
+          <button id="btnMobile">Celular</button>
+        </div>
+        <span class="muted" id="hintCajas">Clic derecho sobre el lienzo para agregar cajitas.</span>
+      </div>
+      <div id="monTit">Lo que ve la sala</div>
+      <div id="stageWrap">
+        <div id="scaler">
+          <div id="canvas" class="isla">
+            <img id="bgImg" alt="">
+
+            <div id="topbar">
+              <img id="logo" alt="">
+              <div id="tnombre">
+                <div id="ttitle">Timer de torneo</div>
+                <div id="tsubt"></div>
+              </div>
+            </div>
+
+            <div id="stage">
+              <div id="ronda"></div>
+              <div id="clock" title="Clic para editar el tiempo">32:00</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<!-- ============================================================
+     APARIENCIA — rail, no ventana
+     Vive fuera de #scaler para no encogerse con la maqueta, y al lado del
+     lienzo en vez de encima, porque todo lo que hay aca se ve reflejado
+     ahi mismo mientras se ajusta.
+     ============================================================ -->
+<aside id="settings" aria-label="Apariencia del timer">
+  <div id="sheet">
+    <h2>Apariencia</h2>
+
+    <section class="grupo">
+      <h3>Marca</h3>
+      <label class="lab">Logo del evento
+              <input type="file" accept="image/*" id="fLogo">
+            </label>
+            <div class="row" style="align-items:center">
+              <span class="hint" id="stLogo" style="flex:1;margin:0"></span>
+              <button class="tbtn" id="btnDelLogo" aria-label="Quitar el logo del evento" title="Quitar el logo del evento">Quitar</button>
+            </div>
+            <div class="hint" id="stPeso" style="margin:0 0 4px"></div>
+    </section>
+
+    <section class="grupo">
+      <h3>Fondo — <span id="bgWhich"></span></h3>
+      
+              <div class="seg">
+                <button id="bgTColor">Color</button>
+                <button id="bgTGrad">Gradiente</button>
+                <button id="bgTImg">Imagen</button>
+              </div>
+
+              <div id="bgColorWrap"><input type="color" class="col" id="bgC1"
+                     aria-label="Color de fondo del lienzo"></div>
+
+              <div id="bgGradWrap" style="display:none">
+                <div class="row" style="margin-top:8px">
+                  <input type="color" id="bgG1" style="flex:1;height:32px;border:1px solid var(--divider);border-radius:var(--radio);background:transparent">
+                  <input type="color" id="bgG2" style="flex:1;height:32px;border:1px solid var(--divider);border-radius:var(--radio);background:transparent">
+                  <select id="bgDir" style="flex:1;height:32px">
+                    <option value="to right">&rarr;</option>
+                    <option value="to bottom">&darr;</option>
+                    <option value="to bottom right">&searr;</option>
+                  </select>
+                </div>
+              </div>
+
+              <div id="bgImgWrap" style="display:none">
+                <div style="margin-top:10px">
+                  <div style="font-size:var(--t2);font-weight:600">Imagen para computador <span class="muted" style="font-weight:400">(horizontal 16:9)</span></div>
+                  <input type="file" accept="image/*" id="fBgDesktop" style="display:block;margin-top:6px;font-size:var(--t2)">
+                  <div class="row" style="margin-top:4px;align-items:center">
+                    <span class="hint" id="stDesktop" style="flex:1;margin:0"></span>
+                    <button class="tbtn" id="btnDelBgD" aria-label="Quitar la imagen de fondo para computador" title="Quitar la imagen de fondo para computador">Quitar</button>
+                  </div>
+                </div>
+                <div style="margin-top:18px">
+                  <div style="font-size:var(--t2);font-weight:600">Imagen para celular <span class="muted" style="font-weight:400">(vertical 9:16)</span></div>
+                  <input type="file" accept="image/*" id="fBgMobile" style="display:block;margin-top:6px;font-size:var(--t2)">
+                  <div class="row" style="margin-top:4px;align-items:center">
+                    <span class="hint" id="stMobile" style="flex:1;margin:0"></span>
+                    <button class="tbtn" id="btnDelBgM" aria-label="Quitar la imagen de fondo para celular" title="Quitar la imagen de fondo para celular">Quitar</button>
+                  </div>
+                </div>
+                <div class="hint" id="bgHint" style="margin-top:8px"></div>
+                <label class="lab" style="margin-top:8px">Brillo del fondo
+                  <input type="range" min="20" max="150" id="bgBri">
+                </label>
+                <label class="lab" style="margin-top:8px">Opacidad del fondo
+                  <input type="range" min="10" max="100" id="bgOpa">
+                </label>
+              </div>
+    </section>
+
+    <section class="grupo">
+      <h3>Reloj</h3>
+      <button class="tbtn" id="btnPaleta">Volver a los colores diseñados</button>
+      <span class="hint" style="margin:0">Repone el fondo, el reloj y el negativo de la
+        pantalla proyectada. Se aplica a las dos vistas.</span>
+      <div class="row">
+              <label class="lab" style="flex:1">Color del timer
+                <input type="color" class="col" id="cTimer">
+              </label>
+              <label class="lab" style="flex:1">Color en negativo
+                <input type="color" class="col" id="cNeg">
+              </label>
+            </div>
+
+            
+
+            <label class="lab">Tama&ntilde;o del timer: <span id="szVal"></span>px
+              <input type="range" min="40" max="240" id="cSize">
+            </label>
+    </section>
+
+    <section class="grupo">
+      <h3>Tiempos</h3>
+      
+              <div class="row">
+                <input type="number" id="newPreset" placeholder="minutos" style="flex:1"
+                       aria-label="Minutos del tiempo nuevo">
+                <button class="tbtn" id="addPreset">Agregar</button>
+              </div>
+    </section>
+
+    <section class="grupo">
+      <h3>Alarma</h3>
+      <span class="hint" style="margin:0">Suena solo en este equipo.</span>
+              <input type="file" accept="audio/*" id="fAlarm" style="font-size:var(--t2)"
+                     aria-label="Archivo de sonido para la alarma">
+              <div class="row" style="margin-top:6px;align-items:center">
+                <span class="hint" id="alarmName" style="flex:1;margin:0"></span>
+                <button class="tbtn" id="testSound">Probar</button>
+                <button class="tbtn" id="clearSound" aria-label="Quitar el sonido de alarma" title="Quitar el sonido de alarma">Quitar</button>
+              </div>
+    </section>
+
+    <section class="grupo">
+      <h3>Paleta del sistema</h3>
+      <span class="hint" style="margin:0">Se aplica al panel <b>y a la pantalla
+        proyectada</b>. Viaja con el tema, así que los jugadores la ven al toque.</span>
+
+      <div class="row">
+        <label class="lab" style="flex:1">Color de acción
+          <input type="color" class="col" id="palAccion">
+        </label>
+        <label class="lab" style="flex:1">Base
+          <input type="color" class="col" id="palBase">
+        </label>
+      </div>
+
+      <div id="palPresets" class="row"></div>
+      <div id="palMuestra" aria-hidden="true"></div>
+      <span class="hint" id="palAviso" style="margin:0"></span>
+
+      <div class="row" style="align-items:center">
+        <div class="seg" id="palFormato" role="group" aria-label="Formato de los codigos">
+          <button data-f="hex" class="on">HEX</button>
+          <button data-f="rgb">RGB</button>
+          <button data-f="hsl">HSL</button>
+        </div>
+        <button class="tbtn" id="palVerMapa" aria-expanded="false" aria-controls="palMapa">Ver el mapa</button>
+      </div>
+
+      <div id="palMapa" hidden></div>
+
+      <label class="lab">Pegar una paleta de afuera
+        <textarea id="palPegar" rows="2" placeholder="#243B60 #F45B45, o rgb(11,127,108), o hsl(7,89%,61%)"></textarea>
+      </label>
+      <div class="row">
+        <button class="tbtn" id="palUsarPegado">Usar lo pegado</button>
+        <button class="tbtn" id="palReset">Volver a la original</button>
+      </div>
+      <span class="hint" id="palPegarAviso" style="margin:0"></span>
+    </section>
+  </div>
+</aside>
+
+</div>
+</div>
+
+<!-- ▌BLOQUE 5 · Pestaña Emparejamientos (marcado) — Dos modos: «Desde archivo» (vigilar la carpeta, arrastrar
+     o pegar el archivo, plantilla, vista previa, publicar, archivar, recuperar IDs) y «Torneo de la página»
+     (torneo suizo y base de jugadores). Abajo, reparto de premios, puntos por puesto e historial. -->
+<!-- ============================================================
+     EMPAREJAMIENTOS
+     ============================================================ -->
+<div class="panel hide" id="panelP">
+<div class="card">
+  <div class="modos" role="tablist" aria-label="Cómo se corre el torneo">
+    <button role="tab" data-modo="archivo" aria-selected="true">Desde archivo</button>
+    <button role="tab" data-modo="pagina" aria-selected="false">Torneo de la página</button>
+  </div>
+  <div class="muted" id="modoTxt" style="margin-top:8px"></div>
+</div>
+
+<div id="modoArchivo">
+<!-- Tarjeta propia, no anidada dentro de la de abajo: vigilar la carpeta y
+     cargar un archivo a mano son dos caminos distintos para lo mismo, no uno
+     dentro del otro. -->
+<div class="card" id="vigCard">
+    <div class="row" style="align-items:center">
+      <div style="flex:1;font-size:var(--t3)"><span class="latido" id="vigLuz" style="display:none"></span>Sincronizaci&oacute;n autom&aacute;tica</div>
+      <button id="vigCarpeta" class="small sec">Vigilar carpeta</button>
+      <button id="vigArchivo" class="small sec">Vigilar un archivo</button>
+      <button id="vigParar" class="small sec" style="display:none">Detener</button>
+    </div>
+    <div class="muted" style="margin-top:6px;line-height:1.55">Eliges <b>una vez</b> la carpeta donde se guarda el archivo del torneo
+      y el panel la revisa sola. Cada vez que el archivo cambia, se lee el m&aacute;s reciente y los emparejamientos se
+      publican sin que toques nada.</div>
+    <div id="vigEstado" class="muted">Apagada. Por ahora hay que arrastrar el archivo a mano.</div>
+    <label class="chk" style="margin-top:8px"><input type="checkbox" id="vigAuto" checked> Publicar apenas detecte un cambio</label>
+</div>
+
+<div class="card">
+  <div style="margin-bottom:10px">Carga el archivo del torneo y se buscan ah&iacute; los jugadores, las mesas y los resultados.
+    Sirve el que guarda tu programa de torneos, un <b>CSV</b> o <b>.txt</b> (en Excel, Guardar como &rsaquo; CSV) o las celdas pegadas abajo.
+    Si lo armas t&uacute;: una fila por mesa con ronda, mesa, jugador 1, ID, jugador 2, ID y resultado.
+    <button class="small sec" id="plantillaBtn" type="button">Descargar plantilla</button></div>
+  <div class="rondasBox">
+    <label>Rondas suizas <input type="number" id="rondasTot" min="0" max="20"></label>
+    <span class="muted" id="rondasHint">Se calculan solas con la cantidad de jugadores al cargar el archivo (como pide el manual).
+      Cámbialas si tu torneo tiene otras: se leen «Ronda 2 de 3» en la pantalla y en los celulares.</span>
+  </div>
+  <div id="drop">
+    <div class="ico"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor"
+      stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8z"/><path d="M14 3v5h5"/>
+      <path d="M9 13h6M9 17h4"/></svg></div>
+    <div class="big">Arrastra aquí el archivo del torneo</div>
+    <div class="sm">o haz clic para buscarlo en tu computador</div>
+  </div>
+  <input type="file" id="archivoIn" style="display:none">
+  <details class="plegable"><summary>Pegar desde Excel o el bloc de notas</summary>
+    <textarea id="pegado" rows="6" placeholder="ronda;mesa;jugador1;id1;jugador2;id2;resultado" aria-label="Partidas pegadas"
+      style="width:100%;box-sizing:border-box;margin-top:8px;font-family:inherit"></textarea>
+    <button class="small sec" id="pegadoBtn" type="button">Leer lo pegado</button>
+  </details>
+  <label class="chk"><input type="checkbox" id="autoPub"> Publicar automáticamente al cargar el archivo</label>
+  <fieldset id="vistaBox" style="margin:10px 0 0;border:1px solid var(--divider);border-radius:var(--radio);padding:8px 12px 10px">
+    <legend style="font-weight:600;padding:0 6px">Qué ven los jugadores</legend>
+    <label class="chk"><input type="checkbox" id="vistaPos"> La pestaña «Posiciones» (la clasificación)</label>
+    <label class="chk"><input type="checkbox" id="vistaPts"> Los puntos de cada jugador (en las mesas y en las posiciones)</label>
+    <label class="chk"><input type="checkbox" id="vistaRec"> El récord (G-P-E) de cada jugador</label>
+    <label class="chk"><input type="checkbox" id="vistaPct"> El % de victorias junto al récord</label>
+    <div class="muted" style="margin-top:6px">Lo que apagues <b>no se publica</b>: tampoco se puede sacar de la consola del navegador. Con los puntos a la vista, los jugadores se ordenan entre ellos mesa a mesa: por eso vienen apagados.
+      Ojo: puntos y récord se calculan uno del otro (3 por victoria, 1 por empate), así que para que nadie pueda sacar los puntos apaga también el récord. El % se calcula del récord.
+      Apaga «Posiciones» hasta el final de la liga y vuelve a prenderla para mostrar la clasificación final.</div>
+    <div id="vistaMsg" class="muted" style="margin-top:4px"></div>
+  </fieldset>
+  <div id="parseMsg" class="muted" style="margin-top:8px"></div>
+  <div id="preview"></div>
+  <div class="row" style="margin-top:12px">
+    <button id="publishBtn" disabled>Publicar a los jugadores</button>
+    <span id="pubMsg" class="muted"></span>
+  </div>
+  <div class="row" style="margin-top:10px;align-items:center">
+    <button id="clearBtn" class="sec">Borrar emparejamientos</button>
+    <span id="clearMsg" class="muted"></span>
+  </div>
+  <div class="muted" style="margin-top:4px">Deja la pesta&ntilde;a de los jugadores en blanco y borra los nombres de Firebase.
+    &Uacute;salo al terminar un torneo o para limpiar una prueba. No afecta a los torneos ya archivados.</div>
+</div>
+
+<div class="card">
+  <div style="font-size:var(--t3);margin-bottom:6px">Cierre del torneo</div>
+  <div class="muted" style="margin-bottom:8px" id="archTxt">Cuando el torneo termin&oacute; de verdad, arch&iacute;valo aqu&iacute;.
+    Reci&eacute;n entonces suma a la clasificaci&oacute;n mensual. El archivo no dice cu&aacute;l es la &uacute;ltima ronda, as&iacute; que el bot&oacute;n es manual.</div>
+  <div class="row" style="align-items:center">
+    <label style="white-space:nowrap" id="archFechaLbl">Fecha del torneo <input type="date" id="archDate" style="width:auto"></label>
+    <label style="white-space:nowrap" id="archJuegoLbl">Juego <input id="archJuego" list="archJuegos" maxlength="40" placeholder="Opcional" style="width:12em"></label>
+    <datalist id="archJuegos"></datalist>
+    <button id="archiveBtn" disabled>Archivar torneo</button>
+    <button class="sec" id="tablaBtn" disabled>Descargar la tabla (imagen)</button>
+    <select id="tablaFmt" hidden aria-label="Formato de la tabla" style="font-size:var(--t3);padding:8px 10px">
+      <option value="general">Tabla general</option><option value="cats">Por categoría</option></select>
+  </div>
+  <details class="plegable" id="tablaOrdenar" hidden><summary>Corregir el orden de la tabla general</summary>
+    <div class="muted" style="margin-top:6px">Si no calza con TOM, sube o baja a quien corresponda. Solo cambia la imagen:
+      lo que se archiva y ven los jugadores no se toca.</div>
+    <ol class="ordenG" id="tablaOrdenLista"></ol>
+    <button class="sec small" id="tablaOrdenReset" type="button">Volver al orden calculado</button>
+  </details>
+  <div id="archMsg" class="muted" style="margin-top:6px"></div>
+</div>
+</div><!-- /modoArchivo -->
+
+<!-- El torneo de la página: la base de jugadores de la tienda y el torneo de
+     este timer. Lo que ven los jugadores sale igual que desde un archivo. -->
+<div id="modoPagina" hidden>
+<div class="card" id="tnCard">
+  <div id="tnCuerpo"><div class="muted">Cargando&hellip;</div></div>
+  <div class="row" style="margin-top:8px"><span id="tnMsg" class="muted"></span><span id="tnPub" class="muted"></span></div>
+</div>
+
+<div class="card" id="bjCard">
+  <div class="row"><h2 class="h2p" style="margin:0;flex:1">Jugadores de la tienda</h2>
+    <span class="muted" id="bjCuenta"></span></div>
+  <div class="muted" style="margin-top:4px">Se inscriben por nombre. Búscalo y toca Inscribir; si no está, escríbelo y agrégalo.
+    Con Enter: inscribe al único que coincida, o agrega el nombre nuevo.</div>
+  <input type="search" id="bjBuscar" placeholder="Busca o escribe un nombre" aria-label="Buscar o agregar jugador" autocomplete="off">
+  <div id="bjLista" style="margin-top:6px"></div>
+  <div id="bjMsg" class="muted" style="margin-top:6px"></div>
+</div>
+</div>
+
+<div class="card" id="premiosCard">
+  <div style="font-size:var(--t3);margin-bottom:6px">Reparto de premios</div>
+  <div class="muted" style="margin-bottom:10px">Cuántos sobres (o lo que repartas) le tocan a cada puesto, con la tabla publicada.</div>
+  <div class="row" style="align-items:flex-end">
+    <label style="margin:0">Para repartir <input type="number" id="prTotal" min="1" max="9999" placeholder="24" inputmode="numeric" style="width:7em"></label>
+    <label style="margin:0">Entre los <select id="prCuantos"></select></label>
+    <label style="margin:0">Reparto <select id="prModo"><option value="escalon">Más para los primeros</option><option value="parejo">Parejo</option></select></label>
+    <button class="sec small" id="prCopiar" disabled>Copiar</button>
+  </div>
+  <div id="prTabla" class="muted" style="margin-top:10px"></div>
+</div>
+
+<div class="card">
+  <div style="font-size:var(--t3);margin-bottom:6px">Puntos por puesto</div>
+  <div class="muted" style="margin-bottom:8px">Puntos que gana cada puesto en la clasificaci&oacute;n mensual.
+    Separa con comas: el primer n&uacute;mero es el 1&ordm; lugar, el segundo el 2&ordm;, y as&iacute;.</div>
+  <div class="row">
+    <input id="ptsList" style="flex:1" placeholder="12, 10, 8, 7, 6, 5, 4, 3">
+    <label style="white-space:nowrap">Resto <input id="ptsRest" type="number" min="0" style="width:64px"></label>
+    <button id="ptsSave" class="small sec">Guardar</button>
+  </div>
+  <div id="ptsMsg" class="muted" style="margin-top:6px"></div>
+</div>
+
+<div class="card">
+  <div style="font-size:var(--t3);margin-bottom:6px">Torneos archivados</div>
+  <div id="histList" class="muted">Cargando&hellip;</div>
+  <div id="recBox">
+  <div class="muted" style="margin-top:12px">¿Archivaste torneos antes del 29-09-2026? Sube sus archivos y el perfil de
+    quien te comparta su ID los va a encontrar, aunque su nombre esté escrito distinto. El archivo no se publica:
+    solo se guardan los ID, que lee tu tienda.</div>
+  <div class="row" style="margin-top:6px;align-items:center">
+    <button class="small sec" id="recBtn">Recuperar IDs desde archivos</button>
+    <input type="file" id="recArchivos" multiple style="display:none">
+    <span id="recMsg" class="muted"></span>
+  </div>
+  <div class="muted" style="margin-top:12px">¿Archivaste torneos con Junior, Senior y Masters antes de que la tabla se
+    dividiera por categoría? Sube sus archivos y cada uno queda con su categoría y su puesto dentro de ella, para el
+    ranking del mes. No hay que borrarlos ni volver a archivarlos.</div>
+  <div class="row" style="margin-top:6px;align-items:center">
+    <button class="small sec" id="recCatBtn">Recuperar categorías desde archivos</button>
+    <input type="file" id="recCatArchivos" multiple style="display:none">
+    <span id="recCatMsg" class="muted"></span>
+  </div>
+  <div class="muted" style="margin-top:12px">¿El ranking junta a jugadores distintos o le suma a alguien torneos que no jugó?
+    Rehaz las claves: se borran las que unen a cada persona entre torneos y se vuelven a calcular desde los ID
+    guardados. No cambia nombres, récords, categorías ni puestos.</div>
+  <div class="row" style="margin-top:6px;align-items:center">
+    <button class="small sec" id="recClavesBtn">Rehacer las claves de jugadores</button>
+    <span id="recClavesMsg" class="muted"></span>
+  </div>
+  </div><!-- /recBox -->
+</div>
+</div>
+
+<!-- ▌BLOQUE 6 · Pestaña Sorteo (marcado) — La ruleta: lista de nombres, girar, ganadores. -->
+<!-- ============================================================
+     SORTEO
+     ============================================================ -->
+<div class="panel hide" id="panelS">
+<div class="card">
+  <div id="sortLayout">
+
+    <div id="sortCol">
+      <label style="margin-top:0">T&iacute;tulo del sorteo
+        <input id="rTitulo" style="width:100%;margin-top:4px" placeholder="Sorteo">
+      </label>
+
+      <label>Participantes <span class="muted">(uno por l&iacute;nea)</span>
+        <textarea id="rItems" placeholder="Ana P&eacute;rez&#10;Beto Soto&#10;Carla D&iacute;az"></textarea>
+      </label>
+      <div class="row" style="margin-top:6px">
+        <button id="rDesdeTorneo" class="small sec">Traer jugadores del torneo</button>
+        <span id="rMsg" class="muted"></span>
+      </div>
+
+      <label class="chk" style="margin-top:12px">
+        <input type="checkbox" id="rQuitar" checked> Sacar al ganador de la rueda despu&eacute;s de girar
+      </label>
+
+      <div class="row" style="margin-top:14px">
+        <button id="rGirar">Girar</button>
+        <button id="rReset" class="sec small">Empezar de nuevo</button>
+        <button id="rBorrar" class="sec small">Quitar de la vista</button>
+      </div>
+
+      <div id="rGanadores"></div>
+    </div>
+
+    <div>
+      <div id="rWrap">
+        <canvas id="rCanvas" width="440" height="440"></canvas>
+        <div id="rPin"></div>
+      </div>
+      <div id="rWinner"></div>
+    </div>
+
+  </div>
+  <div class="muted" style="margin-top:14px">El giro se publica con la hora exacta de partida, as&iacute; que la rueda
+    frena en el mismo nombre y al mismo tiempo en el celular de todos los jugadores.</div>
+</div>
+</div>
+
+<!-- ▌BLOQUE 7 · Pestaña Calendario (marcado) — La rejilla del mes, el formulario de una fecha (con
+     plantillas, inscripciones con lista de mazo y cupos por categoría) y la lista de próximos y pasados. -->
+<!-- ============================================================
+     CALENDARIO
+     ============================================================ -->
+<div class="panel hide" id="panelC">
+
+<div class="card">
+  <div id="calNav">
+    <div id="calMes">&nbsp;</div>
+    <button id="calImg" class="small sec" title="Una imagen del mes para compartir (WhatsApp, Instagram…)">Imagen del mes</button>
+    <button id="calHoy" class="small sec">Hoy</button>
+    <button id="calAnt" class="small sec" title="Mes anterior">&lsaquo;</button>
+    <button id="calSig" class="small sec" title="Mes siguiente">&rsaquo;</button>
+  </div>
+  <div class="calGrid" id="calDows"></div>
+  <div class="calGrid" id="calGrid"></div>
+  <div class="calHint">Haz clic en un d&iacute;a para agendar algo ah&iacute;, o en un evento para editarlo.</div>
+</div>
+
+<div class="card">
+  <div style="font-size:var(--t3);margin-bottom:6px">Fechas de torneo</div>
+  <div class="muted" style="margin-bottom:12px">Lo que agregues acá aparece en la pesta&ntilde;a <b>Agenda</b> de los jugadores,
+    con un bot&oacute;n para meterlo a su Google Calendar de un toque.</div>
+
+  <div id="evForm">
+    <div class="row" style="margin-bottom:10px;align-items:flex-end">
+      <label style="margin:0;flex:1;min-width:180px">Plantilla
+        <select id="evPlantilla" style="display:block;width:100%;margin-top:4px"></select>
+      </label>
+      <button id="evPlGuardar" class="small sec">Guardar como plantilla</button>
+      <button id="evPlBorrar" class="small sec" hidden>Borrar plantilla</button>
+    </div>
+    <label>T&iacute;tulo
+      <input id="evTit" style="width:100%;margin-top:4px" placeholder="Torneo mensual" maxlength="80">
+    </label>
+    <label>Juego <span class="muted">(opcional &mdash; los jugadores filtran la agenda por juego)</span>
+      <input id="evJuego" list="evJuegos" style="width:100%;margin-top:4px" placeholder="El nombre del juego, igual cada vez" maxlength="40">
+      <datalist id="evJuegos"></datalist>
+    </label>
+    <label>Tipo <span class="muted">(opcional &mdash; Liga, Pokeween, Prerelease&hellip;: sale junto al juego)</span>
+      <input id="evTipo" list="evTipos" style="width:100%;margin-top:4px" placeholder="Qué clase de evento es" maxlength="30">
+      <datalist id="evTipos"></datalist>
+    </label>
+
+    <div class="row" style="margin-top:10px;align-items:flex-end">
+      <label style="margin:0">Fecha
+        <input type="date" id="evFecha" style="display:block;margin-top:4px">
+      </label>
+      <label style="margin:0" id="evHoraWrap">Hora de inicio
+        <input type="time" id="evHora" style="display:block;margin-top:4px">
+      </label>
+      <label style="margin:0" id="evDurWrap">Dura
+        <select id="evDur" style="display:block;margin-top:4px">
+          <option value="60">1 hora</option>
+          <option value="120">2 horas</option>
+          <option value="180">3 horas</option>
+          <option value="240" selected>4 horas</option>
+          <option value="300">5 horas</option>
+          <option value="360">6 horas</option>
+          <option value="480">8 horas</option>
+        </select>
+      </label>
+    </div>
+    <label class="chk"><input type="checkbox" id="evTodoDia"> Todo el d&iacute;a (sin hora fija)</label>
+    <label class="chk"><input type="checkbox" id="evInsc"> Recibir inscripciones
+      <span class="muted">(League Challenge, League Cup, eventos con cupo: te da un enlace para compartir)</span></label>
+    <label id="evModoWrap" style="display:none">Qué piden al inscribirse
+      <select id="evModo" style="display:block;margin-top:4px">
+        <option value="lista">Lista de mazo (con sus datos)</option>
+        <option value="id">Solo ID de jugador, nombre completo y correo</option>
+      </select>
+    </label>
+    <label id="evFmtWrap" style="display:none">Formato
+      <select id="evFmt" style="display:block;margin-top:4px">
+        <option value="estandar">Est&aacute;ndar</option>
+        <option value="expandido">Expandido</option>
+      </select>
+    </label>
+    <fieldset id="evCuposWrap" style="display:none;border:0;padding:0;margin:0">
+      <legend class="muted" style="padding:0">Cupos por categor&iacute;a <span>(vac&iacute;o = sin l&iacute;mite)</span></legend>
+      <div style="display:flex;gap:8px;margin-top:4px;flex-wrap:wrap">
+        <label>Junior <input id="evCupo-junior" type="number" min="1" max="200" inputmode="numeric" style="display:block;width:96px;margin-top:4px"></label>
+        <label>Senior <input id="evCupo-senior" type="number" min="1" max="200" inputmode="numeric" style="display:block;width:96px;margin-top:4px"></label>
+        <label>Masters <input id="evCupo-masters" type="number" min="1" max="200" inputmode="numeric" style="display:block;width:96px;margin-top:4px"></label>
+      </div>
+    </fieldset>
+
+    <label>Lugar <span class="muted">(opcional)</span>
+      <input id="evLugar" style="width:100%;margin-top:4px" placeholder="Tienda, direcci&oacute;n" maxlength="120">
+    </label>
+    <label>Detalle <span class="muted">(opcional &mdash; formato, inscripci&oacute;n, premios)</span>
+      <textarea id="evDet" style="width:100%;height:70px;margin-top:4px;resize:vertical"
+                placeholder="Racial Edici&oacute;n. Inscripci&oacute;n 15:30, $3.000. Cupos limitados." maxlength="500"></textarea>
+    </label>
+
+    <div class="row" style="margin-top:12px">
+      <button id="evGuardar">Agregar fecha</button>
+      <button id="evCancelar" class="sec small" style="display:none">Cancelar edici&oacute;n</button>
+      <span id="evMsg" class="muted"></span>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="row" style="align-items:center;margin-bottom:8px">
+    <div style="font-size:var(--t3);flex:1">Pr&oacute;ximos torneos</div>
+    <button id="evIcsTodo" class="small sec">Descargar .ics</button>
+  </div>
+  <div id="evLista" class="muted">Cargando&hellip;</div>
+</div>
+
+<div class="card">
+  <div class="row" style="align-items:center">
+    <div style="font-size:var(--t3);flex:1">Fechas pasadas</div>
+    <button id="evVerPasados" class="small sec">Mostrar</button>
+  </div>
+  <div id="evPasados" style="display:none;margin-top:8px"></div>
+</div>
+</div>
+
+<!-- ▌BLOQUE 8 · Pestaña Tienda (marcado) — Los timers de la tienda (hasta 5), las insignias de la tienda y el
+     código del widget. -->
+<!-- ============================================================
+     TIENDA: su perfil público y quiénes la organizan
+     ============================================================ -->
+<div class="panel hide" id="panelO">
+  <div class="card" id="timersCard">
+    <div class="row"><h2 class="h2p" style="margin:0">Timers de la tienda</h2><span style="flex:1"></span>
+      <span class="muted" id="timersCuenta"></span></div>
+    <div class="muted" style="margin-top:4px">Cada timer tiene su propio reloj, sus mesas y su sorteo: sirven para correr
+      torneos a la vez. Los torneos que archives en cualquiera quedan en el historial de la tienda.</div>
+    <div id="timersLista" style="margin-top:6px"></div>
+    <div class="row" style="margin-top:12px"><button id="timerNuevo" class="sec">Crear otro timer</button>
+      <span id="timersMsg" class="muted"></span></div>
+  </div>
+  <div class="card">
+    <div class="row"><h2 class="h2p" style="margin:0">Perfil público</h2><span style="flex:1"></span>
+      <a id="verPerfil" target="_blank" rel="noopener">Ver el perfil de la tienda</a></div>
+    <div id="verifTxt" class="muted" style="margin-top:6px"></div>
+    <div class="grid2">
+      <label>Nombre<input id="pfNombre" maxlength="60"></label>
+      <label>Comuna<input id="pfComuna" maxlength="60"></label>
+      <label>Dirección del local<input id="pfDireccion" maxlength="120"></label>
+      <label>Horario de torneos<input id="pfHorario" maxlength="120" placeholder="Liga los sábados, 15:00"></label>
+      <label>Instagram<input id="pfInstagram" maxlength="40" placeholder="sin la @"></label>
+      <label>Color de la tienda<input id="pfColor" type="color"></label>
+    </div>
+    <div id="identidadTienda"></div>
+    <div class="row" style="margin-top:12px" id="pfAcciones"><button id="pfGuardar">Guardar perfil</button>
+      <span id="pfMsg" class="muted"></span></div>
+    <div id="pfSoloDueno" class="muted" style="margin-top:10px" hidden>El perfil lo edita el dueño de la tienda.</div>
+  </div>
+  <div class="card" id="rifaCard">
+    <div class="row"><h2 class="h2p" style="margin:0">Rifas</h2><span style="flex:1"></span><span class="muted" id="rfCuenta"></span></div>
+    <div class="muted" style="margin-top:4px">La rifa y sus premios los defines tú, y el cobro lo haces por tu enlace de pago: ByePass
+      no cobra, no recibe dinero ni entrega premios. Quien paga recibe de ti un <b>código de un solo uso</b> que le deja elegir esa
+      cantidad de números en la página de la rifa. Las rifas con venta de números están reguladas en Chile y suelen necesitar
+      autorización: revisa qué te exige la ley antes de venderlos.</div>
+    <label class="chk" style="margin-top:8px"><input type="checkbox" id="rfMostrar"> Mostrar las rifas en el perfil de la tienda</label>
+    <div id="rfLista"></div>
+    <form id="rfForm" hidden novalidate>
+      <div class="grid2">
+        <label>Título<input id="rfTitulo" maxlength="80" placeholder="Rifa pro-viaje al Regional"></label>
+        <label>Cantidad de números (1 a 500)<input id="rfTotal" type="number" min="1" max="500" inputmode="numeric"></label>
+      </div>
+      <label style="display:block;margin-top:8px">Enlace de pago (opcional, https)
+        <input id="rfEnlace" maxlength="300" style="width:100%;font-size:var(--t3);padding:9px 10px;margin-top:4px;box-sizing:border-box" placeholder="https://…"></label>
+      <label style="display:block;margin-top:8px">Premios (uno por línea, hasta 10)
+        <textarea id="rfPremios" placeholder="1.º lugar: caja de sobres&#10;2.º lugar: playmat"></textarea></label>
+      <div class="row" style="margin-top:10px"><button id="rfGuardar" type="submit">Guardar rifa</button>
+        <button id="rfCancelar" class="sec" type="button">Cancelar</button><span id="rfFormMsg" class="muted"></span></div>
+    </form>
+    <div class="row" style="margin-top:12px"><button id="rfNueva" class="sec">Crear una rifa</button><span id="rfMsg" class="muted"></span></div>
+  </div>
+  <div class="card">
+    <h2 class="h2p">Organizadores</h2>
+    <div id="miembrosLista"></div>
+    <div id="invitarCaja" hidden>
+      <div class="muted" style="margin-top:12px">Para sumar a alguien, crea un enlace y mándaselo. Entra con su propia
+        cuenta de ByePass: si se va, lo quitas y nadie tiene que cambiar una clave. Cada enlace sirve una sola vez.</div>
+      <div class="row" style="margin-top:8px"><button id="invitarBtn" class="sec">Crear enlace de invitación</button></div>
+      <div id="invPend"></div>
+    </div>
+    <div class="row" style="margin-top:12px" id="salirCaja" hidden><button id="salirTienda" class="sec">Dejar de organizar esta tienda</button></div>
+    <div id="orgMsg" class="muted" style="margin-top:8px"></div>
+  </div>
+  <div class="card" id="insCard">
+    <h2 class="h2p">Insignias de la tienda</h2>
+    <div class="muted">Se ganan jugando acá y llevan el color y la sigla de la tienda. Las permanentes —Beta tester,
+      Veterano, Campeón…— son de la cuenta de cada jugador y las define ByePass.</div>
+    <div id="insAuto" style="margin-top:10px"></div>
+    <h3 class="h3ins">Insignias de evento</h3>
+    <div class="muted">Para un torneo especial: se entregan solas cuando archivas el torneo de esa fecha.</div>
+    <div id="insEventos" style="margin-top:6px"></div>
+    <div id="insCrear" hidden>
+      <div class="insForm">
+        <div>
+          <label class="campoIns">Nombre<input id="ieNombre" maxlength="40" placeholder="Aniversario 2026"></label>
+          <div class="lbl">Ícono</div>
+          <div class="icos" id="ieIconos" role="group" aria-label="Ícono de la insignia"></div>
+          <label class="campoIns">Fecha del torneo<input id="ieFecha" type="date"></label>
+          <div class="lbl">Se entrega a</div>
+          <label class="opIns"><input type="radio" name="ieModo" value="todos" checked> Todos los que jueguen ese torneo</label>
+          <label class="opIns"><input type="radio" name="ieModo" value="top"> Los primeros
+            <input id="ieTop" type="number" min="1" max="64" value="8" aria-label="Cuántos"></label>
+          <label class="opIns"><input type="radio" name="ieModo" value="elegidos" id="ieModoElegidos"> Jugadores que elijo</label>
+          <div id="ieElegidos" class="muted"></div>
+        </div>
+        <div class="prevIns" id="iePrev"></div>
+      </div>
+      <div class="row" style="margin-top:12px"><button id="ieCrear">Crear insignia</button><span id="ieMsg" class="muted"></span></div>
+    </div>
+  </div>
+
+  <div class="card" id="widgetCard">
+    <h2 class="h2p">Tu agenda y ranking en tu web</h2>
+    <div class="muted" style="margin-bottom:10px">Pega este código en la página de tu tienda (en Wix, WordPress o Shopify: un bloque
+      «HTML» o «Insertar código»). Se actualiza solo con cada fecha y cada torneo que archives.</div>
+    <div class="row" style="align-items:center">
+      <label style="margin:0">Mostrar <select id="wgVer">
+        <option value="">Agenda y ranking</option><option value="agenda">Solo la agenda</option><option value="ranking">Solo el ranking</option>
+      </select></label>
+      <a id="wgPrev" class="btn small sec" target="_blank" rel="noopener">Ver cómo queda</a>
+    </div>
+    <textarea id="wgCodigo" readonly rows="3" style="width:100%;margin-top:10px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:var(--t2)"
+              aria-label="Código para pegar en tu web"></textarea>
+    <div class="row" style="margin-top:6px"><button id="wgCopiar" class="small">Copiar código</button><span id="wgMsg" class="muted"></span></div>
+  </div>
+
+  <div class="card" id="fiCard">
+    <h2 class="h2p">Fondo de las imágenes para compartir</h2>
+    <div class="muted" style="margin-bottom:10px">Cambia el fondo de la tabla final y del calendario del mes: un color, un degradado o una imagen tuya.
+      Con un fondo claro, las letras pasan a oscuras solas. El QR va siempre con fondo blanco para que lo lea el celular.</div>
+    <div class="row" style="align-items:flex-start;gap:16px;flex-wrap:wrap">
+      <div style="flex:1;min-width:240px">
+        <label>Tipo de fondo <select id="fiTipo"><option value="color">Color</option><option value="degradado">Degradado</option><option value="imagen">Imagen</option></select></label>
+        <div class="row" id="fiColores" style="align-items:center;margin-top:8px">
+          <input type="color" id="fiC1" aria-label="Color del fondo" style="width:64px;height:32px;border:1px solid var(--divider);border-radius:var(--radio);background:transparent">
+          <input type="color" id="fiC2" aria-label="Segundo color del degradado" style="width:64px;height:32px;border:1px solid var(--divider);border-radius:var(--radio);background:transparent">
+          <select id="fiDir" aria-label="Dirección del degradado" style="height:32px">
+            <option value="to bottom">&darr; de arriba abajo</option><option value="to right">&rarr; de izquierda a derecha</option>
+            <option value="to bottom right">&searr; en diagonal</option><option value="to top right">&nearr; diagonal hacia arriba</option>
+          </select>
+        </div>
+        <label style="margin-top:8px">Letras <select id="fiLetras"><option value="auto">Automáticas según el fondo</option>
+          <option value="claras">Claras (para fondos oscuros)</option><option value="oscuras">Oscuras (para fondos claros)</option></select></label>
+        <div id="fiImgBox" style="margin-top:8px">
+          <input type="file" accept="image/*" id="fiFile" style="display:block;font-size:var(--t2)">
+          <div class="row" style="align-items:center;margin-top:6px"><span id="fiImgEst" class="muted" style="flex:1"></span><button id="fiQuitar" class="small sec">Quitar imagen</button></div>
+          <label style="margin-top:8px">Oscurecer la imagen para que se lea el texto <input type="range" id="fiOscuro" min="0" max="80" step="5" style="width:100%"></label>
+        </div>
+        <div class="row" style="margin-top:12px;align-items:center"><button id="fiGuardar" class="small">Guardar fondo</button>
+          <button id="fiReset" class="small sec">Volver al original</button><span id="fiMsg" class="muted"></span></div>
+      </div>
+      <div style="flex:0 0 230px;max-width:100%"><div class="muted" style="margin-bottom:4px">Vista previa (el calendario de este mes)</div><div id="fiPrev"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     ESTADÍSTICAS de la tienda: torneos, jugadores y visitas
+     ============================================================ -->
+<div class="panel hide" id="panelM">
+  <div class="card">
+    <div class="row" style="align-items:center">
+      <div class="seg" role="group" aria-label="Canal del chat">
+        <button id="chS" class="on" aria-pressed="true">Staff de la sala<span class="insig" id="badgeS" hidden></span></button>
+        <button id="chT" aria-pressed="false">Entre tiendas<span class="insig" id="badgeT" hidden></span></button>
+      </div>
+      <span style="flex:1"></span>
+      <button class="small sec" id="chAvisos" type="button">Activar avisos</button>
+    </div>
+    <div class="muted" id="chAvisosMsg" style="margin-top:6px"></div>
+  </div>
+
+  <div id="chatStaff">
+    <div class="card">
+      <h2 class="h2p">Staff de la sala</h2>
+      <div class="muted" style="margin-top:4px">Jueces y ayudantes de tu torneo, sin que tengan que ser organizadores de la tienda. Les das un código;
+        ellos piden entrar con su nombre y tú los admites o los rechazas. Los admitidos conversan contigo en el chat de abajo.</div>
+      <div id="stCodigo" style="margin-top:10px"></div>
+      <div id="stPend"></div>
+      <div id="stMiem"></div>
+    </div>
+    <div class="card">
+      <div class="row" style="align-items:center"><h2 class="h2p" style="margin:0;flex:1">Chat de la sala</h2>
+        <button class="small sec" id="stVaciar" type="button">Vaciar el chat</button></div>
+      <div class="chatFeed" id="feedS" role="log" aria-live="polite" aria-label="Mensajes de la sala"></div>
+      <form class="chatForm" id="formS" novalidate>
+        <input id="txtS" maxlength="500" autocomplete="off" placeholder="Escribe un mensaje para el staff" aria-label="Mensaje para el staff">
+        <button type="submit">Enviar</button>
+      </form>
+      <div id="msgS" class="muted"></div>
+    </div>
+  </div>
+
+  <div id="chatTiendas" hidden>
+    <div class="card">
+      <h2 class="h2p">Entre tiendas</h2>
+      <div class="muted" style="margin-top:4px">Un canal común de quienes organizan tiendas en ByePass: para consultarse, coordinar fechas o pedir una mano.
+        Solo lo ven organizadores. Se guardan los últimos mensajes; la administración puede borrar y silenciar.</div>
+      <div class="chatFeed" id="feedT" role="log" aria-live="polite" aria-label="Mensajes entre tiendas"></div>
+      <form class="chatForm" id="formT" novalidate>
+        <input id="txtT" maxlength="500" autocomplete="off" placeholder="Escribe a las otras tiendas" aria-label="Mensaje para las otras tiendas">
+        <button type="submit">Enviar</button>
+      </form>
+      <div id="msgT" class="muted"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ▌BLOQUE 9 · Pestaña Estadísticas (marcado) — Cifras y gráficos de la tienda: torneos, jugadores, visitas.
+     -->
+<div class="panel hide" id="panelE">
+  <div class="card">
+    <div class="row" style="align-items:center"><h2 class="h2p" style="margin:0;flex:1">Estadísticas de la tienda</h2>
+      <button class="small sec" id="etActualizar">Actualizar</button></div>
+    <div class="muted" style="margin-top:4px">Salen de tus torneos archivados y de las visitas a las páginas de tu tienda:
+      su perfil, el timer con las mesas, su muro y el widget en tu web. Las visitas se cuentan sin saber quién visita.</div>
+    <div class="etCifras">
+      <div class="etCifra"><b id="etTorneos">…</b><span>Torneos archivados</span><small id="etTorneosD"></small></div>
+      <div class="etCifra"><b id="etJug">…</b><span>Jugadores distintos</span><small id="etJugD"></small></div>
+      <div class="etCifra"><b id="etProm">…</b><span>Jugadores por torneo</span><small id="etPromD"></small></div>
+      <div class="etCifra"><b id="etVis">…</b><span>Visitas en 30 días</span><small id="etVisD"></small></div>
+    </div>
+  </div>
+  <div class="card"><div class="etTit">Jugadores por torneo <span class="muted">— los últimos 20</span></div><div class="etGraf" id="etGAsis"></div></div>
+  <div class="card"><div class="etTit">Jugadores por mes</div><div class="etGraf" id="etGMes"></div>
+    <div class="etLey"><span><i class="b0"></i>Jugaron ese mes</span><span><i class="b1"></i>Ya habían venido antes</span></div></div>
+  <div class="card"><div class="etTit">Visitas de los últimos 30 días</div><div class="etGraf" id="etGVis"></div>
+    <div class="etLey"><span><i class="b0"></i>Visitas</span><span><i class="b1"></i>Visitantes únicos del día</span></div>
+    <div id="etPaginas" style="margin-top:10px"></div></div>
+  <div class="etDos">
+    <div class="card"><div class="etTit">Qué días vienen más</div><div id="etDias"></div></div>
+    <div class="card"><div class="etTit">Los que más vienen</div><div id="etTop"></div></div>
+  </div>
+  <div class="card" id="etJuegosCard" hidden><div class="etTit">Torneos por juego</div><div id="etJuegos"></div></div>
+</div>
+
+<!-- ============ QR (común a todas las pestañas) ============ -->
+<div class="card center">
+  <div style="font-size:var(--t3);margin-bottom:8px">QR para los jugadores — timer, emparejamientos y sorteo en una sola página</div>
+  <img id="qr" alt="QR">
+  <div class="row" style="margin-top:8px;width:100%;max-width:460px">
+    <input id="shareUrl" readonly style="flex:1"
+           aria-label="Direccion publica de esta sala">
+    <button id="copyBtn" class="small sec">Copiar</button>
+  </div>
+</div>
+</div>
+
+</main>
+
+<div id="menu"></div>
+<input type="file" accept="image/*" id="fBox" style="display:none">
+
+<script src="config.js?v=2efd744ba33e"></script>
+<!-- Todo lo que el panel carga al arrancar se pide a la vez (si no, cada módulo descubre los suyos recién al llegar). Mismas direcciones y versiones que los import. -->
+<link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js">
+<link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js">
+<link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js">
+<link rel="modulepreload" href="./agenda.js?v=2efd744ba33e">
+<link rel="modulepreload" href="./push.js?v=2efd744ba33e">
+<link rel="modulepreload" href="./qr.js?v=2efd744ba33e">
+<link rel="modulepreload" href="./sala.js?v=2efd744ba33e">
+<link rel="modulepreload" href="./mantenimiento.js?v=2efd744ba33e">
+<link rel="modulepreload" href="./presencia.js?v=2efd744ba33e">
+<link rel="modulepreload" href="./graficos.js?v=2efd744ba33e">
+<link rel="modulepreload" href="./insignias.js?v=2efd744ba33e">
+<link rel="modulepreload" href="./clasificacion.js?v=2efd744ba33e">
+<link rel="modulepreload" href="./jugadores.js?v=2efd744ba33e">
+<link rel="modulepreload" href="./importar.js?v=2efd744ba33e">
+<link rel="modulepreload" href="./torneo.js?v=2efd744ba33e">
+<link rel="modulepreload" href="./paleta.js?v=2efd744ba33e">
+<link rel="modulepreload" href="./csv.js?v=2efd744ba33e">
+<link rel="modulepreload" href="./vistapub.js?v=2efd744ba33e">
+<link rel="modulepreload" href="./listamazo.js?v=2efd744ba33e">
+<!-- ▌BLOQUE 10 · Módulos que usa el panel — Imports de Firebase y de los módulos compartidos (sala, agenda,
+     insignias, torneo, paleta, listamazo, etc.). Cada uno lleva su ?v= para que el navegador no mezcle
+     versiones. -->
+<script type="module" src="./admin-panel.js?v=2efd744ba33e"></script>
+</body>
+</html>

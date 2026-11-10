@@ -1,0 +1,252 @@
+/* ▌ÍNDICE de listamazo.js (detalle y números de línea en MAPA-CODIGO.md, en la raíz del proyecto)
+    1. Temporada y división
+    2. Formato de la lista
+    3. Base de Estándar
+    4. Revisar legalidad
+    5. Leer la lista
+    6. Hoja A4 e impresión
+*/
+/* ============================================================
+   listamazo.js — la lista de mazo de las inscripciones
+   ------------------------------------------------------------
+   Versión actual: v=7   (subir el ?v= al tocar este archivo)
+
+   La usan la página de inscripción (el jugador la escribe y ve si está bien)
+   y el panel (la tienda imprime las de todos). Vive acá para que las dos
+   lean la lista igual: si el panel la entendiera distinto que el jugador, la
+   hoja impresa no sería la que el jugador revisó.
+
+   El formato es el que exporta el juego en línea (y cualquier sitio de mazos):
+
+       Pokémon: 12
+       4 Dreepy TWM 128
+       ...
+       Trainer: 36          (o «Entrenador:»)
+       4 Arven SVI 166
+       ...
+       Energy: 12           (o «Energía:»)
+       8 Basic {P} Energy SVE 5
+
+   Se guarda el TEXTO tal cual y se lee al mostrarlo: así lo que el jugador
+   pegó no se pierde aunque la lectura cambie.
+   ============================================================ */
+
+/* ▌BLOQUE 1 · Temporada y división ══════════════════════════════════════════════
+   Junior / Senior / Masters por año de nacimiento. */
+/* La temporada de la hoja oficial. Las divisiones se definen por AÑO de
+   nacimiento y se corren un año con cada temporada: al salir la hoja nueva,
+   cambiar este número y listo. */
+export const TEMPORADA = 2026;
+
+export function division(nacimiento){
+  const a = +String(nacimiento || "").slice(0, 4);
+  if (!a) return "";
+  return a >= TEMPORADA - 12 ? "Junior" : a >= TEMPORADA - 16 ? "Senior" : "Masters";
+}
+
+/* ▌BLOQUE 2 · Formato de la lista ═══════════════════════════════════════════════
+   Reconoce títulos de sección y líneas «4 Iono PAL 185». */
+const SECCION = [
+  ["pokemon",    /^pok[eé]mon/i],
+  ["entrenador", /^(trainers?|entrenador(es)?)/i],
+  ["energia",    /^(energy|energ[ií]as?)/i],
+];
+const TITULO = { pokemon: "Pokémon", entrenador: "Entrenador", energia: "Energía" };
+
+/* «4 Iono PAL 185» → { cant: 4, nombre: "Iono", set: "PAL", num: "185" }.
+   La expansión son 2 a 5 mayúsculas o números con al menos una letra (30C
+   empieza con número; PR-SV lleva guion) y el número puede traer letras (TG05,
+   GG12, SV001). Sin eso, todo es nombre. */
+const LINEA = /^\*?\s*(\d{1,2})x?\s+(.+?)\s*$/;
+const COLA  = /^(.*\S)\s+((?=[A-Z0-9]*[A-Z])[A-Z0-9]{2,5}(?:-[A-Z0-9]{1,4})?)\s+([A-Z]{0,4}\d{1,4}[a-z]?)$/;
+
+/* ▌BLOQUE 3 · Base de Estándar ══════════════════════════════════════════════════
+   Carga cartas-estandar.json (legales y reimpresiones) y lo indexa por código y nombre. */
+/* La base de cartas legales en Estándar: cartas-estandar.json, que arma
+   cartas-estandar.py desde Limitless (expansión, número, nombre, categoría y
+   marca de regulación). Se baja una vez y solo para eventos Estándar. */
+const sinCeros = n => String(n || "").replace(/^0+(?=\d)/, "");
+const normNom = s => String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "")
+  .replace(/[’`´]/g, "'").replace(/\s+/g, " ").trim();
+const BASICA = /\bbasic\b.*energy|energ[ií]a .*b[aá]sica/i;
+export const norm = normNom;
+/* porCodigo: «TWM 130» → { reg, x } (x: B = Pokémon Básico, A = ACE SPEC,
+   R = impresión vieja de un Entrenador que tiene reimpresión legal).
+   Los nombres se guardan con su marca x para revisar por nombre las
+   impresiones viejas. `cartas` queda entera para el buscador, con las
+   reimpresiones (lista «reimp» del JSON) al final. Una impresión vieja de un
+   Entrenador legal vale tanto como la nueva: se juega igual. */
+export function indexar(d){
+  const porCodigo = new Map(), nombres = new Map();
+  d = { ...d, cartas: d.cartas.concat((d.reimp || []).map(c => [...c, "R"])) };
+  d.cartas.forEach(([s, n, nom, , reg, x = ""]) => {
+    porCodigo.set(s + " " + sinCeros(n), { reg, x });
+    const k = normNom(nom); nombres.set(k, (nombres.get(k) || "") + x);
+  });
+  return { porCodigo, nombres, cartas: d.cartas, actualizado: d.actualizado, imagenes: d.imagenes || {} };
+}
+/* La foto de una carta: no se guarda en ningún lado nuestro, el navegador la pide a TCGdex. «imagenes» (lo arma
+   cartas-estandar.py --imagenes) dice, por expansión, su ruta allá y con cuántas cifras van los números («sv/sv01|3»:
+   SVI 5 → …/sv/sv01/005). Sin ruta, con un número raro (TG01) o sin base: "" (la fila se ve sin foto). */
+export function imagenCarta(base, set, num, tam = "low"){
+  const r = base && base.imagenes && base.imagenes[set], n = sinCeros(num);
+  if (!r || !/^[0-9]{1,4}$/.test(n)) return "";
+  const [ruta, cifras] = r.split("|");
+  return "https://assets.tcgdex.net/en/" + ruta + "/" + (cifras ? n.padStart(+cifras, "0") : n) + "/" + tam + ".webp";
+}
+let PEDIDA = null;
+export const cargarEstandar = () => PEDIDA ??= fetch("cartas-estandar.json")
+  .then(r => r.ok ? r.json() : Promise.reject(r.status)).then(indexar)
+  .catch(() => { PEDIDA = null; return null; });   // sin la base, la lista se revisa igual, sin esta parte
+
+/* ▌BLOQUE 4 · Revisar legalidad ═════════════════════════════════════════════════
+   Estado de cada carta, ACE SPEC y Pokémon Básico. */
+/* Con la base (formato Estándar), cada carta se busca por expansión y número:
+   así funciona también con la lista exportada en castellano. Si no calza, por
+   nombre: una carta vieja reimpresa en una expansión legal también se juega
+   (en la hoja va con «NA»). Son avisos y no errores: la última palabra la tiene
+   la tienda, y la base puede ir un paso atrás de la expansión recién salida. */
+/* Cada carta queda con `estado`: "ok", "fuera" (no es legal) o "reimp" (Pokémon
+   con nombre legal pero otra impresión), y con `x` (B / A) cuando se sabe: el
+   registrador lo muestra al lado de cada carta. */
+function revisarLegal(r, base){
+  const fuera = [], reimp = [];
+  let ace = 0, basicos = 0;
+  [...r.pokemon, ...r.entrenador, ...r.energia].forEach(c => {
+    const hit = c.set ? base.porCodigo.get(c.set + " " + sinCeros(c.num)) : undefined;
+    const porNombre = base.nombres.get(normNom(c.nombre));
+    c.x = hit ? hit.x : (porNombre || "").includes("A") ? "A" : (porNombre || "").includes("B") ? "B" : "";
+    if (c.x === "A") ace += c.cant;
+    if (c.x === "B" && r.pokemon.includes(c)) basicos += c.cant;
+    if (hit){ c.reg = hit.reg; c.estado = "ok"; return; }
+    if (BASICA.test(c.nombre)){ c.estado = "ok"; return; }
+    const quien = c.nombre + (c.set ? " " + c.set + " " + c.num : "");
+    if (porNombre === undefined){ c.estado = "fuera"; fuera.push(quien); }
+    else if (r.pokemon.includes(c) && c.set){ c.estado = "reimp"; reimp.push(quien); }
+    else c.estado = "ok";
+  });
+  if (ace > 1) r.avisos.push("Llevas " + ace + " cartas ACE SPEC y solo se permite 1 en el mazo.");
+  if (r.pokemon.length && !basicos) r.avisos.push("No hay ningún Pokémon Básico: el mazo necesita al menos uno.");
+  if (fuera.length) r.avisos.push("No aparecen en la lista de Estándar (al " + base.actualizado + "): " + fuera.join(", ") + ".");
+  if (reimp.length) r.avisos.push("Estos Pokémon no están en Estándar con esa expansión y número: " + reimp.join(", ") +
+    ". Si son reimpresión de una carta legal con el mismo texto, valen (en la hoja, NA en la expansión).");
+}
+
+/* ▌BLOQUE 5 · Leer la lista ═════════════════════════════════════════════════════
+   leerLista: texto → secciones, total y errores/avisos. */
+/* «Pokémon: 12», «Trainer», «Energía:»: devuelve la sección, o null si la línea no es un título. */
+function titulo(l){
+  const s = SECCION.find(([, re]) => re.test(l) && !/^\d/.test(l));
+  return s && /^[^\d]*[:\-–]?\s*\d*\s*$/.test(l) ? s[0] : null;
+}
+
+/* El registrador arma la lista por secciones y la guarda como un solo texto
+   con sus títulos, igual que antes: así la hoja, el CSV y las reglas no cambian. */
+export const componer = c => "Pokémon:\n" + (c.pokemon || "").trim() + "\n\nEntrenador:\n" + (c.entrenador || "").trim() +
+  "\n\nEnergía:\n" + (c.energia || "").trim();
+
+export function leerLista(texto, base = null){
+  const r = { pokemon: [], entrenador: [], energia: [], total: 0, errores: [], avisos: [] };
+  let sec = null;
+  String(texto || "").split(/\r?\n/).forEach(crudo => {
+    const l = crudo.trim();
+    if (!l || /^(total|cartas)/i.test(l)) return;
+    const s = titulo(l);
+    if (s){ sec = s; return; }
+    const m = LINEA.exec(l);
+    if (!m){ r.errores.push("No entendí «" + l + "»: cada línea es cantidad, nombre, expansión y número."); return; }
+    if (!sec){ r.errores.push("Falta el título de la sección (Pokémon:, Entrenador: o Energía:) antes de «" + l + "»."); return; }
+    const c = COLA.exec(m[2]);
+    const carta = { cant: +m[1], nombre: c ? c[1] : m[2], set: c ? c[2] : "", num: c ? c[3] : "" };
+    if (!carta.cant){ r.errores.push("«" + l + "» dice 0 copias."); return; }
+    r[sec].push(carta);
+    r.total += carta.cant;
+  });
+  if (r.total !== 60 && r.total) r.errores.push("El mazo tiene " + r.total + " cartas y tienen que ser 60.");
+  if (!r.total) r.errores.push("La lista está vacía.");
+  const sinSet = r.pokemon.filter(c => !c.set).map(c => c.nombre);
+  if (sinSet.length) r.avisos.push("A los Pokémon les falta la expansión y el número: " + sinSet.join(", ") + ". La hoja oficial los pide.");
+  /* Tope de 4 por nombre, salvo Energía básica. Es aviso y no error: las
+     excepciones (ACE SPEC, cartas con regla propia) no las sabe esta página. */
+  const n = {};
+  [...r.pokemon, ...r.entrenador, ...r.energia.filter(c => !/b[aá]sic/i.test(c.nombre))]
+    .forEach(c => n[c.nombre.toLowerCase()] = (n[c.nombre.toLowerCase()] || 0) + c.cant);
+  const pasadas = Object.keys(n).filter(k => n[k] > 4);
+  if (pasadas.length) r.avisos.push("Más de 4 copias de: " + pasadas.join(", ") + ".");
+  if (base) revisarLegal(r, base);
+  return r;
+}
+
+/* ▌BLOQUE 6 · Hoja A4 e impresión ═══════════════════════════════════════════════
+   hoja(): la lista con el formato de la hoja oficial; imprimir() sin abrir otra ventana. */
+export const cuenta = (r, sec) => r[sec].reduce((s, c) => s + c.cant, 0);
+
+/* esc() es la global de config.js: todas las páginas que importan este módulo la cargan antes. */
+export const ddmmaaaa = iso => /^\d{4}-\d{2}-\d{2}$/.test(iso || "") ? iso.split("-").reverse().join("/") : "";
+
+/* Una hoja A4 con los datos del jugador y las tres tablas, con las mismas
+   columnas que la hoja oficial. La columna Reg. sale de la base de Estándar
+   (el juego en línea no la exporta); sin base, o si la carta no está, en blanco. */
+export function hoja(ins, ev, base = null){
+  const r = leerLista(ins.lista, ev.formato === "expandido" ? null : base), div = division(ins.nacimiento);
+  const filas = (sec, n, conSet) => {
+    const cs = r[sec].map(c => "<tr><td>" + c.cant + "</td><td>" + esc(c.nombre) + "</td>" +
+      (conSet ? "<td>" + esc(c.set) + "</td><td>" + esc(c.num) + "</td><td>" + esc(c.reg || "") + "</td>" : "") + "</tr>");
+    while (cs.length < n) cs.push("<tr><td>&nbsp;</td><td></td>" + (conSet ? "<td></td><td></td><td></td>" : "") + "</tr>");
+    return cs.join("");
+  };
+  const tabla = (sec, n, conSet) => '<table><thead><tr class="t"><th colspan="' + (conSet ? 5 : 2) + '">' + TITULO[sec] +
+    " · " + cuenta(r, sec) + '</th></tr><tr><th class="c">Cant.</th><th>Nombre</th>' +
+    (conSet ? '<th class="s">Expansión</th><th class="s">N.º</th><th class="s">Reg.</th>' : "") + "</tr></thead><tbody>" +
+    filas(sec, n, conSet) + "</tbody></table>";
+  const caja = (x, si) => '<span class="caja">' + (si ? "✕" : "") + "</span>" + x;
+  /* Caben 32 filas entre Pokémon y Entrenador; un mazo con más líneas
+     distintas pasa a letra más chica para no partirse en dos hojas.
+     ponytail: sobre ~45 líneas igual se parte; ahí habría que ir a 2 columnas. */
+  const denso = Math.max(r.pokemon.length, 12) + Math.max(r.entrenador.length, 20) > 32;
+  return '<section class="hojaLista' + (denso ? " denso" : "") + '">' +
+    '<header><div><b>Lista de mazo · Temporada ' + TEMPORADA + "</b><br>" + esc(ev.titulo) + " · " + esc(ddmmaaaa(ev.fecha)) +
+      (ev.tienda ? " · " + esc(ev.tienda) : "") + "</div><div>Formato: " + caja("Estándar", ev.formato !== "expandido") +
+      " " + caja("Expandido", ev.formato === "expandido") + "</div></header>" +
+    '<div class="datos"><div><small>Nombre del jugador</small>' + esc(ins.nombre + " " + ins.apellido) + "</div>" +
+      "<div><small>ID de jugador</small>" + esc(ins.playerId) + "</div>" +
+      "<div><small>Fecha de nacimiento (DD/MM/AAAA)</small>" + esc(ddmmaaaa(ins.nacimiento)) + "</div>" +
+      "<div><small>Nick</small>" + esc(ins.nick) + "</div></div>" +
+    '<div class="div">División: ' + caja("Junior (" + (TEMPORADA - 12) + " o después)", div === "Junior") + " " +
+      caja("Senior (" + (TEMPORADA - 16) + "–" + (TEMPORADA - 13) + ")", div === "Senior") + " " +
+      caja("Masters (" + (TEMPORADA - 17) + " o antes)", div === "Masters") + "</div>" +
+    tabla("pokemon", 12, true) + '<div class="dos">' + tabla("entrenador", 20, false) + "<div>" + tabla("energia", 6, false) +
+      '<table class="adm"><thead><tr class="t"><th>Uso administrativo</th></tr></thead><tbody><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr></tbody></table></div></div>' +
+    "<footer>Total: " + r.total + " cartas · Inscripción " + new Date(ins.actualizado || Date.now()).toLocaleString("es-CL") + "</footer></section>";
+}
+
+/* Imprime una o varias hojas (una por página) sin abrir otra ventana: se
+   montan en la misma página y el CSS de impresión esconde todo lo demás. */
+const CSS = "@media screen{#hojasLista{display:none}}" +
+  "@media print{@page{size:A4;margin:10mm}body>*:not(#hojasLista){display:none!important}" +
+  "html,body{background:#fff!important;color:#000!important}#hojasLista{display:block}}" +
+  "#hojasLista{font:9pt/1.25 Arial,Helvetica,sans-serif;color:#000}" +
+  ".hojaLista{break-after:page;page-break-after:always}.hojaLista:last-child{break-after:auto;page-break-after:auto}" +
+  ".hojaLista header{display:flex;justify-content:space-between;gap:8mm;border-bottom:2px solid #000;padding-bottom:2mm;margin-bottom:3mm;font-size:10pt}" +
+  ".hojaLista .datos{display:grid;grid-template-columns:2fr 1.2fr 1.5fr 1.3fr;gap:3mm;margin-bottom:2mm}" +
+  ".hojaLista .datos div{border-bottom:1px solid #000;padding:1mm 0;font-size:10.5pt;min-height:5mm}" +
+  ".hojaLista small{display:block;font-size:7pt;text-transform:uppercase;letter-spacing:.04em}" +
+  ".hojaLista .div{margin:2mm 0 3mm}.hojaLista .caja{display:inline-block;width:3.2mm;height:3.2mm;border:1px solid #000;margin:0 1mm 0 3mm;vertical-align:-.5mm;text-align:center;line-height:3.2mm;font-size:8pt}" +
+  ".hojaLista table{width:100%;border-collapse:collapse;margin-bottom:3mm}" +
+  ".hojaLista th,.hojaLista td{border:1px solid #777;padding:.7mm 1.5mm;text-align:left;height:4.2mm}" +
+  ".hojaLista tr.t th{background:#000;color:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}" +
+  ".hojaLista th.c,.hojaLista td:first-child{width:10mm;text-align:center}.hojaLista th.s{width:17mm}" +
+  ".hojaLista .dos{display:grid;grid-template-columns:1fr 1fr;gap:4mm;align-items:start}.hojaLista .dos table{margin:0 0 4mm}" +
+  ".hojaLista .adm td{height:7mm}" +
+  ".hojaLista footer{margin-top:3mm;font-size:8pt}" +
+  ".hojaLista.denso table{font-size:7.5pt}.hojaLista.denso th,.hojaLista.denso td{padding:.2mm 1.5mm;height:3.4mm}";
+
+export function imprimir(hojas){
+  let caja = document.getElementById("hojasLista");
+  if (!caja){
+    const st = document.createElement("style"); st.textContent = CSS; document.head.appendChild(st);
+    caja = document.createElement("div"); caja.id = "hojasLista"; document.body.appendChild(caja);
+  }
+  caja.innerHTML = hojas.join("");
+  window.print();
+}

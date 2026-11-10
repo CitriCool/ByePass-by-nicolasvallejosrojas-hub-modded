@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es-CL">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#F8F7F2">
+<meta name="description" content="Tu próxima partida empieza en ByePass. Encuentra tu tienda, sigue tus torneos y conecta con tu comunidad de juegos.">
+<title>ByePass — Tu próxima partida empieza aquí</title>
+<script src="tema.js?v=2efd744ba33e"></script>
+<link rel="stylesheet" href="estilo.css?v=2efd744ba33e">
+<link rel="stylesheet" href="portada.css?v=2efd744ba33e">
+</head>
+<body data-pagina="index">
+<a class="skip" href="#contenido">Saltar al contenido</a>
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="index.html" aria-label="ByePass, inicio"><span class="brand-mark"><svg viewBox="-4 -1.5 44 44" aria-hidden="true"><g fill="var(--bp-logo-fondo,var(--pagina))" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="17" y="9" width="19" height="27" rx="3.6" transform="rotate(-42 18 38)"/><rect x="17" y="9" width="19" height="27" rx="3.6" transform="rotate(-28 18 38)"/><rect x="17" y="9" width="19" height="27" rx="3.6" transform="rotate(-14 18 38)"/><g transform="rotate(4 18 38)"><rect x="17" y="9" width="19" height="27" rx="3.6"/><path fill="none" stroke-width="1.9" stroke-linecap="round" d="M22.6 15.5v13h4.9a3.3 3.3 0 0 0 0-6.6h-4.9h4.2a3.2 3.2 0 0 0 0-6.4z"/></g></g></svg></span><span aria-hidden="true">ye<span>Pass</span></span></a>
+    <nav class="header-nav" aria-label="Principal">
+      <a href="#como-funciona">Cómo funciona</a>
+      <a href="tienda.html?emu=1" data-link="tiendas">Tiendas</a>
+      <a href="#para-tiendas">Para organizadores</a>
+    </nav>
+    <div class="header-actions">
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Cambiar tema"></button>
+      <button class="btn" type="button" data-auth-open="ingreso" aria-haspopup="dialog" aria-controls="authDialog">Ingresar <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+    </div>
+  </div>
+</header>
+<main id="contenido">
+  <section class="hero wrap" aria-labelledby="heroTitle">
+    <div class="hero-copy reveal">
+      <p class="eyebrow">Tu comunidad. Tu tienda. Tu juego.</p>
+      <h1 id="heroTitle">Tu próxima partida <em>empieza aquí.</em></h1>
+      <p class="hero-description">La emoción está en la mesa. Encuentra tu tienda, sigue cada ronda y comparte tu camino con la gente que juega contigo.</p>
+      <div class="hero-actions">
+        <a class="btn primario" href="tienda.html?emu=1" data-link="tiendas">Encuentra tu tienda <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="btn secundario" href="#como-funciona">Conoce ByePass</a>
+      </div>
+      <p class="hero-note"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg> Gratis para jugadores. Sin descargar nada.</p>
+    </div>
+    <figure class="tournament-visual">
+      <span class="visual-star" aria-hidden="true">✳</span>
+      <div class="game-board" aria-hidden="true">
+        <div class="board-heading"><span class="board-brand">Liga de sábado</span><span class="sample-badge">VISTA DE EJEMPLO</span></div>
+        <p class="board-round">Ronda 3 de 5</p>
+        <div class="board-clock" id="demoClock">23:41</div>
+        <div class="board-progress"><span></span></div>
+        <div class="board-table">
+          <div class="board-table-top"><span>MESA 02</span><span>A jugar.</span></div>
+          <div class="players">
+            <div class="player"><span class="player-avatar">NV</span><div><div class="player-name">Nicolás V.</div><div class="player-record">2–0–0 · 6 PTS</div></div></div>
+            <span class="versus">VS</span>
+            <div class="player"><span class="player-avatar">IS</span><div><div class="player-name">Iván S.</div><div class="player-record">1–1–1 · 4 PTS</div></div></div>
+          </div>
+        </div>
+        <div class="board-footer"><span>Una comunidad, muchas partidas.</span><span>ByePass ↗</span></div>
+      </div>
+      <div class="table-notice" aria-hidden="true"><span class="notice-icon"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><div><b>Tu mesa está lista.</b><small>Menos buscar. Más jugar.</small></div></div>
+      <div class="game-sticker" aria-hidden="true">Nos vemos<br>en la mesa.</div>
+      <figcaption>Una muestra de tu próxima ronda.</figcaption>
+    </figure>
+  </section>
+  <div class="benefits wrap" aria-label="Lo que hace más fácil tu torneo">
+    <div class="benefit"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h6v6H3zM15 3h6v6h-6zM3 15h6v6H3zM15 15h3v3h3v3h-6zM21 12h-6v-3M12 3v9H3M12 15v6"/></svg><span><b>Escanea y juega.</b><br>Tu mesa, en tu celular.</span></div>
+    <div class="benefit"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="5" width="12" height="16" rx="2"/><path d="M4 17 2 5a2 2 0 0 1 1.7-2.3L14 1M11 10l2-2 2 2-2 2z"/></svg><span><b>Cada partida cuenta.</b><br>Tu historia, en un lugar.</span></div>
+    <div class="benefit"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3 21v-3a6 6 0 0 1 12 0v3M17 5a3 3 0 0 1 0 6M18 15a5 5 0 0 1 3 5"/></svg><span><b>Mejor en comunidad.</b><br>Conecta con tu tienda.</span></div>
+  </div>
+  <section class="wrap" id="como-funciona" aria-labelledby="featuresTitle">
+    <div class="section-head"><div><p class="eyebrow">Dentro y fuera de la mesa</p><h2 id="featuresTitle">Menos vueltas.<br>Más partidas.</h2></div><p>Desde encontrar a tu rival hasta recordar esa gran victoria. Todo lo que necesitas para disfrutar el torneo.</p></div>
+    <div class="feature-grid">
+      <article class="feature">
+        <div class="feature-scene" aria-hidden="true"><div class="mini-match"><div class="mini-search"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6"/><path d="m15 15 5 5"/></svg> Nicolás</div><div class="mini-meta"><span>MESA 02</span><span>RONDA 3</span></div><div class="mini-names"><span>Nicolás Vallejos</span><span>Iván Soto</span></div></div></div>
+        <div class="feature-body"><span class="feature-num">01 / LLEGA Y JUEGA</span><h3>Tu mesa, sin dar vueltas.</h3><p>Escanea el QR de tu tienda y encuentra tu mesa, tu rival y el reloj de la ronda. Sin cuenta ni descargas.</p></div>
+      </article>
+      <article class="feature">
+        <div class="feature-scene" aria-hidden="true"><div class="mini-profile"><span class="mini-avatar">N</span><div><b>Tu historia como jugador</b><p>12 torneos · 31 victorias · un gran camino</p></div></div></div>
+        <div class="feature-body"><span class="feature-num">02 / CONSTRUYE TU HISTORIA</span><h3>Las buenas partidas se recuerdan.</h3><p>Reúne tus torneos, resultados y mejores puestos en tu muro. Mira cómo vas creciendo, una fecha a la vez.</p></div>
+      </article>
+      <article class="feature">
+        <div class="feature-scene" aria-hidden="true"><div class="mini-live"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><div><b>23:41</b><p>Ronda 3 · Mesa 2 · Todo a mano.</p></div></div></div>
+        <div class="feature-body"><span class="feature-num">03 / NO TE PIERDAS NADA</span><h3>La ronda va contigo.</h3><p>Consulta el reloj y los emparejamientos desde tu celular. Sigue el torneo entre partidas o acompáñalo desde casa.</p></div>
+      </article>
+      <article class="feature">
+        <div class="feature-scene" aria-hidden="true"><div class="mini-ranking"><div class="ranking-row"><b>01</b><span>Camila Ríos</span><span>34 pts</span></div><div class="ranking-row"><b>02</b><span>Tú</span><span>30 pts</span></div><div class="ranking-row"><b>03</b><span>Iván Soto</span><span>27 pts</span></div></div></div>
+        <div class="feature-body"><span class="feature-num">04 / ENCUENTRA TU LUGAR</span><h3>Tu tienda. Tu gente.</h3><p>Sigue su clasificación y descubre la próxima fecha. Tú eliges qué compartir y cómo aparecer en las tablas públicas.</p></div>
+      </article>
+    </div>
+    <article class="rulings-feature oculto" id="pasoRulings"><div><h3>¿Una duda en plena partida?</h3><p>Consulta rulings de Pokémon TCG en español, con el original en inglés al lado.</p></div><a class="btn secundario" href="rulings.html?emu=1" data-link="rulings">Buscar un ruling <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></article>
+  </section>
+  <section class="organizer wrap" id="para-tiendas" aria-labelledby="organizerTitle">
+    <div><p class="eyebrow">Para quienes hacen que todo pase</p><h2 id="organizerTitle">Tú reúne a la comunidad.<br>Nosotros te ayudamos con el torneo.</h2><p>Rondas, emparejamientos y clasificación en un solo lugar. Dale a tu tienda más tiempo para lo que importa: su gente.</p></div>
+    <div class="organizer-actions"><a class="btn" href="cuenta.html?emu=1#tienda" data-link="pedir">Quiero organizar <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a href="invitado.html?emu=1">Probar un timer sin cuenta</a></div>
+  </section>
+</main>
+<footer class="site-footer wrap">
+  <div class="footer-top"><div><a class="brand" href="index.html" aria-label="ByePass, inicio"><span class="brand-mark"><svg viewBox="-4 -1.5 44 44" aria-hidden="true"><g fill="var(--bp-logo-fondo,var(--pagina))" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="17" y="9" width="19" height="27" rx="3.6" transform="rotate(-42 18 38)"/><rect x="17" y="9" width="19" height="27" rx="3.6" transform="rotate(-28 18 38)"/><rect x="17" y="9" width="19" height="27" rx="3.6" transform="rotate(-14 18 38)"/><g transform="rotate(4 18 38)"><rect x="17" y="9" width="19" height="27" rx="3.6"/><path fill="none" stroke-width="1.9" stroke-linecap="round" d="M22.6 15.5v13h4.9a3.3 3.3 0 0 0 0-6.6h-4.9h4.2a3.2 3.2 0 0 0 0-6.4z"/></g></g></svg></span><span aria-hidden="true">ye<span>Pass</span></span></a><p class="footer-tagline">El juego nos reúne.</p></div><nav class="footer-nav" aria-label="Pie de página"><a href="tienda.html?emu=1" data-link="tiendas">Tiendas</a><a href="#para-tiendas">Organizadores</a><a class="oculto" id="pieRulings" href="rulings.html?emu=1" data-link="rulings">Rulings</a><a href="#registro" data-auth-open="registro" aria-haspopup="dialog" aria-controls="authDialog">Crear cuenta</a><a href="cuenta.html?emu=1#sugerencias">Hablemos</a></nav></div>
+  <div class="footer-bottom"><span>© 2026 ByePass · Hecho para la comunidad de juegos.</span><div class="footer-legal"><a href="terminos.html">Términos</a><a href="privacidad.html">Privacidad</a></div></div>
+</footer>
+<dialog class="auth-dialog" id="authDialog" aria-labelledby="authTitle" aria-describedby="authIntro">
+  <div class="auth-shell">
+    <div class="auth-top"><span class="brand" aria-label="ByePass"><span class="brand-mark"><svg viewBox="-4 -1.5 44 44" aria-hidden="true"><g fill="var(--bp-logo-fondo,var(--pagina))" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="17" y="9" width="19" height="27" rx="3.6" transform="rotate(-42 18 38)"/><rect x="17" y="9" width="19" height="27" rx="3.6" transform="rotate(-28 18 38)"/><rect x="17" y="9" width="19" height="27" rx="3.6" transform="rotate(-14 18 38)"/><g transform="rotate(4 18 38)"><rect x="17" y="9" width="19" height="27" rx="3.6"/><path fill="none" stroke-width="1.9" stroke-linecap="round" d="M22.6 15.5v13h4.9a3.3 3.3 0 0 0 0-6.6h-4.9h4.2a3.2 3.2 0 0 0 0-6.4z"/></g></g></svg></span><span aria-hidden="true">ye<span>Pass</span></span></span><button class="close-dialog" id="closeAuth" type="button" aria-label="Cerrar acceso"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
+    <h2 class="auth-title" id="authTitle">Qué bueno verte de nuevo.</h2>
+    <p class="auth-intro" id="authIntro">Entra para seguir tus torneos y conectar con tu tienda.</p>
+    <div class="auth-tabs" role="tablist" aria-label="Acceso a tu cuenta">
+      <button type="button" id="tabIngreso" role="tab" aria-selected="true" aria-controls="panelIngreso" data-auth-tab="ingreso">Iniciar sesión</button>
+      <button type="button" id="tabRegistro" role="tab" aria-selected="false" aria-controls="panelRegistro" tabindex="-1" data-auth-tab="registro">Crear cuenta</button>
+    </div>
+    <section id="panelIngreso" role="tabpanel" aria-labelledby="tabIngreso">
+      <form id="formEntrar" novalidate>
+        <div class="fila"><label for="enCorreo">Correo electrónico</label><input id="enCorreo" type="email" autocomplete="username" inputmode="email" placeholder="tu@correo.cl"></div>
+        <div class="fila"><label for="enClave">Contraseña</label><div class="password-wrap"><input id="enClave" type="password" autocomplete="current-password" placeholder="Tu contraseña"><button class="password-toggle" type="button" data-password="enClave" aria-controls="enClave" aria-label="Mostrar u ocultar la contraseña" aria-pressed="false">Mostrar</button></div></div>
+        <a class="forgot" href="cuenta.html?emu=1#olvide" data-link="olvide">¿Olvidaste tu contraseña?</a>
+        <div class="aviso mal oculto" id="errEntrar" role="alert"></div>
+        <button class="btn primario auth-submit" type="submit" id="btnEntrar" disabled>Iniciar sesión</button>
+      </form>
+      <p class="auth-help">¿Vienes a jugar un torneo?<br>Puedes <a href="tienda.html?emu=1" data-link="tiendas">encontrar tu tienda</a> sin crear una cuenta.</p>
+    </section>
+    <section id="panelRegistro" role="tabpanel" aria-labelledby="tabRegistro" hidden>
+      <p class="betaAviso oculto" id="betaAviso"><span class="med" aria-hidden="true">β</span><span>Los primeros 100 en registrarse se llevan la insignia <b>Beta tester</b>.</span></p>
+      <form id="formRegistro" novalidate>
+          <div class="fila"><label for="rgNombre">Nombre y apellido</label>
+            <input type="text" id="rgNombre" autocomplete="name" maxlength="80"></div>
+          <div class="fila"><label for="rgCorreo">Correo</label>
+            <input type="email" id="rgCorreo" autocomplete="email" inputmode="email"></div>
+          <div class="fila"><label for="rgClave">Contraseña</label>
+            <div>
+              <div class="password-wrap"><input type="password" id="rgClave" autocomplete="new-password" aria-describedby="rgFalta"><button class="password-toggle" type="button" data-password="rgClave" aria-controls="rgClave" aria-label="Mostrar u ocultar la nueva contraseña" aria-pressed="false">Mostrar</button></div>
+              <div class="medidor" id="rgMedidor" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+              <span class="falta" id="rgFalta" aria-live="polite">Mínimo 8 caracteres, con minúscula, mayúscula, número y símbolo.</span>
+            </div></div>
+          <div class="fila" role="group" aria-labelledby="lblNac"><span class="lbl" id="lblNac">Nacimiento</span>
+            <div>
+              <div class="fecha">
+                <select id="rgDia" aria-label="Día"><option value="">Día</option></select>
+                <select id="rgMes" aria-label="Mes"><option value="">Mes</option></select>
+                <select id="rgAnio" aria-label="Año"><option value="">Año</option></select>
+              </div>
+              <details class="porque"><summary>¿Para qué usamos tu fecha de nacimiento?</summary>
+                <p>Para saber en qué categoría de edad juegas. No sale en ninguna parte pública
+                  y lo puedes corregir en tus ajustes.</p></details>
+            </div></div>
+          <!-- Solo con la beta cerrada (beta/activa): sin código, la base no guarda el perfil. -->
+          <div class="fila oculto" id="filaCodigo"><label for="rgCodigo">Código de invitación</label>
+            <div><input type="text" id="rgCodigo" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="24">
+              <span class="falta">Estamos en beta cerrada: el código te lo da tu tienda o quien te invitó.</span></div></div>
+          <div class="enviar">
+            <div class="aviso mal oculto" id="errRegistro" role="alert"></div>
+            <button class="btn primario auth-submit" type="submit" id="btnRegistro" disabled>Crear mi cuenta</button>
+            <p class="despues">Tu ID de jugador lo agregas después, en tus ajustes. Al crear tu cuenta aceptas los
+              <a href="terminos.html">Términos y condiciones</a> y la <a href="privacidad.html">Política de privacidad</a>.</p>
+          </div>
+        </form>
+    </section>
+    <p class="auth-status" id="authStatus" role="status" aria-live="polite"></p>
+  </div>
+</dialog>
+<noscript><p class="wrap">Activa JavaScript para iniciar sesión y consultar los datos de tu tienda.</p></noscript>
+<script src="config.js?v=2efd744ba33e"></script>
+<script src="portada.js?v=2efd744ba33e"></script>
+<script type="module" src="portada-auth.js?v=2efd744ba33e"></script>
+</body>
+</html>

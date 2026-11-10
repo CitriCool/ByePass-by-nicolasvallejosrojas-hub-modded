@@ -1,0 +1,197 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "usuarios": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        ".write": "auth != null && auth.uid === $uid && (root.child('beta/activa').val() !== true || data.exists() || (newData.child('invitacion').isString() && !root.child('beta/codigos').child(newData.child('invitacion').val()).child('quienes').child($uid).exists() && newData.parent().parent().child('beta/codigos').child(newData.child('invitacion').val()).child('quienes').child($uid).exists() && newData.parent().parent().child('beta/codigos').child(newData.child('invitacion').val()).child('usados').val() === root.child('beta/codigos').child(newData.child('invitacion').val()).child('usados').val() + 1 && newData.parent().parent().child('beta/codigos').child(newData.child('invitacion').val()).child('usados').val() <= root.child('beta/codigos').child(newData.child('invitacion').val()).child('max').val()))",
+        ".validate": "newData.hasChildren(['nombre','nacimiento','playerId','publico','creado'])",
+        "nombre": {
+          ".validate": "newData.isString() && newData.val().length >= 3 && newData.val().length <= 80"
+        },
+        "nacimiento": {
+          ".validate": "newData.isString() && newData.val().matches(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/)"
+        },
+        "playerId": {
+          ".validate": "newData.isString() && (newData.val() === '' || newData.val().matches(/^[0-9]{6,8}$/))"
+        },
+        "publico": {
+          ".validate": "newData.isBoolean()"
+        },
+        "creado": {
+          ".validate": "newData.isNumber() && newData.val() <= now + 5000 && (!data.exists() || newData.val() === data.val())"
+        },
+        "invitacion": {
+          ".validate": "newData.isString() && newData.val().matches(/^[A-Z0-9]{8,20}$/)"
+        },
+        "$otro": {
+          ".validate": false
+        }
+      }
+    },
+    "beta": {
+      "activa": {
+        ".read": true
+      },
+      "codigos": {
+        "$codigo": {
+          "max": {
+            ".read": true
+          },
+          "usados": {
+            ".read": true,
+            ".write": "auth != null && root.child('beta/activa').val() === true && newData.isNumber() && newData.val() === data.val() + 1 && newData.val() <= newData.parent().child('max').val() && !root.child('beta/codigos').child($codigo).child('quienes').child(auth.uid).exists() && newData.parent().child('quienes').child(auth.uid).exists() && newData.parent().parent().parent().parent().child('usuarios').child(auth.uid).child('invitacion').val() === $codigo"
+          },
+          "quienes": {
+            "$uid": {
+              ".read": "auth != null && auth.uid === $uid",
+              ".write": "auth != null && auth.uid === $uid && !data.exists() && newData.isNumber() && root.child('beta/activa').val() === true && newData.parent().parent().child('usados').val() === root.child('beta/codigos').child($codigo).child('usados').val() + 1 && newData.parent().parent().child('usados').val() <= newData.parent().parent().child('max').val() && newData.parent().parent().parent().parent().parent().child('usuarios').child($uid).child('invitacion').val() === $codigo"
+            }
+          }
+        }
+      },
+      "testers": {
+        "$uid": {
+          ".read": true,
+          ".write": "auth != null && auth.uid === $uid && !data.exists() && newData.val() === true && newData.parent().parent().parent().child('usuarios').child($uid).child('invitacion').isString() && newData.parent().parent().parent().child('beta/codigos').child(newData.parent().parent().parent().child('usuarios').child($uid).child('invitacion').val()).child('quienes').child($uid).exists()"
+        }
+      }
+    },
+    "admins": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        ".write": false
+      }
+    },
+    "tiendas": {
+      "$t": {
+        ".read": "auth != null && (root.child('admins').child(auth.uid).val() === true || root.child('tiendas').child($t).child('miembros').child(auth.uid).child('rol').val() === 'dueno' || root.child('tiendas').child($t).child('miembros').child(auth.uid).child('rol').val() === 'organizador')",
+        "perfil": {
+          ".read": true,
+          ".write": "auth != null && (root.child('admins').child(auth.uid).val() === true || root.child('tiendas').child($t).child('miembros').child(auth.uid).child('rol').val() === 'dueno' || root.child('tiendas').child($t).child('miembros').child(auth.uid).child('rol').val() === 'organizador')"
+        },
+        "miembros": {
+          ".write": "auth != null && root.child('tiendas').child($t).child('miembros').child(auth.uid).child('rol').val() === 'dueno'",
+          "$uid": {
+            ".read": "auth != null && auth.uid === $uid"
+          }
+        }
+      }
+    },
+    "salas": {
+      "$s": {
+        ".write": "(auth != null && (root.child('admins').child(auth.uid).val() === true || root.child('tiendas').child($s).child('miembros').child(auth.uid).child('rol').val() === 'dueno' || root.child('tiendas').child($s).child('miembros').child(auth.uid).child('rol').val() === 'organizador')) || (root.child('salas').child($s).child('tienda').isString() && (auth != null && (root.child('admins').child(auth.uid).val() === true || root.child('tiendas').child(root.child('salas').child($s).child('tienda').val()).child('miembros').child(auth.uid).child('rol').val() === 'dueno' || root.child('tiendas').child(root.child('salas').child($s).child('tienda').val()).child('miembros').child(auth.uid).child('rol').val() === 'organizador')))",
+        "pairings": {
+          ".read": true
+        },
+        "timer": {
+          ".read": true
+        },
+        "agenda": {
+          ".read": true
+        },
+        "historial": {
+          ".read": true
+        },
+        "historialVer": {
+          ".read": true
+        },
+        "nombre": {
+          ".read": true
+        },
+        "tienda": {
+          ".read": true
+        },
+        "torneo": {
+          ".read": "(auth != null && (root.child('admins').child(auth.uid).val() === true || root.child('tiendas').child($s).child('miembros').child(auth.uid).child('rol').val() === 'dueno' || root.child('tiendas').child($s).child('miembros').child(auth.uid).child('rol').val() === 'organizador')) || (root.child('salas').child($s).child('tienda').isString() && (auth != null && (root.child('admins').child(auth.uid).val() === true || root.child('tiendas').child(root.child('salas').child($s).child('tienda').val()).child('miembros').child(auth.uid).child('rol').val() === 'dueno' || root.child('tiendas').child(root.child('salas').child($s).child('tienda').val()).child('miembros').child(auth.uid).child('rol').val() === 'organizador')))"
+        }
+      }
+    },
+    "organiza": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        ".write": "auth != null && root.child('admins').child(auth.uid).val() === true"
+      }
+    },
+    "idsHistorial": {
+      "$t": {
+        ".read": "auth != null && (root.child('admins').child(auth.uid).val() === true || root.child('tiendas').child($t).child('miembros').child(auth.uid).child('rol').val() === 'dueno' || root.child('tiendas').child($t).child('miembros').child(auth.uid).child('rol').val() === 'organizador')",
+        ".write": "auth != null && (root.child('admins').child(auth.uid).val() === true || root.child('tiendas').child($t).child('miembros').child(auth.uid).child('rol').val() === 'dueno' || root.child('tiendas').child($t).child('miembros').child(auth.uid).child('rol').val() === 'organizador')"
+      }
+    },
+    "jugadores": {
+      "$t": {
+        ".read": "auth != null && (root.child('admins').child(auth.uid).val() === true || root.child('tiendas').child($t).child('miembros').child(auth.uid).child('rol').val() === 'dueno' || root.child('tiendas').child($t).child('miembros').child(auth.uid).child('rol').val() === 'organizador')",
+        ".write": "auth != null && (root.child('admins').child(auth.uid).val() === true || root.child('tiendas').child($t).child('miembros').child(auth.uid).child('rol').val() === 'dueno' || root.child('tiendas').child($t).child('miembros').child(auth.uid).child('rol').val() === 'organizador')"
+      }
+    },
+    "inscripciones": {
+      "$t": {
+        "$e": {
+          ".read": "auth != null && (root.child('admins').child(auth.uid).val() === true || root.child('tiendas').child($t).child('miembros').child(auth.uid).child('rol').val() === 'dueno' || root.child('tiendas').child($t).child('miembros').child(auth.uid).child('rol').val() === 'organizador')",
+          "$uid": {
+            ".read": "auth != null && auth.uid === $uid",
+            ".write": "(auth != null && (root.child('admins').child(auth.uid).val() === true || root.child('tiendas').child($t).child('miembros').child(auth.uid).child('rol').val() === 'dueno' || root.child('tiendas').child($t).child('miembros').child(auth.uid).child('rol').val() === 'organizador')) || (auth != null && auth.uid === $uid && root.child('salas').child($t).child('agenda').child($e).child('inscripcion/abierta').val() === true && root.child('salas').child($t).child('agenda').child($e).child('inicioMs').val() > now && (!newData.exists() || ((!root.child('salas').child($t).child('agenda').child($e).child('inscripcion/cupos').child(newData.child('division').val()).exists() || (newData.parent().parent().parent().parent().child('cupos').child($t).child($e).child(newData.child('division').val()).child(newData.child('cupo').val()).val() === $uid && newData.parent().parent().parent().parent().child('cupos').child($t).child($e).child('quien').child($uid).val() === newData.child('division').val() + '/' + newData.child('cupo').val())))))",
+            ".validate": "newData.hasChildren(['nombre','apellido','correo','playerId','acepta','creado','actualizado']) && newData.child('acepta').val() === true",
+            "nombre": {
+              ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 120"
+            },
+            "lista": {
+              ".validate": "newData.isString() && newData.val().length <= 6000"
+            }
+          }
+        }
+      }
+    },
+    "cupos": {
+      "$t": {
+        "$e": {
+          ".read": "auth != null",
+          ".write": "auth != null && (root.child('admins').child(auth.uid).val() === true || root.child('tiendas').child($t).child('miembros').child(auth.uid).child('rol').val() === 'dueno' || root.child('tiendas').child($t).child('miembros').child(auth.uid).child('rol').val() === 'organizador')",
+          "$d": {
+            "$n": {
+              ".write": "auth != null && ($d === 'junior' || $d === 'senior' || $d === 'masters') && root.child('salas').child($t).child('agenda').child($e).child('inscripcion/abierta').val() === true && root.child('salas').child($t).child('agenda').child($e).child('inicioMs').val() > now && ((data.val() === '' && newData.val() === auth.uid && !root.child('cupos').child($t).child($e).child('quien').child(auth.uid).exists() && newData.parent().parent().parent().parent().parent().child('cupos').child($t).child($e).child('quien').child(auth.uid).val() === $d + '/' + $n && newData.parent().parent().parent().parent().parent().child('inscripciones').child($t).child($e).child(auth.uid).child('division').val() === $d && newData.parent().parent().parent().parent().parent().child('inscripciones').child($t).child($e).child(auth.uid).child('cupo').val() === $n) || (data.val() === auth.uid && newData.val() === '' && !newData.parent().parent().parent().parent().parent().child('cupos').child($t).child($e).child('quien').child(auth.uid).exists() && !newData.parent().parent().parent().parent().parent().child('inscripciones').child($t).child($e).child(auth.uid).exists()) || (data.val() === auth.uid && newData.val() === auth.uid))"
+            }
+          },
+          "quien": {
+            "$uid": {
+              ".write": "auth != null && auth.uid === $uid && root.child('salas').child($t).child('agenda').child($e).child('inscripcion/abierta').val() === true && root.child('salas').child($t).child('agenda').child($e).child('inicioMs').val() > now && ((!newData.exists() && !newData.parent().parent().parent().parent().parent().child('inscripciones').child($t).child($e).child($uid).exists()) || (newData.isString() && newData.parent().parent().parent().parent().parent().child('inscripciones').child($t).child($e).child($uid).child('division').val() + '/' + newData.parent().parent().parent().parent().parent().child('inscripciones').child($t).child($e).child($uid).child('cupo').val() === newData.val()))"
+            }
+          }
+        }
+      }
+    },
+    "sistema": {
+      ".read": true,
+      ".write": "auth != null && root.child('admins').child(auth.uid).val() === true"
+    },
+    "rulingsEd": {
+      ".read": true,
+      ".write": "auth != null && root.child('admins').child(auth.uid).val() === true"
+    },
+    "fcmTokens": {
+      "$t": {
+        "$uid": {
+          ".write": "auth != null && auth.uid === $uid && (auth != null && (root.child('admins').child(auth.uid).val() === true || root.child('tiendas').child($t).child('miembros').child(auth.uid).child('rol').val() === 'dueno' || root.child('tiendas').child($t).child('miembros').child(auth.uid).child('rol').val() === 'organizador'))",
+          ".read": "auth != null && auth.uid === $uid"
+        }
+      }
+    },
+    "notificaciones": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        ".write": false
+      }
+    },
+    "fotos": {
+      "$t": {
+        ".read": true,
+        ".write": "auth != null && (root.child('admins').child(auth.uid).val() === true || root.child('tiendas').child($t).child('miembros').child(auth.uid).child('rol').val() === 'dueno')",
+        "logo": {
+          ".validate": "newData.isString() && newData.val().length <= 180000 && newData.val().matches(/^data:image\\/(png|webp);base64,[A-Za-z0-9+\\/=]+$/)"
+        }
+      }
+    }
+  }
+}

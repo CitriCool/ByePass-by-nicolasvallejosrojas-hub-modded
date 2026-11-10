@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<!-- ▌ÍNDICE de timer-view.html (detalle y números de línea en MAPA-CODIGO.md, en la raíz del proyecto)
+      1. Desvío de televisores viejos
+      2. Estilos de la vista de jugadores
+      3. Marcado: pestañas y páginas
+      4. Módulos que usa la vista
+      5. Arranque
+      6. Pestañas
+      7. Respaldo local
+      8. Conexión
+      9. Reloj
+     10. Diseño e imágenes
+     11. Emparejamientos
+     12. Clasificación mensual
+     13. Ruleta de sorteos
+     14. Agenda de torneos
+     15. Sala de invitado vencida
+-->
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- ▌BLOQUE 1 · Desvío de televisores viejos — Si el navegador no soporta módulos (Smart TV de antes de
+     2021), manda a tele.html. -->
+<script>
+/* Navegadores viejos (Smart TV con Tizen o webOS de antes de 2021): esta
+   vista usa módulos, ?. y ?? y ahí ni arranca. Se van a tele.html, la vista
+   liviana del timer. ?completa=1 fuerza esta página igual. */
+(function(){
+  // Capacidades modernas sin eval: la CSP local bloquea new Function incluso
+  // en navegadores actuales y antes provocaba un desvío incorrecto a tele.html.
+  var viejo = !("noModule" in document.createElement("script"))
+    || typeof String.prototype.replaceAll !== "function";
+  if (viejo && !/[?&]completa=1/.test(location.search)) location.replace("tele.html" + location.search);
+})();
+</script>
+<title>Torneo — Timer y emparejamientos</title>
+<link rel="stylesheet" href="estilo.css?v=2efd744ba33e">
+<!-- ▌BLOQUE 2 · Estilos de la vista de jugadores — Reloj, pestañas, mesas, clasificación, ruleta y agenda.
+     -->
+
+<link rel="stylesheet" href="/paginas/timer-view.css?v=2efd744ba33e">
+<link rel="stylesheet" href="/sistema.css?v=2efd744ba33e">
+</head>
+<body data-pagina="timer-view">
+
+<!-- ============ Fondo y barra de pestañas ============ -->
+<img id="bg" alt="">
+
+<!-- ▌BLOQUE 3 · Marcado: pestañas y páginas — Timer, Emparejamientos, Clasificación, Sorteo y Agenda. -->
+<!-- Barra abajo: cinco pestañas con texto no caben a 375 px, y abajo se
+     llega con el pulgar mientras la otra mano sostiene el mazo. -->
+<nav id="tabbar" class="vidrio" aria-label="Secciones">
+  <button id="tabT" class="on" aria-current="page"><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/></svg><span>Timer</span></button>
+  <button id="tabP"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="7.5" height="7"/><rect x="13.5" y="4" width="7.5" height="7"/><rect x="3" y="13" width="7.5" height="7"/><rect x="13.5" y="13" width="7.5" height="7"/></svg><span>Mesas</span><i id="dot"></i></button>
+  <button id="tabC"><svg viewBox="0 0 24 24"><path d="M9 20V10M15 20V4M3 20h18M21 20v-6"/></svg><span>Ranking</span></button>
+  <button id="tabS"><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 5v16M4 13h16M6.3 7.3l11.4 11.4M17.7 7.3L6.3 18.7"/></svg><span>Sorteo</span></button>
+  <button id="tabA"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span>Agenda</span></button>
+</nav>
+
+<main>
+<!-- ============ Timer ============ -->
+<div class="page isla" id="pTimer" aria-labelledby="h-pTimer">
+  <h1 class="solo-lector" id="h-pTimer">Tiempo de la ronda</h1>
+  <!-- Misma cabecera que la pantalla de la tienda, sin los botones de control
+       ni el rótulo de "solo organizador", que ahí no significan nada. -->
+  <div id="cabecera">
+    <img id="logo" alt="">
+    <span id="marcaBP" aria-label="ByePass">Bye<b>Pass</b></span>
+    <div id="cabtxt">
+      <div id="ctitulo"></div>
+      <div id="csub"></div>
+    </div>
+  </div>
+  <div id="names"><span id="n1"></span><span class="vs">vs</span><span id="n2"></span></div>
+  <!-- Rótulo y reloj van juntos en un grupo, y ese grupo es lo que se centra:
+       si se centrara solo el reloj, el rótulo lo empujaría hacia abajo. -->
+  <!-- El reloj se lee visualmente; para lector de pantalla se anuncia solo
+       en hitos desde #avisoReloj, porque narrar cada segundo sería inusable. -->
+  <div id="relojGrupo" aria-hidden="true">
+    <div id="pronda"></div>
+    <div id="clock" class="reloj">--:--</div>
+    <div id="extras" hidden></div>
+    <div id="llamada" hidden></div>
+  </div>
+  <div id="tstatus" role="status" aria-live="polite">Conectando…</div>
+  <p id="avisoReloj" class="solo-lectores" role="status" aria-live="polite"></p>
+</div>
+
+<!-- ============ Emparejamientos ============ -->
+<div class="page hide" id="pPair" aria-labelledby="tname">
+  <h1 id="tname">Emparejamientos</h1>
+  <div id="tsub"></div>
+  <a class="aPerfil" id="aPerfil" href="tienda.html">Ver el perfil de la tienda</a>
+  <div id="banner" class="banner" role="status" aria-live="polite" style="display:none"></div>
+  <input id="q" placeholder="Escribe tu nombre">
+  <details class="esperaCaja"><summary>Jugar mientras espero</summary><section id="espera"></section></details>
+  <div id="rounds"></div>
+  <div id="list" aria-live="polite" aria-relevant="additions text"></div>
+  <div id="pstatus">Conectando…</div>
+  <!-- La puerta a la cuenta desde el torneo. Va acá, donde el jugador acaba de
+       buscar su nombre, y no en el reloj, que tiene un solo trabajo. -->
+  <p class="aCuenta">Con tu cuenta guardas tus resultados y ganas insignias. <a id="aCuentaTorneo" href="cuenta.html">Crea tu cuenta o entra</a></p>
+</div>
+
+<!-- ============ Clasificación mensual ============ -->
+<div class="page hide" id="pClas" aria-labelledby="hClas">
+  <h1 id="hClas">Ranking</h1>
+  <div class="row" style="justify-content:center;margin:6px 0 10px">
+    <label for="mes" class="solo-lectores">Mes de la clasificación</label>
+    <select id="mes"></select>
+    <label for="vistaClas" class="solo-lectores">Qué tabla ver</label>
+    <select id="vistaClas" hidden><option value="cat">Por categoría</option><option value="general">General</option></select>
+  </div>
+  <div id="clasBox"></div>
+  <div id="cstatus">Conectando&hellip;</div>
+</div>
+
+<!-- ============ Sorteo ============ -->
+<div class="page hide" id="pSort" aria-labelledby="rTitle">
+  <h1 id="rTitle">Sorteo</h1>
+  <div id="rVacio" class="vacio" style="display:none">
+    <b>Todav&iacute;a no hay sorteo</b>
+    <div>Cuando el organizador lo prepare, la rueda aparece ac&aacute; sola.</div>
+  </div>
+  <div id="rWrap">
+    <canvas id="rCanvas" width="440" height="440"></canvas>
+    <div id="rPin"></div>
+  </div>
+  <div id="rWinner"></div>
+  <div id="rList"></div>
+  <div id="sstatus"></div>
+</div>
+
+<!-- ============ Agenda de torneos ============ -->
+<div class="page hide" id="pAgenda" aria-labelledby="aTitle">
+  <h1 id="aTitle">Pr&oacute;ximos torneos</h1>
+
+  <div id="calCaja" style="display:none;margin-bottom:20px">
+    <div id="calNav">
+      <div id="calMes">&nbsp;</div>
+      <button id="calHoy">Hoy</button>
+      <button id="calAnt" aria-label="Mes anterior"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <button id="calSig" aria-label="Mes siguiente"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+    </div>
+    <div class="calGrid" id="calDows"></div>
+    <div class="calGrid" id="calGrid"></div>
+  </div>
+
+  <div id="aVacio" class="vacio" style="display:none">
+    <b>No hay fechas publicadas</b>
+    <div>Cuando el organizador agende el pr&oacute;ximo torneo, aparece ac&aacute;.</div>
+  </div>
+  <div id="aLista"></div>
+  <div id="astatus">Cargando&hellip;</div>
+</div>
+
+</main>
+
+<script src="config.js?v=2efd744ba33e"></script>
+<!-- ▌BLOQUE 4 · Módulos que usa la vista — Imports de Firebase y módulos compartidos. -->
+<script type="module">
+import { montarEspera } from "./espera.js";
+import { aplicarMarca } from "./identidad.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, connectAuthEmulator, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { vigilar } from "./mantenimiento.js?v=2efd744ba33e";
+import { getDatabase, connectDatabaseEmulator, ref, onValue, get } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+import { estaVigente, urlGoogle, bajarIcs, fechaLegible, cuantoFalta, ordenar,
+         MES_LARGO, DOWS, mesDesplazado, celdasDelMes, porFecha, mesDeInteres } from "./agenda.js?v=2efd744ba33e";
+import { SALA, BASE, TIENDA, BASE_T, INVITADO, SIN_TIENDA, numTimer } from "./sala.js?v=2efd744ba33e";
+import { estoyEnLinea } from "./presencia.js?v=2efd744ba33e";
+
+/* Sin ?sala= no hay qué mostrar (antes abría «principal», que no era de
+   nadie): se va al directorio, a elegir la tienda. */
+if (!new URLSearchParams(location.search).get("sala"))
+  location.replace("tienda.html" + (typeof EMULADOR !== "undefined" && EMULADOR ? "?emu=1" : ""));
+
+/* El enlace a la cuenta lleva ?desde=torneo: con eso, la entrada muestra la
+   ronda en vivo arriba del formulario en vez de la pantalla de siempre. La
+   sala y el emulador viajan con él, o la cuenta abriría otra tienda o la base
+   real. */
+{
+  const p = new URLSearchParams({ desde: "torneo" });
+  if (SALA !== "principal") p.set("sala", SALA);
+  if (typeof EMULADOR !== "undefined" && EMULADOR) p.set("emu", "1");
+  document.getElementById("aCuentaTorneo").href = "cuenta.html?" + p + "#crear";
+  /* El perfil de la tienda: su clasificación, sus torneos y a quién seguir. */
+  const q = new URLSearchParams({ sala: TIENDA });
+  if (typeof EMULADOR !== "undefined" && EMULADOR) q.set("emu", "1");
+  document.getElementById("aPerfil").href = "tienda.html?" + q;
+}
+import { resolver as palResolver, esOriginal as palEsOriginal, aplicar as palAplicarEn,
+         alDia } from "./paleta.js?v=2efd744ba33e";
+import { vistaDe } from "./vistapub.js?v=2efd744ba33e";
+import { nombreMes, mesDe, mesesDe, clasificarPorCategoria, rankingDelMes, VISTA_RANKING, PUNTOS_DEF, deTimer, porCategoria } from "./clasificacion.js?v=2efd744ba33e";
+
+/* ▌BLOQUE 5 · Arranque ══════════════════════════════════════════════════════════
+   Conecta Firebase en modo lectura y calcula la hora del servidor. */
+/* =========================================================
+   1. Arranque: Firebase, sala y utilidades
+   ========================================================= */
+const app = initializeApp(FIREBASE_CONFIG);
+const db  = getDatabase(app);
+
+/* Esta pantalla solo lee. Auth está solo para la pantalla de mantenimiento:
+   saber si quien mira administra el sitio. Igual tiene que apuntar al emulador
+   o estaría mostrando los datos reales mientras el panel escribe en los falsos. */
+const auth = getAuth(app);
+if (typeof EMULADOR !== "undefined" && EMULADOR){
+  connectAuthEmulator(auth, "http://" + EMULADOR.host + ":" + EMULADOR.auth, { disableWarnings: true });
+  connectDatabaseEmulator(db, EMULADOR.host, EMULADOR.db);
+}
+vigilar(db, auth, { aviso: false });   // la pantalla de mantenimiento (sin el aviso para todos: se proyecta)
+estoyEnLinea(db, "timer", TIENDA);
+
+const $ = id => document.getElementById(id);
+
+
+
+
+/* El empate vale media victoria, igual que en el sistema oficial */
+let VISTA_JUG = vistaDe();                            // lo que la tienda deja ver (salas/<tienda>/vistaJugadores): por defecto, sin el %
+const pctTxt = r => {
+  if (!VISTA_JUG.pct) return "";
+  const j = (r.w||0) + (r.l||0) + (r.t||0);
+  return j ? " · " + Math.round(((r.w||0) + (r.t||0)/2) / j * 100) + "%" : "";
+};
+/* El récord y los puntos, solo si se publicaron (la tienda elige qué mostrar: vistapub.js). */
+const recTxt = r => r && r.w != null ? r.w + "-" + r.l + "-" + r.t : "";
+
+let offset = 0;                                   // diferencia con la hora del servidor
+const ahora = () => Date.now() + offset;
+onValue(ref(db, ".info/serverTimeOffset"), s => { offset = s.val() || 0; });
+
+/* ▌BLOQUE 6 · Pestañas ══════════════════════════════════════════════════════════
+   Muestra una pestaña y suscribe sus datos solo cuando se abre. */
+/* =========================================================
+   2. Navegación entre pestañas
+   ========================================================= */
+/* Una entrada por pestaña: página, botón y qué hay que despertar al abrirla.
+   Las pestañas pesadas (clasificación, agenda) recién se suscriben a Firebase
+   cuando alguien las abre, así entrar al timer no descarga nada de más. */
+let tab = "timer";
+const PAGINAS = {
+  timer:  ["pTimer",  "tabT", null],
+  pair:   ["pPair",   "tabP", () => { $("dot").style.visibility = "hidden"; seenStamp = P?.updatedAt || 0; }],
+  clas:   ["pClas",   "tabC", () => suscribirHistorial()],
+  sorteo: ["pSort",   "tabS", () => pintarRuleta()],
+  agenda: ["pAgenda", "tabA", () => suscribirAgenda()]
+};
+function show(t){
+  tab = t;
+  for (const [k, [pagina, boton]] of Object.entries(PAGINAS)){
+    $(pagina).classList.toggle("hide", k !== t);
+    $(boton).classList.toggle("on", k === t);
+    if (k === t) $(boton).setAttribute("aria-current", "page");
+    else $(boton).removeAttribute("aria-current");
+  }
+  document.querySelectorAll(".imgbox").forEach(e => e.style.display = t==="timer" ? "block" : "none");
+  $("bg").style.opacity = t==="timer" ? "1" : "0";
+  // Con cinco pestañas la barra ya no cabe entera en un celular angosto: la
+  // que se abre se trae a la vista sola, para que no quede a medias en el borde.
+  $(PAGINAS[t][1]).scrollIntoView({ behavior:"smooth", block:"nearest", inline:"nearest" });
+  PAGINAS[t][2]?.();
+}
+Object.entries(PAGINAS).forEach(([k, [, boton]]) => $(boton).onclick = () => show(k));
+
+/* ▌BLOQUE 7 · Respaldo local ════════════════════════════════════════════════════
+   Guarda en el teléfono el estado del reloj y el diseño: sin señal sigue marcando bien. */
+/* =========================================================
+   3. Respaldo local
+   El reloj y el diseño quedan guardados en el propio teléfono. Si el jugador
+   recarga la página sin señal, la vista igual aparece y el reloj sigue
+   correcto, porque lo que guardamos es la HORA DE TÉRMINO, no los segundos
+   que faltaban.
+   ========================================================= */
+let S = null, TH = null;
+
+const RK = "tv-back-" + SALA;
+try {
+  const b = JSON.parse(localStorage.getItem(RK) || "null");
+  if (b){ S = b.S || null; TH = b.TH || null; }
+} catch(e){ console.warn("No se pudo completar una operación opcional", e); }
+
+let backTimer = null, backupWarned = false;
+function guardarRespaldo(){
+  clearTimeout(backTimer);
+  backTimer = setTimeout(() => {
+    try { localStorage.setItem(RK, JSON.stringify({ S, TH })); }
+    catch(e){ if (!backupWarned){ backupWarned = true; console.warn("Respaldo local no disponible:", e); } }
+  }, 500);
+}
+
+/* ▌BLOQUE 8 · Conexión ══════════════════════════════════════════════════════════
+   Indicador de conectado / sin señal. */
+/* =========================================================
+   4. Conexión
+   ========================================================= */
+onValue(ref(db, ".info/connected"), s => {
+  const online = s.val() === true;
+  $("tstatus").textContent = online ? (S ? "" : "Esperando al organizador…")
+                                    : (S ? "Sin conexión — mostrando lo último recibido" : "Sin conexión…");
+});
+
+/* Soltar la conexión en segundo plano: lo hace presencia.js. El reloj sigue
+   andando solo porque conoce la hora exacta de término. */
+
+/* ▌BLOQUE 9 · Reloj ═════════════════════════════════════════════════════════════
+   Escucha timer/state y timer/extras y dibuja el reloj contra la hora del servidor; anuncios para
+   lector de pantalla y pantalla encendida. */
+/* =========================================================
+   5. Reloj
+   Llega por su propio canal (paquete diminuto = respuesta inmediata).
+   ========================================================= */
+onValue(ref(db, BASE + "/timer/state"), snap => {
+  S = snap.val();
+  $("tstatus").textContent = S ? "" : "Esperando al organizador…";
+  guardarRespaldo();
+  dibujarReloj();
+}, () => $("tstatus").textContent = "Sin conexión — reintentando…");
+
+function fmt(sec){
+  const n = sec < 0, a = Math.abs(sec);
+  return (n?"-":"") + String(Math.floor(a/60)).padStart(2,"0") + ":" + String(a%60).padStart(2,"0");
+}
+
+/* Llamada a mesas: la hora (del servidor) en que empezó; sin valor, no hay llamada. */
+let LLAMADA = null, llamadaTxt = "";
+onValue(ref(db, BASE + "/timer/llamada"), s => { LLAMADA = typeof s.val() === "number" ? s.val() : null; dibujarLlamada(); }, () => {});
+function dibujarLlamada(){
+  const sec = LLAMADA === null ? null : Math.max(0, Math.floor((ahora() - LLAMADA) / 1000));
+  const h = sec === null ? "" : "Llamada a mesas<b>" + fmt(sec) + "</b>";
+  if (h === llamadaTxt) return;
+  llamadaTxt = h; $("llamada").innerHTML = h; $("llamada").hidden = !h;
+}
+setInterval(dibujarLlamada, 1000);
+
+/* Tiempo extra por mesa: minutos que el juez le sumó a una mesa sola. */
+let EXTRAS = {}, extrasTxt = "";
+onValue(ref(db, BASE + "/timer/extras"), s => { EXTRAS = s.val() || {}; dibujarReloj(); }, () => {});
+function dibujarExtras(sec){
+  const ms = Object.keys(EXTRAS).filter(m => EXTRAS[m] > 0).sort((a, b) => a - b);
+  const h = ms.map(m => { const resto = sec + EXTRAS[m] * 60;
+    return '<span class="extra' + (sec <= 0 && resto <= 0 ? " fin" : "") + '">Mesa ' + esc(m) + "<b>" +
+      (sec > 0 ? "+" + EXTRAS[m] + " min" : resto > 0 ? fmt(resto) : "tiempo") + "</b></span>"; }).join("");
+  if (h === extrasTxt) return;   // se llama 4 veces por segundo: tocar el DOM solo si cambió
+  extrasTxt = h; $("extras").innerHTML = h; $("extras").hidden = !h;
+}
+
+function dibujarReloj(){
+  if (!S) return;
+  const sec = (S.paused || !S.endTime) ? Math.round(S.remaining ?? 0)
+                                       : Math.round((S.endTime - ahora())/1000);
+  dibujarExtras(sec);
+  const c = $("clock");
+  c.textContent = fmt(sec);
+  c.style.color = sec < 0 ? (alDia(S.negativeColor)||"#FF7A6B") : (alDia(S.timerColor)||"#F8F7F2");
+  const porVencer = !S.paused && sec <= 10 && sec >= 0;
+  c.classList.toggle("porvencer", porVencer);
+  c.classList.toggle("pulsing", porVencer);
+  c.classList.toggle("pausado", !!S.paused);
+  if (S.timerSize) c.style.fontSize = "min(" + S.timerSize + "px, 26vw)";
+}
+
+/* Antes esto giraba con requestAnimationFrame y ahí estaba el bug del reloj
+   detenido: basta que el navegador congele los frames al bloquear la pantalla
+   (o que se escape una excepción) para que el bucle no se vuelva a pedir nunca
+   más y el número quede clavado. Un intervalo no se muere, y como el reloj
+   muestra segundos enteros nadie nota la diferencia. */
+setInterval(() => { try { dibujarReloj(); } catch(e){ console.warn("No se pudo completar una operación opcional", e); } }, 250);
+
+/* Anuncio para lector de pantalla. Solo en hitos: narrar cada segundo dejaría
+   la app inusable. Se dispara al cruzar cada umbral, una sola vez. */
+const HITOS = [600, 300, 60, 10, 0];
+let ultimoHito = null;
+setInterval(() => {
+  if (!S || S.paused || !S.endTime) return;
+  const s = Math.round((S.endTime - ahora())/1000);
+  const hito = HITOS.find(h => s <= h && s > h - 2);
+  if (hito == null || hito === ultimoHito) return;
+  ultimoHito = hito;
+  $("avisoReloj").textContent = hito === 0 ? "Tiempo cumplido."
+    : hito === 10 ? "Quedan diez segundos."
+    : hito === 60 ? "Queda un minuto."
+    : "Quedan " + (hito/60) + " minutos.";
+}, 1000);
+
+// Al volver a primer plano se redibuja de inmediato, sin esperar el intervalo
+["visibilitychange","pageshow","focus","online"].forEach(ev =>
+  window.addEventListener(ev, () => { try { dibujarReloj(); } catch(e){ console.warn("No se pudo completar una operación opcional", e); } }));
+
+/* Mantener la pantalla encendida mientras corre la ronda */
+const pedirWakeLock = () => { try { navigator.wakeLock?.request("screen").catch(e => console.warn("Operación secundaria sin confirmar", e)); } catch(e){ console.warn("No se pudo completar una operación opcional", e); } };
+pedirWakeLock();
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible") pedirWakeLock();
+});
+
+/* ▌BLOQUE 10 · Diseño e imágenes ════════════════════════════════════════════════
+   Aplica el tema publicado (colores, fondos, logo, cajas) y baja las imágenes solo cuando cambia
+   mediaVersion. */
+/* =========================================================
+   6. Diseño e imágenes
+   "theme" es liviano y llega en vivo con cada cambio. Las imágenes son
+   pesadas: se guardan en el propio celular y solo se vuelven a descargar si
+   el organizador cambia alguna de verdad.
+   ========================================================= */
+const CK = "tv-media-" + SALA;
+let MED = null, medVer = null;
+
+try {
+  const c = JSON.parse(localStorage.getItem(CK) || "null");
+  if (c && c.m){ MED = c.m; medVer = c.v; }
+} catch(e){ console.warn("No se pudo completar una operación opcional", e); }
+
+onValue(ref(db, BASE + "/timer/theme"), snap => { TH = snap.val(); applyTheme(); guardarRespaldo(); });
+
+async function bajarMedia(v){
+  try {
+    const s = await get(ref(db, BASE + "/timer/media"));
+    MED = s.val(); medVer = v; applyTheme();
+    try { localStorage.setItem(CK, JSON.stringify({ v, m: MED })); } catch(e){ console.warn("No se pudo completar una operación opcional", e); }
+  } catch(e){ console.warn("No se pudo completar una operación opcional", e); }
+}
+onValue(ref(db, BASE + "/timer/mediaVersion"), s => {
+  const v = s.val();
+  if (v == null) return;                          // panel antiguo: las imágenes venían dentro del theme
+  if (v === medVer && MED){ applyTheme(); return; }
+  bajarMedia(v);
+});
+
+const vistaActual = () => (window.innerHeight >= window.innerWidth) ? "mobile" : "desktop";
+
+function applyTheme(){
+  if (!TH) return;
+
+  /* La paleta del organizador viaja dentro del tema. Sin ella (salas viejas,
+     o antes de que llegue el primer paquete) se borran los tokens y manda
+     estilo.css, que es la paleta disenada. */
+  palAplicarEn(document.documentElement,
+    (TH.paleta && !palEsOriginal(TH.paleta)) ? palResolver(TH.paleta) : null);
+
+  const modo = vistaActual();
+  const V = TH[modo] || TH.desktop || TH;         // compatible con el formato anterior
+  const M = (MED && (MED[modo] || MED.desktop)) || {};
+  /* Sin tienda (invitado o timer personal): el logo es el de ByePass. El
+     invitado, además, sin imagen de fondo ni cajas. */
+  const logoSrc = SIN_TIENDA ? "" : (MED && MED.logo) || TH.logo || "";
+  const bgSrc   = INVITADO ? "" : M.bgImage || V.bgImage || "";
+  const srcDe   = id => {
+    const b = (M.boxes || []).find(x => x.id === id);
+    return b ? b.src : null;
+  };
+  const DIM = modo === "mobile" ? {w:620,h:1100} : {w:1180,h:660};
+
+  if (V.bgType === "image" && bgSrc){
+    $("bg").src = bgSrc; $("bg").style.display = "block";
+    $("bg").style.filter = `opacity(${V.bgOpacity??100}%) brightness(${V.bgBrightness??100}%)`;
+    document.body.style.background = "var(--lienzo)";
+  } else {
+    $("bg").style.display = "none";
+    document.body.style.background = V.bgType === "gradient"
+      ? `linear-gradient(${V.bgDir||"to right"}, ${alDia(V.bgColor1)||"#1B2C49"}, ${alDia(V.bgColor2)||"#121E30"})`
+      : (alDia(V.bgColor1) || "#1B2C49");
+  }
+
+  if (logoSrc){ $("logo").src = logoSrc; $("logo").style.display = "block"; }
+  else $("logo").style.display = "none";
+  // Acá NO va pintarCabecera(): applyTheme corre al evaluar el módulo, antes de
+  // que se declare P, y leerlo ahí revienta por zona muerta. El logo lo pone el
+  // tema y el texto lo ponen los emparejamientos; son independientes.
+  $("names").style.display = "none";
+
+  document.querySelectorAll(".imgbox").forEach(e => e.remove());
+  (INVITADO ? [] : V.boxes || V.imgBoxes || []).forEach(box => {
+    const src = box.src || srcDe(box.id);
+    if (!src) return;
+    const d = document.createElement("div"); d.className = "imgbox";
+    d.style.left   = (box.x / DIM.w * 100) + "vw";
+    d.style.top    = (box.y / DIM.h * 100) + "vh";
+    d.style.width  = (box.w / DIM.w * 100) + "vw";
+    d.style.height = (box.h / DIM.h * 100) + "vh";
+    d.style.display = tab === "timer" ? "block" : "none";
+    const im = document.createElement("img"); im.src = src;
+    if (box.flip) im.style.transform = "scaleX(-1)";
+    d.appendChild(im); document.body.appendChild(d);
+  });
+}
+window.addEventListener("resize", () => { if (TH) applyTheme(); });
+window.addEventListener("orientationchange", () => setTimeout(() => { if (TH) applyTheme(); }, 300));
+
+/* Sala de invitado: la marca de ByePass arriba, sin Ranking ni Agenda (son de
+   una tienda), y el aviso cuando vence: al pasar la hora las reglas cortan la
+   lectura, y también si la sala ya se borró. */
+if (SIN_TIENDA){
+  $("marcaBP").style.display = "block";
+  ["tabC", "tabA"].forEach(id => $(id).style.display = "none");   // la barra les pone display: hidden no alcanza
+}
+if (INVITADO){
+  const vencida = () => { $("vencida").style.display = "flex"; };
+  onValue(ref(db, BASE + "/vence"), s => {
+    const v = s.val();
+    if (!(v > ahora())) return vencida();
+    setTimeout(vencida, Math.min(v - ahora(), 2147483647));
+  }, vencida);
+}
+
+// Si había respaldo, la vista aparece de inmediato sin esperar a la red
+if (TH) applyTheme();
+dibujarReloj();
+
+/* ▌BLOQUE 11 · Emparejamientos ══════════════════════════════════════════════════
+   Escucha pairings: rondas, buscador de nombre, mesas con resultado y tabla. */
+/* =========================================================
+   7. Emparejamientos
+   ========================================================= */
+let P = null, sel = null, showStand = false, seenStamp = 0, first = true;
+
+function limpiarPair(msg){
+  $("tname").textContent = "Mesas";
+  $("tsub").textContent  = "";
+  $("banner").style.display = "none";
+  $("rounds").innerHTML = "";
+  $("list").innerHTML   = "";
+  $("q").value = "";
+  sel = null; showStand = false; first = true;
+  $("dot").style.visibility = "hidden";
+  $("pstatus").textContent = msg;
+}
+
+async function memoriaApi(accion,extra={}){
+  const u=auth.currentUser;if(!u||u.isAnonymous)throw Error('Ingresa con tu cuenta para jugar.');
+  const token=await u.getIdToken();
+  const {juego,...datos}=extra;
+  const r=await fetch(juego==='minas'?'/api/minas':juego==='salto'?'/api/salto':'/api/memoria',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...datos,accion,sala:SALA,token}),signal:AbortSignal.timeout(12000)});
+  const data=await r.json();if(!r.ok)throw Object.assign(new Error(data.error||'No se pudo guardar tu partida.'),{status:r.status});return data;
+}
+const espera = montarEspera({root:$("espera"),api:memoriaApi,volver:nombre=>{show('pair');$("q").value=nombre;renderPair();$("q").focus();}});
+onAuthStateChanged(auth,async u=>{
+  espera.cuenta(null);if(!u||u.isAnonymous)return;
+  try{const p=(await get(ref(db,'usuarios/'+u.uid))).val();if(auth.currentUser?.uid===u.uid&&p?.nombre)espera.cuenta({uid:u.uid,nombre:p.nombre});}
+  catch(e){console.warn('No se pudo comprobar el perfil del juego',e);}
+});
+onValue(ref(db,".info/connected"),snap=>espera.conexion(snap.val()===true));
+onValue(ref(db,"tiendas/"+TIENDA+"/perfil/color"),snap=>aplicarMarca(document.documentElement,snap.val()));
+onValue(ref(db, BASE + "/pairings"), snap => {
+  P = snap.val();
+  espera.actualizar(P);
+  // El organizador borró lo publicado: hay que limpiar lo que quedó en pantalla,
+  // si no los nombres siguen visibles aunque ya no existan en Firebase.
+  if (!P || !P.rounds || !P.rounds.length){
+    P = null;
+    limpiarPair("Aún no hay emparejamientos publicados.");
+    pintarCabecera();
+    return;
+  }
+  $("pstatus").textContent = "";
+  const lastNum = P.rounds[P.rounds.length-1].number;
+  if (sel === null || sel < lastNum) sel = lastNum;
+  if (!first && tab !== "pair" && P.updatedAt > seenStamp) $("dot").style.visibility = "visible";
+  first = false;
+  pintarCabecera();
+  renderPair();
+}, () => $("pstatus").textContent = "Sin conexión — reintentando…");
+
+/* El nombre del torneo y la ronda vienen en el mismo paquete de
+   emparejamientos que ya se estaba escuchando, así que no cuesta nada más. Si
+   no hay nada publicado, la cabecera queda con el logo solo. */
+function pintarCabecera(){
+  const t = $("ctitulo"), sub = $("csub"), ro = $("pronda");
+  if (!P || !P.rounds || !P.rounds.length){
+    t.textContent = ""; sub.textContent = ""; ro.style.display = "none"; return;
+  }
+  const deN = P.rondasTotales ? " de " + P.rondasTotales : "";
+  /* Las del top cut traen su nombre («Semifinal»); las suizas, su número. */
+  const etq = ((P.rounds.find(r => r.number === P.lastRound) || {}).etiqueta) || "Ronda " + P.lastRound + deN;
+  t.textContent = P.name || "";
+  sub.textContent = etq +
+    (P.roundtime ? " · rondas de " + P.roundtime + " min" : "");
+  ro.textContent = etq +
+    (P.phase === "results" ? " · resultados" : " · en curso");
+  ro.style.display = "block";
+}
+
+$("q").oninput = renderPair;
+onValue(ref(db, BASE + "/vistaJugadores"), s => { VISTA_JUG = vistaDe(s.val()); if (P) renderPair(); }, () => {});   // la tienda cambia qué se ve (vistapub.js)
+
+function renderPair(){
+  if (!P) return;
+  $("tname").textContent = P.name;
+  $("tsub").textContent = (P.roundtime ? "Rondas de "+P.roundtime+" min · " : "") +
+    "Actualizado " + new Date(P.updatedAt).toLocaleTimeString("es-CL",{hour:"2-digit",minute:"2-digit"});
+
+  const b = $("banner"), etqUlt = (P.rounds.find(r => r.number === P.lastRound) || {}).etiqueta;
+  if (P.phase === "results"){
+    b.style.display = "block";
+    b.textContent = (etqUlt ? etqUlt + ": resultados publicados." : "Resultados de la ronda "+P.lastRound+" publicados.") +
+      " Revisa que el tuyo esté correcto y avisa al juez si hay algún error.";
+  } else if (P.phase === "paired"){
+    b.style.display = "block";
+    b.textContent = etqUlt ? etqUlt + ": ya están las mesas. Busca la tuya." : "Ronda "+P.lastRound+" emparejada. Busca tu mesa.";
+  } else b.style.display = "none";
+
+  const rb = $("rounds"); rb.innerHTML = "";
+  P.rounds.forEach(r => {
+    const btn = document.createElement("button");
+    btn.textContent = r.etiqueta || "R"+r.number;
+    btn.className = (!showStand && sel===r.number) ? "on" : "";
+    btn.onclick = () => { sel=r.number; showStand=false; renderPair(); };
+    rb.appendChild(btn);
+  });
+  if (P.standings?.length){
+    const btn = document.createElement("button");
+    btn.textContent = "Posiciones"; btn.className = showStand ? "on" : "";
+    btn.onclick = () => { showStand=true; renderPair(); };
+    rb.appendChild(btn);
+  }
+
+  const list = $("list"); list.innerHTML = "";
+  list.className = showStand ? "" : "mesas";   // la rejilla es solo para las mesas
+  const q = $("q").value.trim().toLowerCase();
+
+  if (showStand){
+    /* Con varias categorías, una sección por cada una (Masters, Senior, Junior), cada una con su 1.º. */
+    let h = "";
+    porCategoria(P.standings).forEach(sec => {
+      h += '<div class="secLabel">' + (sec.nombre ? "POSICIONES · " + esc(sec.nombre.toUpperCase()) : "POSICIONES FINALES") + '</div>';
+      sec.filas.forEach(s => {
+        const hit = q && s.name.toLowerCase().includes(q);
+        const medalla = s.place <= 3 ? " pod"+s.place : "";
+        h += `<div class="frow${hit?" hlrow":""}"${q&&!hit?' style="opacity:.35"':''}>
+                <span class="fpos${medalla}">${s.place}</span>
+                <div class="fmid"><div class="fname">${esc(s.name)}</div>
+                  <div class="fmeta">${recTxt(s)}${pctTxt(s)}</div></div>
+                <span class="fpts">${s.pts != null ? s.pts : ""}</span>
+              </div>`;
+      });
+    });
+    list.innerHTML = h;
+    return;
+  }
+
+  const round = P.rounds.find(r => r.number === sel);
+  const ms = round?.matches || [];
+  let mostradas = 0;
+  ms.forEach(m => {
+    const hit = q && (m.p1.toLowerCase().includes(q) || (m.p2||"").toLowerCase().includes(q));
+    if (q && !hit) return;                        // con búsqueda activa se ocultan las demás
+    mostradas++;
+    const d = document.createElement("div"); d.className = "match";
+    if (hit) d.classList.add("hl");
+
+    // Quién ganó, para marcarlo en su fila
+    const g1  = m.result && m.p1 && m.result === "Gana " + m.p1;
+    const g2  = m.result && m.p2 && m.result === "Gana " + m.p2;
+    const emp = m.result === "Empate";
+
+    const fila = (n, r, gana) => {
+      if (!n) return "";
+      const marca = gana ? '<span class="win">GANA</span>'
+                  : (emp ? '<span class="tie">EMPATE</span>' : "");
+      return `<div class="prow${gana?" won":""}">
+                <div class="pinfo"><div class="pname">${esc(n)}</div>
+                  <div class="pmeta">${r ? [recTxt(r), r.pts != null ? r.pts + " pts" : ""].filter(Boolean).join(" · ") + pctTxt(r) : ""}</div></div>
+                ${marca}</div>`;
+    };
+
+    d.innerHTML = `
+      <div class="mnum"><span class="mlbl">MESA</span><span class="mval">${m.p2 ? m.table : "—"}</span></div>
+      <div class="mbody">
+        ${fila(m.p1, m.p1rec, g1)}
+        ${m.p2 ? fila(m.p2, m.p2rec, g2)
+               : '<div class="byetag"><b>BYE</b> descansa esta ronda</div>'}
+      </div>`;
+    list.appendChild(d);
+  });
+
+  if (q && !mostradas){
+    list.className = "";                       // el aviso ocupa el ancho completo
+    list.innerHTML = '<div class="vacio"><b>Sin coincidencias</b>'
+      + '<div>Prueba con tu apellido o borra la búsqueda.</div></div>';
+  }
+}
+
+/* ▌BLOQUE 12 · Clasificación mensual ════════════════════════════════════════════
+   Lee config e historial de la tienda directo de Firebase (al abrir la pestaña) y arma la tabla
+   del mes con clasificacion.js; podio. */
+/* =========================================================
+   8. Clasificación mensual
+   El historial puede crecer bastante, así que se descarga recién cuando
+   alguien abre la pestaña, no al entrar a la página.
+   ========================================================= */
+/* La cuenta vive en clasificacion.js, que también usa el perfil de la tienda. */
+let HIST = null, CFG = PUNTOS_DEF, mesSel = null, histOn = false;
+
+function suscribirHistorial(){
+  if (histOn) return;
+  histOn = true;
+  onValue(ref(db, BASE_T + "/config"), snap => {
+    const v = snap.val();
+    if (v && Array.isArray(v.puntos)) CFG = { puntos: v.puntos, resto: v.resto ?? 1 };
+    renderClas();
+  });
+  onValue(ref(db, BASE_T + "/historial"), snap => { HIST = snap.val() || {}; renderClas(); },
+          () => { $("cstatus").textContent = "No se pudo cargar la clasificación."; });
+}
+
+$("mes").onchange = e => { mesSel = e.target.value; renderClas(true); };
+/* General o por categoría: se recuerda en este navegador. */
+let VISTA = "cat";
+try { VISTA = localStorage.getItem(VISTA_RANKING) === "general" ? "general" : "cat"; } catch(e){ console.warn("No se pudo completar una operación opcional", e); }
+$("vistaClas").value = VISTA;
+$("vistaClas").onchange = e => { VISTA = e.target.value; try { localStorage.setItem(VISTA_RANKING, VISTA); } catch(x){ console.warn("No se pudo completar una operación opcional", x); } renderClas(true); };
+
+/* El podio repite a los tres primeros que ya están en la tabla de abajo. No
+   es información nueva: es para que se vea de un vistazo quién va ganando el
+   mes, que es lo que el jugador viene a mirar. Con categorías, uno por cada una
+   (hasta el 20-10-2026 desaparecía en ese caso). Con uno o dos jugadores se ve
+   raro, así que ahí no va. */
+function podioHtml(filas){
+  if (filas.length < 3) return "";
+  const orden = [filas[1], filas[0], filas[2]];       // en pantalla: 2 · 1 · 3
+  const puesto = [2, 1, 3];
+  return '<div class="podio">' + orden.map((r, i) =>
+    '<div class="pod p' + puesto[i] + '">' +
+      '<div class="podNom">' + esc(r.name) + '</div>' +
+      '<div class="podPts">' + r.pts + ' pts</div>' +
+      '<div class="podCaja">' + puesto[i] + '</div>' +
+    '</div>').join("") + "</div>";
+}
+
+function renderClas(soloTabla){
+  if (!HIST) return;
+  /* El historial es de la tienda; cada timer muestra su propia tabla. */
+  const torneos = deTimer(Object.values(HIST), numTimer(SALA));
+  if (!torneos.length){
+    $("clasBox").innerHTML = "";
+    $("cstatus").textContent = "Todavía no hay torneos archivados.";
+    $("mes").style.display = "none";
+    return;
+  }
+  $("mes").style.display = "";
+
+  const meses = mesesDe(torneos);
+  if (!mesSel || !meses.includes(mesSel)) mesSel = meses[0];
+  if (!soloTabla){
+    $("mes").innerHTML = meses.map(m =>
+      '<option value="'+m+'"'+(m===mesSel?' selected':'')+'>'+nombreMes(m)+'</option>').join("");
+  }
+
+  const delMes = torneos.filter(t => mesDe(t) === mesSel);
+  /* Con categorías, una tabla por cada una (Masters, Senior, Junior), cada una con sus puntos. */
+  const hayCats = clasificarPorCategoria(torneos, mesSel, CFG).length > 1;
+  $("vistaClas").hidden = !hayCats;
+  const secs = rankingDelMes(torneos, mesSel, CFG, hayCats ? VISTA : "cat");
+
+  let h = '<div class="sub" style="margin-bottom:10px">' + delMes.length +
+          (delMes.length === 1 ? ' torneo' : ' torneos') + ' en ' + nombreMes(mesSel) + '</div>';
+  h += '<div class="chead"><span>JUGADOR</span><span>PUNTOS</span></div>';
+  let k = 0;   // el número de cada fila no se repite entre categorías: es lo que une la fila con su detalle
+  secs.forEach(sec => { if (sec.nombre) h += '<div class="secLabel" style="margin:14px 0 4px">' + esc(sec.nombre.toUpperCase()) + '</div>';
+  h += podioHtml(sec.filas);
+  sec.filas.forEach((r,i) => {
+    const pos = i+1, medalla = pos <= 3 ? " pod"+pos : "", n = k++;
+    h += `<div class="crow" data-i="${n}">
+            <span class="fpos${medalla}">${pos}</span>
+            <div class="fmid"><div class="fname">${esc(r.name)}</div>
+              <div class="fmeta">${r.torneos} ${r.torneos===1?'torneo':'torneos'}`
+       + (r.wr===null ? '' : ' · ' + r.wr.toFixed(0) + '% vict.') + `</div></div>
+            <span class="fpts">${r.pts}</span>
+          </div>
+          <div class="cdet" data-d="${n}">
+            <div><span>TORNEOS</span><b>${r.torneos}</b></div>
+            <div><span>MEJOR PUESTO</span><b class="ac">${r.mejor}º</b></div>
+            <div><span>RÉCORD</span><b>${r.w}-${r.l}-${r.e}</b></div>
+          </div>`;
+  }); });
+  h += '<div class="chint">Toca una fila para ver el detalle.</div>';
+  $("clasBox").innerHTML = h;
+
+  // Tocar una fila despliega su detalle y cierra el anterior
+  $("clasBox").querySelectorAll(".crow").forEach(row => {
+    row.onclick = () => {
+      const i = row.dataset.i;
+      const det = $("clasBox").querySelector('.cdet[data-d="'+i+'"]');
+      const abierto = det.classList.contains("open");
+      $("clasBox").querySelectorAll(".cdet.open").forEach(e => e.classList.remove("open"));
+      $("clasBox").querySelectorAll(".crow.sel").forEach(e => e.classList.remove("sel"));
+      if (!abierto){ det.classList.add("open"); row.classList.add("sel"); }
+    };
+  });
+  $("cstatus").textContent = "";
+}
+
+/* ▌BLOQUE 13 · Ruleta de sorteos ════════════════════════════════════════════════
+   Dibuja la ruleta y reproduce el giro que publica el panel. */
+/* =========================================================
+   9. Ruleta de sorteos
+   El organizador publica el giro con la hora exacta de partida, el ángulo
+   inicial y el final. Cada teléfono anima ESE mismo giro con la hora del
+   servidor, así todos ven la rueda frenar en el mismo nombre al mismo tiempo.
+   ========================================================= */
+const TAU = Math.PI * 2;
+/* Los ocho sectores salen de la familia de tonos del sistema, no de la
+   paleta fría anterior. Todos pasan 4.5:1 con el texto oscuro que va
+   encima, y el nombre impreso en cada sector hace que el color no sea
+   nunca el único código. */
+const COLORES_RULETA = ["#DDCC88","#DDA288","#DD88DD","#AB88DD",
+                        "#88C1DD","#88DDC1","#88DD88","#BADD88"];
+const norm = a => ((a % TAU) + TAU) % TAU;
+const easeOut = t => 1 - Math.pow(1 - t, 4);
+
+/* Quien pidio menos movimiento en su sistema operativo lo pidio para todo, no
+   solo para el CSS. La ruleta gira con requestAnimationFrame, que ninguna regla
+   de hoja de estilo alcanza: hay que preguntarlo a mano. */
+const menosMovimiento = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+
+function dibujarRueda(cv, items, rot){
+  const ctx = cv.getContext("2d");
+  const R = cv.width/2, cx = R, cy = R, N = items.length;
+  ctx.clearRect(0, 0, cv.width, cv.height);
+  if (!N) return;
+
+  const seg = TAU / N;
+  const fuente = Math.max(10, Math.min(20, 460/N));
+  for (let i = 0; i < N; i++){
+    const a0 = rot + i*seg;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.arc(cx, cy, R-4, a0, a0+seg);
+    ctx.closePath();
+    ctx.fillStyle = COLORES_RULETA[i % COLORES_RULETA.length];
+    ctx.fill();
+    ctx.strokeStyle = "rgba(14,15,24,.5)"; ctx.lineWidth = 2; ctx.stroke();
+
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(a0 + seg/2);
+    ctx.textAlign = "right"; ctx.textBaseline = "middle";
+    ctx.fillStyle = "#10231E";
+    ctx.font = "600 " + fuente + "px Inter, system-ui, sans-serif";
+    const txt = items[i].length > 22 ? items[i].slice(0,21) + "…" : items[i];
+    ctx.fillText(txt, R - 16, 0);
+    ctx.restore();
+  }
+
+  ctx.beginPath(); ctx.arc(cx, cy, R*0.13, 0, TAU);
+  ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue("--pagina").trim(); ctx.fill();
+  ctx.strokeStyle = "rgba(233,233,237,.28)"; ctx.lineWidth = 2; ctx.stroke();
+}
+
+let SORT = null, giroId = null, animando = false, rotActual = 0;
+
+onValue(ref(db, BASE + "/sorteo"), snap => {
+  SORT = snap.val();
+  arrancarGiro();
+  pintarRuleta();
+});
+
+function arrancarGiro(){
+  const g = SORT?.giro;
+  if (!g || !g.id || g.id === giroId) return;
+  giroId = g.id;
+
+  // Quien abre la página después de que la rueda ya paró no ve el giro de
+  // nuevo: aparece directamente frenada en el ganador.
+  if (ahora() > g.startAt + g.dur){ animando = false; rotActual = g.to; return; }
+
+  animando = true;
+  const fin = () => { animando = false; rotActual = g.to; pintarRuleta(); };
+
+  /* Sin giro: la rueda aparece ya frenada en el ganador, igual que para quien
+     abre la pagina despues de que termino. */
+  if (menosMovimiento()){ fin(); return; }
+  const paso = () => {
+    if (!animando) return;
+    const t = Math.min(1, Math.max(0, (ahora() - g.startAt) / g.dur));
+    rotActual = g.from + (g.to - g.from) * easeOut(t);
+    pintarRuleta();
+    if (t < 1) requestAnimationFrame(paso); else fin();
+  };
+  requestAnimationFrame(paso);
+  // Red de seguridad: si el navegador congela los frames, la rueda igual
+  // termina en el nombre correcto en vez de quedarse a medio girar.
+  setTimeout(() => { if (animando) fin(); },
+             Math.max(0, g.startAt - ahora()) + g.dur + 600);
+}
+
+function pintarRuleta(){
+  if (tab !== "sorteo") return;
+
+  // Mientras haya un giro publicado se dibuja la rueda tal como estaba en ese
+  // giro, para que la flecha siga apuntando al ganador que todos vieron salir.
+  const g  = SORT?.giro;
+  const gs = SORT?.ganadores || [];
+  const items = g?.items?.length ? g.items : (SORT?.items || []);
+
+  // La pestaña está siempre a la vista, así que cuando el organizador todavía
+  // no prepara nada hay que decirlo con todas sus letras en vez de dejar un
+  // círculo vacío que parece que se rompió algo.
+  const vacio = !items.length && !gs.length;
+  $("rVacio").style.display  = vacio ? "" : "none";
+  $("rWrap").style.display   = vacio ? "none" : "";
+  $("rWinner").style.display = vacio ? "none" : "";
+  if (vacio){
+    $("rTitle").textContent = "Sorteo";
+    $("rList").innerHTML = "";
+    $("sstatus").textContent = "";
+    return;
+  }
+
+  $("rTitle").textContent = SORT?.titulo || "Sorteo";
+  dibujarRueda($("rCanvas"), items, rotActual);
+
+  const w = $("rWinner");
+  if (animando)          w.innerHTML = '<div class="lbl">GIRANDO…</div>';
+  else if (g?.ganador)   w.innerHTML = '<div class="lbl">GANADOR</div><div class="who">' + esc(g.ganador) + '</div>';
+  else                   w.innerHTML = '<div class="lbl">LISTO PARA GIRAR</div>';
+
+  $("rList").innerHTML = gs.length
+    ? '<div class="secLabel">GANADORES</div>' + gs.map((x,i) =>
+        `<div class="frow"><span class="fpos">${i+1}</span>
+           <div class="fmid"><div class="fname">${esc(x.nombre)}</div></div></div>`).join("")
+    : "";
+
+  const quedan = (SORT?.items || []).length;
+  $("sstatus").textContent = quedan
+    ? quedan + (quedan === 1 ? " participante en la rueda" : " participantes en la rueda")
+    : "Ya salieron todos los premios.";
+}
+
+window.addEventListener("resize", () => { if (tab === "sorteo") pintarRuleta(); });
+/* ▌BLOQUE 14 · Agenda de torneos ════════════════════════════════════════════════
+   Lista y rejilla del mes, de solo lectura; enlace directo a pestañas con #mesas, #ranking,
+   #sorteo, #agenda. */
+/* =========================================================
+   10. Agenda de torneos
+   El organizador publica las fechas desde su panel; acá solo se muestran y se
+   ofrecen dos salidas: el enlace de Google Calendar (que la app del celular
+   abre sola) y un .ics para iPhone, Outlook y el resto.
+   ========================================================= */
+const MES_CORTO = ["ENE","FEB","MAR","ABR","MAY","JUN","JUL","AGO","SEP","OCT","NOV","DIC"];
+let AG = null, agendaOn = false, mesVista = null;
+
+function suscribirAgenda(){
+  if (agendaOn) return;
+  agendaOn = true;
+  onValue(ref(db, BASE_T + "/agenda"), snap => {
+    const v = snap.val() || {};
+    AG = ordenar(Object.entries(v).map(([id, e]) => ({ id, ...e })));
+    renderAgenda();
+  }, () => { $("astatus").textContent = "No se pudo cargar la agenda."; });
+}
+
+function tarjeta(ev, esProximo){
+  const [, m, d] = (ev.fecha || "").split("-");
+  const card = document.createElement("div");
+  card.className = "evCard" + (esProximo ? " prox" : "");
+  card.dataset.ev = ev.id;
+  card.innerHTML =
+    '<div class="evCal"><div class="d">' + (+d) + '</div><div class="m">' + MES_CORTO[+m-1] + '</div></div>' +
+    '<div class="evBody">' +
+      '<div class="evTit">' + (ev.juego ? '<span class="evJuego">' + esc(ev.juego) + "</span>" : "") + (ev.tipo ? '<span class="evJuego">' + esc(ev.tipo) + "</span>" : "") + esc(ev.titulo) + '</div>' +
+      '<div class="evCuando">' + esc(fechaLegible(ev.fecha)) +
+        (ev.hora ? " · " + esc(ev.hora) + " h" : " · todo el día") +
+        (ev.lugar ? "<br>" + esc(ev.lugar) : "") + "</div>" +
+      '<span class="evFalta">' + esc(cuantoFalta(ev)) + "</span>" +
+      (ev.detalle ? '<div class="evDet">' + esc(ev.detalle) + "</div>" : "") +
+      '<div class="evBtns"></div>' +
+    "</div>";
+
+  const btns = card.querySelector(".evBtns");
+  const g = document.createElement("a");
+  g.className = "gcal"; g.href = urlGoogle(ev);
+  g.target = "_blank"; g.rel = "noopener";
+  g.textContent = "Agregar a Google Calendar";
+  btns.appendChild(g);
+
+  const i = document.createElement("button");
+  i.textContent = "Otro calendario (.ics)";
+  i.onclick = () => bajarIcs([ev], (ev.titulo || "torneo").toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 40) + ".ics");
+  btns.appendChild(i);
+
+  return card;
+}
+
+/* La rejilla es solo de lectura: el jugador no agenda nada. Tocar un evento lo
+   lleva a su tarjeta, que es donde están los botones de Google Calendar. */
+function renderMes(){
+  if (!mesVista) mesVista = mesDeInteres(AG || []);
+  $("calMes").textContent = MES_LARGO[mesVista.m] + " " + mesVista.a;
+
+  if (!$("calDows").childElementCount){
+    DOWS.forEach(d => {
+      const c = document.createElement("div"); c.className = "calDow"; c.textContent = d;
+      $("calDows").appendChild(c);
+    });
+  }
+
+  const porDia = porFecha(AG || []);
+  const g = $("calGrid"); g.innerHTML = "";
+
+  celdasDelMes(mesVista.a, mesVista.m).forEach(c => {
+    const cel = document.createElement("div");
+    cel.className = "calDia" + (c.fuera ? " fuera" : "") + (c.hoy ? " hoy" : "");
+
+    const num = document.createElement("div");
+    num.className = "calNum"; num.textContent = c.dia;
+    cel.appendChild(num);
+
+    (porDia[c.iso] || []).forEach(ev => {
+      const chip = document.createElement("div");
+      chip.className = "calEv" + (estaVigente(ev) ? "" : " pasado") + (ev.hora ? "" : " todoDia");
+      /* Sin hora, en el celular queda como barra (estilo.css): «todo el día» no cabe. */
+      chip.innerHTML = ev.hora ? '<span class="calHora">' + esc(ev.hora) + "</span>" : '<span class="calTit">todo el día</span>';
+      chip.title = ev.titulo;
+      chip.onclick = () => irATarjeta(ev);
+      cel.appendChild(chip);
+    });
+
+    g.appendChild(cel);
+  });
+}
+
+function irMes(delta){ mesVista = mesDesplazado(mesVista.a, mesVista.m, delta); renderMes(); }
+$("calAnt").onclick = () => irMes(-1);
+$("calSig").onclick = () => irMes(1);
+$("calHoy").onclick = () => { const h = new Date(); mesVista = { a:h.getFullYear(), m:h.getMonth() }; renderMes(); };
+
+/* Toca un evento de la rejilla: baja a su tarjeta y la resalta un momento. Si
+   ya pasó no tiene tarjeta —la lista solo muestra los próximos—, así que ahí
+   se avisa en vez de hacer nada. */
+function irATarjeta(ev){
+  const card = $("aLista").querySelector('[data-ev="' + ev.id + '"]');
+  if (!card){
+    $("astatus").textContent = "«" + ev.titulo + "» ya pasó.";
+    setTimeout(() => { $("astatus").textContent = ""; }, 2500);
+    return;
+  }
+  card.scrollIntoView({ behavior:"smooth", block:"center" });
+  card.classList.add("destacada");
+  setTimeout(() => card.classList.remove("destacada"), 1600);
+}
+
+function renderAgenda(){
+  if (!AG) return;
+  renderMes();
+  $("calCaja").style.display = AG.length ? "block" : "none";
+  const futuros = AG.filter(e => estaVigente(e));
+  $("aVacio").style.display = futuros.length ? "none" : "block";
+  $("astatus").textContent = "";
+  const lista = $("aLista"); lista.innerHTML = "";
+  futuros.forEach((e, i) => lista.appendChild(tarjeta(e, i === 0)));
+  if (futuros.length > 1){
+    const todos = document.createElement("div");
+    todos.className = "evBtns";
+    todos.style.justifyContent = "center";
+    const b = document.createElement("button");
+    b.textContent = "Descargar las " + futuros.length + " fechas (.ics)";
+    b.onclick = () => bajarIcs(futuros, "torneos.ics", "Torneos");
+    todos.appendChild(b);
+    lista.appendChild(todos);
+  }
+}
+
+/* "en 3 días" envejece solo: si alguien deja la página abierta toda la noche,
+   al otro día tiene que decir "mañana" y no seguir diciendo "en 2 días". */
+setInterval(() => { if (tab === "agenda" && AG) renderAgenda(); }, 60000);
+
+/* El perfil de la tienda enlaza directo a una pestaña: #mesas, #ranking,
+   #sorteo o #agenda. Sin hash, el reloj de siempre. */
+const POR_HASH = { mesas: "pair", ranking: "clas", sorteo: "sorteo", agenda: "agenda" };
+if (POR_HASH[location.hash.slice(1)]) show(POR_HASH[location.hash.slice(1)]);
+</script>
+<!-- ▌BLOQUE 15 · Sala de invitado vencida — El aviso cuando las reglas ya no dejan leer la sala. -->
+<!-- Sala de invitado vencida: las reglas ya no dejan leerla. -->
+<div id="vencida" role="alert"><h2>Esta sala de invitado terminó</h2>
+  <p>Las salas de invitado duran 24 horas y después se borran. Crea la tuya, o una cuenta para guardar tus torneos, en <a href="index.html">byepass.cl</a>.</p></div>
+</body>
+</html>

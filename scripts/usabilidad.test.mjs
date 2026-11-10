@@ -1,0 +1,16 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { colorLogo,colorValido } from '../web/identidad.js';
+import { estadoEspera,mazoMemoria } from '../web/espera-estado.js';
+const p={name:'Copa',fecha:'2026-11-09',lastRound:1,rounds:[{number:1,matches:[{p1:'Ana Vega',p2:'Bruno',table:1,result:''}]}]};
+test('Logo ignora transparencia y fondos blancos',()=>{assert.equal(colorLogo([255,255,255,255,0,255,0,0,100,30,180,255]),'#641eb4');});
+test('Logo monocromático conserva un color legible de respaldo',()=>{assert.ok(colorValido(colorLogo([0,0,0,255,255,255,255,255])));});
+test('El color más frecuente domina frente a un detalle',()=>{assert.equal(colorLogo([120,20,80,255,120,20,80,255,10,200,30,255]),'#781450');});
+test('Colores inválidos no se aceptan como CSS',()=>{for(const c of ['red','url(x)','#abc',null])assert.equal(colorValido(c),false);});
+test('Sin publicación no se habilita juego',()=>assert.equal(estadoEspera(null,'Ana Vega').listo,false));
+test('Partida sin resultado sigue bloqueada',()=>assert.equal(estadoEspera(p,'Ana Vega').listo,false));
+test('Resultado de otro jugador no habilita una partida pendiente',()=>{const d=structuredClone(p);d.rounds[0].matches.push({p1:'Carla',p2:'Diego',result:'Gana Carla'});assert.equal(estadoEspera(d,'Ana Vega').listo,false);});
+test('Resultado publicado y bye habilitan el juego',()=>{for(const result of ['Gana Ana Vega','Empate','Bye']){const d=structuredClone(p);d.rounds[0].matches[0].result=result;assert.equal(estadoEspera(d,'ana vega').listo,true);}});
+test('Nombres duplicados se rechazan',()=>{const d=structuredClone(p);d.rounds[0].matches[0].result='Gana Ana Vega';d.rounds[0].matches.push({p1:'Ana Vega',p2:'Otra',result:'Empate'});assert.equal(estadoEspera(d,'Ana Vega').listo,false);});
+test('Nueva ronda cambia la clave aunque el resultado anterior exista',()=>{const d=structuredClone(p);d.lastRound=2;d.rounds.push({number:2,matches:[{p1:'Ana Vega',p2:'Otra',result:''}]});assert.notEqual(estadoEspera(d,'Ana Vega').clave,estadoEspera(p,'Ana Vega').clave);assert.equal(estadoEspera(d,'Ana Vega').listo,false);});
+test('Memoria siempre tiene 12 cartas únicas y seis parejas',()=>{for(let i=0;i<30;i++){const cards=mazoMemoria();assert.equal(new Set(cards.map(c=>c.id)).size,12);for(let t=0;t<6;t++)assert.equal(cards.filter(c=>c.tipo===t).length,2);}});

@@ -1,0 +1,27 @@
+{
+  "name": "byepass-local-tests",
+  "private": true,
+  "scripts": {
+    "start": "node scripts/start.mjs",
+    "seed": "node scripts/data.mjs seed",
+    "import:database": "node scripts/data.mjs import",
+    "verify": "node scripts/verify.mjs",
+    "verify:ui": "node scripts/verify-ui.mjs",
+    "test:registro": "node --test scripts/registro.test.mjs",
+    "test:registro:emuladores": "node scripts/probar-registro.mjs",
+    "assets:version": "node scripts/versionar.mjs",
+    "test:sistema:emuladores": "node scripts/probar-registro.mjs --sistema",
+    "test:sistema": "node --test scripts/sistema.test.mjs",
+    "verify:entrega": "node scripts/verificar-entrega.mjs",
+    "test:usabilidad": "node --test scripts/usabilidad.test.mjs",
+    "test:memoria": "node --test scripts/memoria.test.mjs",
+    "test:memoria:api": "node scripts/test-memoria-api.mjs",
+    "test:salto": "node --test scripts/salto.test.mjs",
+    "test:salto:api": "node scripts/test-salto-api.mjs",
+    "test:minas": "node --test scripts/minas.test.mjs",
+    "test:minas:api": "node scripts/test-minas-api.mjs"
+  },
+  "dependencies": {
+    "firebase-tools": "15.35.0"
+  }
+}

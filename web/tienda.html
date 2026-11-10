@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<!-- ▌ÍNDICE de tienda.html (detalle y números de línea en MAPA-CODIGO.md, en la raíz del proyecto)
+      1. Estilos
+      2. Marcado
+      3. Módulos
+      4. Arranque
+      5. Directorio de tiendas y jugadores
+      6. Perfil de la tienda
+      7. Fotos (logo y portada)
+      8. Seguir / dejar / favorita
+      9. En vivo
+     10. Clasificación
+     11. Torneos y agenda
+     12. Información
+     13. Pestañas
+-->
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#243B60">
+<script src="tema.js?v=2efd744ba33e"></script>
+<title>Tiendas — ByePass</title>
+<link rel="stylesheet" href="estilo.css?v=2efd744ba33e">
+<!-- ▌BLOQUE 1 · Estilos — Perfil de la tienda, directorio y edición de fotos. -->
+
+<link rel="stylesheet" href="/paginas/tienda.css?v=2efd744ba33e">
+<link rel="stylesheet" href="/sistema.css?v=2efd744ba33e">
+<script src="/sistema.js?v=2efd744ba33e" defer></script>
+</head>
+<body data-pagina="tienda">
+  <header class="sup vidrio">
+    <a class="marca bp-brand" href="index.html" data-link="inicio" aria-label="ByePass, inicio"><span class="bp-symbol" aria-hidden="true"><svg viewBox="-4 -1.5 44 44" aria-hidden="true"><g fill="var(--bp-logo-fondo,var(--pagina))" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="17" y="9" width="19" height="27" rx="3.6" transform="rotate(-42 18 38)"/><rect x="17" y="9" width="19" height="27" rx="3.6" transform="rotate(-28 18 38)"/><rect x="17" y="9" width="19" height="27" rx="3.6" transform="rotate(-14 18 38)"/><g transform="rotate(4 18 38)"><rect x="17" y="9" width="19" height="27" rx="3.6"/><path fill="none" stroke-width="1.9" stroke-linecap="round" d="M22.6 15.5v13h4.9a3.3 3.3 0 0 0 0-6.6h-4.9h4.2a3.2 3.2 0 0 0 0-6.4z"/></g></g></svg></span><span class="bp-word" aria-hidden="true">ye<span>Pass</span></span></a>
+    <a class="btn" href="tienda.html" data-link="tiendas">Tiendas</a>
+    <a class="btn" href="cuenta.html" id="aCuenta">Entrar</a>
+  </header>
+
+  <!-- ▌BLOQUE 2 · Marcado — Directorio de tiendas y jugadores, perfil de una tienda, diálogo de fotos y «no
+       existe». -->
+  <!-- ================================================= DIRECTORIO -->
+  <main class="ancho oculto" id="vDir">
+    <h1 class="grande" id="tituloDir">Tiendas</h1>
+    <div class="seg" role="tablist" aria-label="Qué buscar">
+      <button role="tab" aria-selected="true" data-dir="tiendas">Tiendas</button>
+      <button role="tab" aria-selected="false" data-dir="jugadores">Jugadores</button></div>
+    <input type="search" id="buscar" placeholder="Busca por nombre o comuna" aria-label="Buscar tiendas">
+    <div id="dirTiendas">
+      <div id="dirFav"></div>
+      <h2 class="gtit">Tiendas verificadas</h2>
+      <div class="grupo" id="dirLista"><div class="vacio">Cargando…</div></div>
+      <p class="nota" style="margin:var(--e4) var(--e1) 0">¿Organizas torneos en una tienda?
+        <a href="cuenta.html#tienda" data-link="pedir">Pide su cuenta</a>. Aparece acá cuando la aprobemos.</p>
+    </div>
+    <div id="dirJugadores" hidden>
+      <h2 class="gtit" id="jugTit">Jugadores</h2>
+      <div class="grupo" id="jugLista"></div>
+      <p class="nota" id="jugNota" style="margin:var(--e4) var(--e1) 0"></p>
+    </div>
+  </main>
+
+  <!-- ================================================= PERFIL -->
+  <div class="oculto" id="vPerfil">
+    <div class="portada" id="portada"><img id="portadaImg" alt="" hidden></div>
+    <div class="ancho">
+      <div class="ident">
+        <div class="logoT" id="logo" aria-hidden="true"></div>
+        <div class="quien">
+          <h1 class="grande" id="nombre">…</h1>
+          <div class="meta" id="meta1"></div>
+          <div class="meta" id="meta2"></div>
+        </div>
+        <div class="acciones" id="acciones"></div>
+      </div>
+      <div class="aviso mal oculto" id="errAccion" role="alert" style="margin-top:var(--e3)"></div>
+      <p class="nota oculto" id="notaId"></p>
+
+      <nav class="tabs" role="tablist" aria-label="Secciones de la tienda">
+        <button role="tab" data-tab="vivo" aria-selected="true">En vivo</button>
+        <button role="tab" data-tab="clas" aria-selected="false">Clasificación</button>
+        <button role="tab" data-tab="torneos" aria-selected="false">Torneos</button>
+        <button role="tab" data-tab="agenda" aria-selected="false">Agenda</button>
+        <button role="tab" data-tab="info" aria-selected="false" class="soloMovil">Información</button>
+      </nav>
+    </div>
+
+    <div class="ancho cols">
+      <aside id="infoLado"></aside>
+      <main>
+        <section data-sec="vivo">
+          <div id="vivo"></div>
+          <div id="timersT" class="oculto"><h2 class="gtit">Timers de la tienda</h2><div class="grupo" id="timersL"></div></div>
+          <div id="rifasT" class="oculto"><h2 class="gtit">Rifas</h2><div class="grupo" id="rifasL"></div></div>
+          <div id="postsT" class="oculto"><h2 class="gtit">Publicaciones</h2><div class="grupo">
+            <form class="psForm oculto" id="psForm" novalidate>
+              <textarea id="psTexto" maxlength="600" aria-label="Texto de la publicación"
+                placeholder="Escribe algo para tus jugadores: una fecha nueva, un cambio de horario, un premio especial."></textarea>
+              <input id="psEnlace" maxlength="300" placeholder="Enlace (opcional, https://…)" aria-label="Enlace de la publicación">
+              <div class="psAcc"><span class="nota" id="psMsg" role="status">Sale en el muro de quienes siguen la tienda.</span>
+                <button class="btn primario" type="submit" id="psPublicar">Publicar</button></div>
+            </form>
+            <div id="postsL"></div></div></div>
+          <div class="dos">
+            <div><h2 class="gtit"><span id="hClasCorta">Clasificación</span> <button data-ir="clas">Ver todo</button></h2>
+              <div class="grupo" id="clasCorta"></div></div>
+            <div><h2 class="gtit">Últimos torneos <button data-ir="torneos">Ver todos</button></h2>
+              <div class="grupo" id="torneosCorta"></div></div>
+          </div>
+        </section>
+        <section data-sec="clas" class="oculto">
+          <select id="tablaSel" class="oculto" aria-label="Tabla de clasificación"></select>
+          <select id="mesSel" aria-label="Mes de la clasificación"></select>
+          <select id="vistaSel" class="oculto" aria-label="Qué tabla ver"><option value="cat">Por categoría</option><option value="general">General</option></select>
+          <h2 class="gtit" id="hClas">Clasificación</h2>
+          <div class="grupo" id="clasTodo"></div>
+          <p class="nota" style="margin:var(--e2) var(--e3) 0" id="clasNota"></p>
+        </section>
+        <section data-sec="torneos" class="oculto">
+          <h2 class="gtit">Torneos jugados</h2>
+          <div class="grupo" id="torneosTodo"></div>
+        </section>
+        <section data-sec="agenda" class="oculto">
+          <h2 class="gtit">Próximas fechas</h2>
+          <div class="filtroJuego" id="agFiltro" role="group" aria-label="Filtrar por juego" hidden></div>
+          <div class="grupo" id="agendaTodo"></div>
+        </section>
+        <section data-sec="info" class="oculto" id="infoTab"></section>
+      </main>
+    </div>
+  </div>
+
+  <!-- ================================================= EDITAR FOTOS
+       Para quien organiza la tienda, cuando ya está verificada. -->
+  <dialog class="hoja" id="dlgFotos" aria-labelledby="dfTit">
+    <h2 id="dfTit">Fotos de la tienda</h2>
+    <p class="nota">Se achican solas antes de subirse, para que carguen rápido en cualquier celular.</p>
+    <div class="dfBanner" id="dfBanner"></div>
+    <div class="dfFila">
+      <div class="txt"><b>Banner</b><small>Horizontal. En el celular se ve la parte del medio.</small></div>
+      <div class="dfBtns"><button class="btn primario chico" data-subir="banner">Subir</button>
+        <button class="btn chico" data-quitar="banner">Quitar</button></div>
+    </div>
+    <div class="dfFila" style="margin-top:var(--e4)">
+      <div class="logoT dfLogo" id="dfLogo" aria-hidden="true"></div>
+      <div class="txt"><b>Logo</b><small>Se recorta en un cuadrado, al centro.</small></div>
+      <div class="dfBtns"><button class="btn primario chico" data-subir="logo">Subir</button>
+        <button class="btn chico" data-quitar="logo">Quitar</button></div>
+    </div>
+    <p class="nota" id="dfMsg" role="status"></p>
+    <div style="display:flex;justify-content:flex-end;margin-top:var(--e2)"><button class="btn" id="dfCerrar">Listo</button></div>
+    <input type="file" accept="image/*" id="dfArchivo" hidden>
+  </dialog>
+
+  <!-- ================================================= NO EXISTE -->
+  <main class="ancho oculto" id="vNada">
+    <div class="vacio" style="padding-top:var(--e6)"><b style="display:block;font-size:var(--t5);color:var(--texto)">Esa tienda no existe</b>
+      Puede que el enlace esté mal escrito. <a href="tienda.html" data-link="tiendas">Ver todas las tiendas</a>.</div>
+  </main>
+  <footer class="ancho" style="padding-bottom:var(--e5)"><p class="legal"><a href="cuenta.html#sugerencias">Sugerencias</a> ·
+    <a href="terminos.html">Términos</a> ·
+    <a href="privacidad.html">Privacidad</a> · ByePass © 2026</p></footer>
+
+<script src="config.js?v=2efd744ba33e"></script>
+<!-- ▌BLOQUE 3 · Módulos — Imports. -->
+<script type="module">
+import { aplicarMarca } from "./identidad.js";
+import { ref, onValue, get, set, update, remove, query, orderByChild, equalTo, push, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { db, auth, enEmulador, urlCuenta, urlMuro, urlPanel } from "./sesion.js?v=2efd744ba33e";
+import { slug, tiendaDe, salaDeTimer, MAX_TIMERS, nombreTienda, iniciales } from "./sala.js?v=2efd744ba33e";
+import { ordenar, estaVigente, fechaLegible, cuantoFalta, urlGoogle, MES_LARGO } from "./agenda.js?v=2efd744ba33e";
+import { nombreMes, mesDe, mesesDe, clasificarPorCategoria, rankingDelMes, VISTA_RANKING, PUNTOS_DEF, timerDe, deTimer, claveGlobal } from "./clasificacion.js?v=2efd744ba33e";
+import { norm } from "./insignias.js?v=2efd744ba33e";
+import { estoyEnLinea } from "./presencia.js?v=2efd744ba33e";
+import { leerHistorial, historialUnaVez } from "./historial.js?v=2efd744ba33e";
+
+const $ = id => document.getElementById(id);
+/* ▌BLOQUE 4 · Arranque ══════════════════════════════════════════════════════════
+   La tienda pedida por ?sala (o el directorio si no hay), enlaces y sesión. */
+/* Sin sala: el directorio. Con el id de uno de sus timers (…-t2), la tienda. */
+const ID = tiendaDe(slug(new URLSearchParams(location.search).get("sala"), 28));
+
+/* Los enlaces llevan el ?emu=1: sin eso, en una prueba local se abriría la
+   base real. */
+const EMU = enEmulador() ? "emu=1&" : "";
+const aTienda = id => "tienda.html?" + EMU + "sala=" + encodeURIComponent(id);
+estoyEnLinea(db, "tiendas", ID);   // en el directorio (sin ?sala) ID queda vacío: cuenta solo la visita general
+const aTimer  = (id, h) => "timer-view.html?" + EMU + "sala=" + encodeURIComponent(id) + (h ? "#" + h : "");
+const DEST = { inicio: "index.html" + (EMU ? "?" + EMU.slice(0, -1) : ""), tiendas: "tienda.html" + (EMU ? "?" + EMU.slice(0, -1) : ""),
+               panel: urlPanel(), pedir: urlCuenta("tienda") };
+document.querySelectorAll("[data-link]").forEach(a => a.href = DEST[a.dataset.link]);
+
+const ICO = {
+  estrella: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5l2.6 5.3 5.9.9-4.2 4.1 1 5.8L12 16.9l-5.3 2.7 1-5.8-4.2-4.1 5.9-.9z"/></svg>',
+  estrellaLlena: '<svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5l2.6 5.3 5.9.9-4.2 4.1 1 5.8L12 16.9l-5.3 2.7 1-5.8-4.2-4.1 5.9-.9z"/></svg>',
+  verif: '<svg width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2.8l2.3 1.7 2.9-.2.9 2.7 2.3 1.8-.9 2.7.9 2.7-2.3 1.8-.9 2.7-2.9-.2L12 21.2l-2.3-1.7-2.9.2-.9-2.7-2.3-1.8.9-2.7-.9-2.7 2.3-1.8.9-2.7 2.9.2z"/><path d="M8.5 12.2l2.3 2.3 4.7-4.8" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  chev: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>',
+  check: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+  lugar: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6.5-6.2-6.5-11a6.5 6.5 0 0113 0c0 4.8-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></svg>',
+  cal: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>',
+  enlace: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14a4 4 0 005.7 0l3-3a4 4 0 00-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 00-5.7 0l-3 3a4 4 0 005.7 5.7l1-1"/></svg>',
+  mesas: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="2"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><rect x="13.5" y="13.5" width="7" height="7" rx="2"/></svg>',
+  camara: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8.5A2.5 2.5 0 016.5 6h1.7l1.3-2h5l1.3 2h1.7A2.5 2.5 0 0120 8.5v9A2.5 2.5 0 0117.5 20h-11A2.5 2.5 0 014 17.5z"/><circle cx="12" cy="13" r="3.5"/></svg>',
+  pantalla: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg>',
+};
+/* El logo: la foto si la tienda subió una (las reglas solo dejan datos de
+   imagen), si no la sigla sobre su color. */
+const logo = (perfil, id, px, foto) => '<span class="logoT" style="--c:' + esc((perfil && perfil.color) || "var(--franja)") +
+  ';width:' + px + 'px;height:' + px + 'px;font-size:' + Math.round(px * .34) + 'px" aria-hidden="true">' +
+  (foto ? '<img src="' + esc(foto) + '" alt="">' : esc(iniciales(nombreTienda(perfil, id)))) + "</span>";
+function fechaBadge(f){
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(f || "");
+  return m ? '<div class="fecha"><b>' + +m[3] + "</b><small>" + MES_LARGO[+m[2] - 1].slice(0, 3) + "</small></div>"
+           : '<div class="fecha"></div>';
+}
+
+let usuario = null, PERFIL, MIAS = null;
+onAuthStateChanged(auth, u => {
+  usuario = u;
+  $("aCuenta").textContent = u ? "Mi muro" : "Entrar";
+  $("aCuenta").href = u ? urlMuro() : urlCuenta("ingresar");
+  PERFIL = undefined; MIAS = null;
+  if (!u){ pintarAcciones(); pintarDir(); return; }
+  /* El perfil del jugador: para marcar su mesa y para saber si puede seguir
+     (una cuenta de organizador sin perfil de jugador no tiene dónde guardarlo). */
+  onValue(ref(db, "usuarios/" + u.uid), s => { PERFIL = s.val(); MIAS = (PERFIL && PERFIL.tiendas) || {};
+    pintarAcciones(); pintarVivo(); pintarClas(); pintarDir(); }, () => { PERFIL = null; pintarAcciones(); });
+});
+
+/* ▌BLOQUE 5 · Directorio de tiendas y jugadores ═════════════════════════════════
+   Lista las tiendas verificadas; la pestaña Jugadores junta a quien aparece en los torneos
+   archivados de esas tiendas por su clave de ID (o su cuenta; si no hay, por nombre). */
+/* ============================================================ DIRECTORIO */
+let VERIF = null, EXTRA = {};
+function directorio(){
+  $("vDir").classList.remove("oculto");
+  document.title = "Tiendas — ByePass";
+  onValue(query(ref(db, "tiendas"), orderByChild("verificada"), equalTo(true)),
+          s => { VERIF = s.val() || {}; pintarDir(); if (DIR === "jugadores") cargarJugadores(); },
+          () => { $("dirLista").innerHTML = '<div class="vacio">No se pudo cargar la lista.</div>'; });
+  $("buscar").oninput = () => DIR === "tiendas" ? pintarDir() : pintarJugadores();
+  document.querySelectorAll("[data-dir]").forEach(b => b.onclick = () => elegirDir(b.dataset.dir));
+}
+function elegirDir(m){
+  DIR = m;
+  document.querySelectorAll("[data-dir]").forEach(b => b.setAttribute("aria-selected", String(b.dataset.dir === m)));
+  $("dirTiendas").hidden = m !== "tiendas";
+  $("dirJugadores").hidden = m !== "jugadores";
+  $("tituloDir").textContent = m === "tiendas" ? "Tiendas" : "Jugadores";
+  $("buscar").placeholder = m === "tiendas" ? "Busca por nombre o comuna" : "Busca un jugador por su nombre";
+  $("buscar").setAttribute("aria-label", m === "tiendas" ? "Buscar tiendas" : "Buscar jugadores");
+  if (m === "jugadores"){ cargarJugadores(); pintarJugadores(); } else pintarDir();
+  $("buscar").focus();
+}
+
+/* ------------------------------------------------------------ jugadores
+   Quienes aparecen en los torneos archivados de las tiendas verificadas,
+   buscados por nombre. Sale todo del historial, que ya es público; los
+   «Jugador reservado» no aparecen. El perfil se abre en el muro (con cuenta),
+   en la tienda donde más ha jugado.
+   ponytail: baja el historial de cada tienda verificada (desde la segunda
+   visita, solo los torneos nuevos: historial.js); con muchas tiendas
+   convendría un índice de nombres aparte. */
+let DIR = "tiendas", JUGS = null, cargandoJ = false;
+async function cargarJugadores(){
+  if (JUGS || cargandoJ || VERIF === null) return;
+  cargandoJ = true;
+  const idx = {};
+  await Promise.all(Object.keys(VERIF).map(id => historialUnaVez(db, id).then(h => {
+    Object.values(h).forEach(t => Object.values(t.standings || {}).forEach(f => {
+      if (!f || f.reservado || !f.name) return;
+      /* La misma persona aunque su nombre cambie (clave por ID de Play! Pokémon; en varias
+         tiendas, su cuenta). `k` es lo que se busca: todos los nombres con que apareció.
+         `enlace` es lo que lleva el link a su perfil en el muro. */
+      const nn = norm(f.name), cl = f.clave || f.claveN;
+      const j = idx[claveGlobal(id, f)] ??= { k: nn, enlace: f.uid ? "u:" + f.uid : cl ? "c:" + cl : nn, nombre: f.name, torneos: 0, tiendas: {}, mejor: 99, ultimo: "" };
+      if (!j.k.split("|").includes(nn)) j.k += "|" + nn;
+      j.torneos++; j.tiendas[id] = (j.tiendas[id] || 0) + 1; j.mejor = Math.min(j.mejor, +f.place || 99);
+      /* El nombre como lo escribió la tienda en su torneo más reciente. */
+      if ((t.fecha || "") >= j.ultimo){ j.ultimo = t.fecha || ""; j.nombre = f.name; }
+    }));
+  }, () => {})));
+  JUGS = Object.values(idx); cargandoJ = false;
+  pintarJugadores();
+}
+function pintarJugadores(){
+  if (DIR !== "jugadores") return;
+  $("jugNota").textContent = usuario ? "" : "Para abrir el perfil de un jugador necesitas tu cuenta.";
+  if (JUGS === null){ $("jugLista").innerHTML = '<div class="vacio">Buscando en los torneos de las tiendas…</div>'; return; }
+  const texto = $("buscar").value.trim(), q = norm(texto);
+  if (q.length < 2){
+    $("jugTit").textContent = JUGS.length + (JUGS.length === 1 ? " jugador" : " jugadores") + " en los torneos";
+    $("jugLista").innerHTML = '<div class="vacio">Escribe al menos dos letras del nombre.</div>';
+    return;
+  }
+  const res = JUGS.filter(j => j.k.includes(q)).sort((a, b) => b.torneos - a.torneos || a.nombre.localeCompare(b.nombre));
+  $("jugTit").textContent = res.length === 1 ? "1 jugador" : res.length + " jugadores";
+  $("jugLista").innerHTML = res.slice(0, 40).map(filaJugador).join("") ||
+    '<div class="vacio">Nadie llamado «' + esc(texto) + '» en los torneos archivados.</div>';
+}
+function filaJugador(j){
+  const ids = Object.keys(j.tiendas).sort((a, b) => j.tiendas[b] - j.tiendas[a]);
+  const href = "muro.html?" + EMU + "sala=" + encodeURIComponent(ids[0]) + "#jugador=" + encodeURIComponent(j.enlace);
+  return '<a class="fila" href="' + href + '"><span class="logoT" style="--c:var(--sup-alta);color:var(--texto);width:40px;height:40px;font-size:15px">' +
+    esc(iniciales(j.nombre)) + '</span><div class="txt"><b>' + esc(j.nombre) + "</b><small>" +
+    j.torneos + (j.torneos === 1 ? " torneo" : " torneos") + " · " +
+    esc(ids.map(id => nombreTienda(VERIF[id] && VERIF[id].perfil, id)).join(", ")) +
+    (j.mejor <= 3 ? " · mejor puesto: " + j.mejor + "º" : "") + "</small></div>" + ICO.chev + "</a>";
+}
+/* Los logos viven aparte (fotos/<id>/logo) para que la lista no baje todas
+   las fotos de una: se piden los de las filas que se muestran, una vez. */
+const LOGOS = {};
+function pedirLogo(id){
+  if (id in LOGOS) return;
+  LOGOS[id] = null;
+  get(ref(db, "fotos/" + id + "/logo")).then(s => { if (s.val()){ LOGOS[id] = s.val(); pintarDir(); } }, () => {});
+}
+function filaTienda(id, t){
+  pedirLogo(id);
+  const p = t && t.perfil, mia = (MIAS || {})[id];
+  const der = mia && mia.favorita ? '<span class="fav" title="Favorita">' + ICO.estrellaLlena + "</span>"
+            : mia ? '<span class="der">Siguiendo</span>' : ICO.chev;
+  return '<a class="fila" href="' + aTienda(id) + '">' + logo(p, id, 44, LOGOS[id]) +
+    '<div class="txt"><b>' + esc(nombreTienda(p, id)) + (t && t.verificada ? ' <span class="verif">' + ICO.verif + "</span>" : "") +
+    "</b><small>" + esc((p && p.comuna) || "Sin comuna") + "</small></div>" + der + "</a>";
+}
+function pintarDir(){
+  if (ID) return;
+  const q = $("buscar").value.trim().toLowerCase();
+  const pasa = (id, t) => !q || (nombreTienda(t && t.perfil, id) + " " + ((t && t.perfil && t.perfil.comuna) || ""))
+                                  .toLowerCase().includes(q);
+  /* Las favoritas van arriba aunque no estén verificadas: el jugador ya las eligió. */
+  const favs = Object.keys(MIAS || {}).filter(id => MIAS[id] && MIAS[id].favorita);
+  favs.filter(id => !(VERIF || {})[id] && !(id in EXTRA)).forEach(id => {
+    EXTRA[id] = null;
+    get(ref(db, "tiendas/" + id)).then(s => { EXTRA[id] = s.val() || {}; pintarDir(); }).catch(e => console.warn("Operación secundaria sin confirmar", e));
+  });
+  const tiendaDe = id => (VERIF || {})[id] || EXTRA[id];
+  const f = favs.filter(id => pasa(id, tiendaDe(id)));
+  $("dirFav").innerHTML = f.length ? '<h2 class="gtit">Tus favoritas</h2><div class="grupo">' +
+    f.map(id => filaTienda(id, tiendaDe(id))).join("") + "</div>" : "";
+  if (VERIF === null) return;
+  const ids = Object.keys(VERIF).filter(id => !favs.includes(id) && pasa(id, VERIF[id]))
+    .sort((a, b) => nombreTienda(VERIF[a].perfil, a).localeCompare(nombreTienda(VERIF[b].perfil, b)));
+  $("dirLista").innerHTML = ids.length ? ids.map(id => filaTienda(id, VERIF[id])).join("")
+    : '<div class="vacio">' + (q ? "Ninguna tienda calza con «" + esc(q) + "»." : "Todavía no hay tiendas verificadas.") + "</div>";
+}
+
+/* ▌BLOQUE 6 · Perfil de la tienda ═══════════════════════════════════════════════
+   Carga perfil, timers, en vivo, historial y agenda; cabecera y acciones (seguir, favorita, abrir
+   panel). */
+/* ============================================================ PERFIL */
+let FOTOS = {}, TIENDA, OWNER, ESTADO = null, PAIR = null, HIST = null, CFG = PUNTOS_DEF, AG = [], offset = 0, mesSel = null;
+const ahora = () => Date.now() + offset;
+
+function perfil(){
+  $("vPerfil").classList.remove("oculto");
+  onValue(ref(db, ".info/serverTimeOffset"), s => offset = s.val() || 0);
+  onValue(ref(db, "tiendas/" + ID), s => { TIENDA = s.val(); existe(); pintarCabecera(); pintarInfo(); pintarAcciones(); });
+  onValue(ref(db, "salas/" + ID + "/owner"), s => { OWNER = s.val(); existe(); pintarAcciones(); });
+  onValue(ref(db, "fotos/" + ID + "/banner"), s => { FOTOS.banner = s.val(); pintarFotos(); }, () => {});
+  onValue(ref(db, "fotos/" + ID + "/logo"), s => { FOTOS.logo = s.val(); pintarFotos(); }, () => {});
+  onValue(ref(db, "salas/" + ID + "/timer/state"), s => { ESTADO = s.val(); pintarVivo(); pintarTimers(); });
+  /* Las rifas abiertas de la tienda (rifa.html), salvo que ella las esconda: salas/<tienda>/config/rifa = false. */
+  onValue(ref(db, "rifas/" + ID), s => { RIFAS = s.val() || {}; pintarRifas(); }, () => {});
+  onValue(ref(db, "salas/" + ID + "/config/rifa"), s => { RIFAS_OFF = s.val() === false; pintarRifas(); }, () => {});
+  /* Lo que la tienda publica (posts/<tienda>): las 5 últimas. Quien la organiza publica y borra desde acá. */
+  onValue(ref(db, "posts/" + ID), s => { POSTS_T = Object.entries(s.val() || {}); pintarPosts(); }, () => {});
+  onValue(ref(db, "salas/" + ID + "/pairings"), s => { PAIR = s.val(); pintarVivo(); });
+  onValue(ref(db, "salas/" + ID + "/config"), s => {
+    const v = s.val(); if (v && Array.isArray(v.puntos)) CFG = { puntos: v.puntos, resto: v.resto ?? 1 };
+    OCULTAS = (v && v.tablas) || {};
+    pintarClas(); });
+  leerHistorial(db, ID, h => { HIST = Object.values(h);
+    pintarCabecera(); pintarClas(); pintarTorneos(); });
+  onValue(ref(db, "salas/" + ID + "/agenda"), s => {
+    AG = ordenar(Object.entries(s.val() || {}).map(([id, e]) => ({ id, ...e }))); pintarVivo(); pintarAgenda(); });
+  for (let n = 2; n <= MAX_TIMERS; n++){
+    const id = salaDeTimer(ID, n);
+    onValue(ref(db, "salas/" + id + "/tienda"), s => {
+      if (s.val() !== ID){ delete TIMERS[n]; return pintarTimers(); }
+      if (TIMERS[n]) return;
+      TIMERS[n] = {};
+      onValue(ref(db, "salas/" + id + "/nombre"), x => { if (TIMERS[n]){ TIMERS[n].nombre = x.val(); pintarTimers(); pintarClas(); } });
+      onValue(ref(db, "salas/" + id + "/timer/state"), x => { if (TIMERS[n]){ TIMERS[n].estado = x.val(); pintarTimers(); } });
+    }, () => {});
+  }
+  onValue(ref(db, "salas/" + ID + "/nombre"), s => { NOMBRE1 = s.val(); pintarTimers(); pintarClas(); }, () => {});
+  setInterval(pintarReloj, 1000);
+}
+
+/* Los timers de la tienda, cuando tiene más de uno: cuál corre y cuál no. El
+   grande de arriba es el 1. */
+const TIMERS = {};
+let NOMBRE1 = null;
+/* ------------------------------------------------------------ publicaciones
+   posts/<tienda>/<id> = { texto (hasta 600), enlace? (https), creado (hora del servidor) }. Salen acá y en el muro
+   de quienes siguen la tienda. Solo quien la organiza ve el cuadro para publicar y el «Borrar» (las reglas
+   tampoco dejan a nadie más). Se publica y se borra; no se edita. */
+let POSTS_T = [];
+function pintarPosts(){
+  const org = soyDeLaTienda();
+  const ps = POSTS_T.filter(([, p]) => p && typeof p.texto === "string").sort(([, a], [, b]) => (b.creado || 0) - (a.creado || 0)).slice(0, 5);
+  $("postsT").classList.toggle("oculto", !ps.length && !org);
+  $("psForm").classList.toggle("oculto", !org);
+  $("postsL").innerHTML = ps.map(([id, p]) => '<div class="fila"><div class="txt"><b style="font-weight:400;white-space:pre-wrap;overflow-wrap:anywhere">' + esc(p.texto) + "</b><small>" +
+    new Date(p.creado || 0).toLocaleDateString("es-CL", { day: "numeric", month: "long" }) +
+    (/^https:\/\/\S+$/.test(p.enlace || "") ? ' · <a href="' + esc(p.enlace) + '" target="_blank" rel="noopener">Ver más</a>' : "") + "</small></div>" +
+    (org ? '<button class="psBorrar" data-psborrar="' + esc(id) + '">Borrar</button>' : "") + "</div>").join("") ||
+    '<div class="fila"><div class="txt"><small>Todavía no publicas nada.</small></div></div>';
+  $("postsL").querySelectorAll("[data-psborrar]").forEach(b => b.onclick = () => {
+    if (confirm("¿Borrar esta publicación? Deja de verse acá y en el muro."))
+      remove(ref(db, "posts/" + ID + "/" + b.dataset.psborrar)).catch(() => $("psMsg").textContent = "No se pudo borrar. Revisa la conexión.");
+  });
+}
+$("psForm").onsubmit = async e => {
+  e.preventDefault();
+  const texto = $("psTexto").value.trim().slice(0, 600), enlace = $("psEnlace").value.trim();
+  if (!texto) return ($("psMsg").textContent = "Escribe algo para publicar.");
+  if (enlace && !/^https:\/\/\S+$/.test(enlace)) return ($("psMsg").textContent = "El enlace tiene que empezar con https://");
+  $("psPublicar").disabled = true; $("psMsg").textContent = "Publicando…";
+  try {
+    await push(ref(db, "posts/" + ID), { texto, ...(enlace ? { enlace: enlace.slice(0, 300) } : {}), creado: serverTimestamp() });
+    $("psTexto").value = ""; $("psEnlace").value = ""; $("psMsg").textContent = "Publicado: ya sale en el muro de quienes siguen la tienda.";
+  } catch(x){ $("psMsg").textContent = "No se pudo publicar. Revisa la conexión."; }
+  $("psPublicar").disabled = false;
+};
+
+let RIFAS = {}, RIFAS_OFF = false;
+function pintarRifas(){
+  const abiertas = RIFAS_OFF ? [] : Object.entries(RIFAS).filter(([, r]) => r.estado === "abierta").sort(([a], [b]) => a < b ? -1 : 1);
+  $("rifasT").classList.toggle("oculto", !abiertas.length);
+  $("rifasL").innerHTML = abiertas.map(([n, r]) => {
+    const ocupados = Object.keys(r.tomados || {}).length;
+    return '<a class="fila" href="rifa.html?sala=' + encodeURIComponent(ID) + "&r=" + n + (enEmulador() ? "&emu=1" : "") + '"><div class="txt"><b>' + esc(r.titulo) +
+      "</b><small>" + ocupados + " de " + r.total + " números ocupados" + (r.premios ? " · " + Object.keys(r.premios).length + (Object.keys(r.premios).length === 1 ? " premio" : " premios") : "") + "</small></div>" + ICO.enlace + "</a>";
+  }).join("");
+}
+function pintarTimers(){
+  const ns = Object.keys(TIMERS).map(Number).sort((a, b) => a - b);
+  $("timersT").classList.toggle("oculto", !ns.length);
+  if (!ns.length) return;
+  const estado = e => !e ? "Sin usar todavía" : !e.paused && e.endTime ? "Corriendo" : "En pausa";
+  $("timersL").innerHTML = [[1, { nombre: NOMBRE1, estado: ESTADO }], ...ns.map(n => [n, TIMERS[n]])].map(([n, t]) =>
+    '<a class="fila" href="' + aTimer(salaDeTimer(ID, n)) + '">' + ICO.pantalla + '<div class="txt"><b>' +
+    esc(t.nombre || "Timer " + n) + "</b><small>" + estado(t.estado) + "</small></div>" + ICO.chev + "</a>").join("");
+}
+/* Una sala sin tienda es una sala de antes del 25-09: se muestra igual, con
+   el nombre sacado del id. Sin sala ni tienda, el enlace está mal. */
+function existe(){
+  if (TIENDA === undefined || OWNER === undefined) return;
+  const nada = !TIENDA && !OWNER;
+  $("vPerfil").classList.toggle("oculto", nada);
+  $("vNada").classList.toggle("oculto", !nada);
+}
+
+function pintarCabecera(){
+  const p = TIENDA && TIENDA.perfil, nom = nombreTienda(p, ID);
+  document.title = nom + " — ByePass";
+  const color = (p && p.color) || "";
+  aplicarMarca(document.documentElement,color);
+  $("portada").style.setProperty("--c", color || "var(--franja)");
+  $("logo").style.setProperty("--c", color || "var(--franja)");
+  pintarFotos();
+  $("nombre").textContent = nom;
+  $("meta1").innerHTML = (TIENDA && TIENDA.verificada ? '<span class="verif">' + ICO.verif + " Tienda verificada</span>" : "") +
+    (TIENDA && TIENDA.verificada && p && p.comuna ? " · " : "") + esc((p && p.comuna) || "");
+  const n = (HIST || []).length, c = p && p.creada ? new Date(p.creada) : null;
+  $("meta2").textContent = [n ? n + (n === 1 ? " torneo" : " torneos") : "",
+    c ? "desde " + MES_LARGO[c.getMonth()] + " de " + c.getFullYear() : ""].filter(Boolean).join(" · ");
+}
+
+function pintarAcciones(){
+  if (!ID) return;
+  const mia = (MIAS || {})[ID];
+  let h, nota = "";
+  if (!usuario){
+    h = '<a class="btn primario" href="' + urlCuenta("ingresar") + '">Seguir</a>' +
+        '<a class="btn" href="' + urlCuenta("ingresar") + '">' + ICO.estrella + " Favorita</a>";
+  } else if (soyDeLaTienda()){
+    /* Quien la organiza no se sigue a sí mismo: el camino es el panel, y con
+       la tienda verificada, sus fotos. */
+    h = '<a class="btn primario" href="' + urlPanel() + '">Panel del organizador</a>' +
+        (TIENDA.verificada ? '<button class="btn" id="bFotos">' + ICO.camara + " Editar fotos</button>"
+                           : '<span class="btn" aria-disabled="true">' + ICO.check + " Organizas esta tienda</span>");
+    if (!TIENDA.verificada) nota = "Cuando verifiquemos la tienda vas a poder subirle banner y logo.";
+  } else if (PERFIL === undefined){
+    h = "";
+  } else if (PERFIL === null){
+    h = '<a class="btn primario" href="' + urlCuenta("ajustes") + '">Completa tu cuenta para seguirla</a>';
+  } else {
+    h = (mia ? '<button class="btn" id="bSeguir">' + ICO.check + " Siguiendo</button>"
+             : '<button class="btn primario" id="bSeguir">Seguir</button>') +
+        '<button class="btn" id="bFav" aria-pressed="' + !!(mia && mia.favorita) + '">' +
+        (mia && mia.favorita ? '<span class="fav">' + ICO.estrellaLlena + "</span> Favorita" : ICO.estrella + " Favorita") + "</button>";
+  }
+  $("acciones").innerHTML = h;
+  pintarPosts();
+  if ($("bSeguir")) $("bSeguir").onclick = () => accion(mia ? dejar : seguir);
+  if ($("bFav")) $("bFav").onclick = () => accion(() => favorita(!(mia && mia.favorita)));
+  if ($("bFotos")) $("bFotos").onclick = abrirFotos;
+  /* Seguir es el momento de compartir el ID: eso vive en el muro de la tienda. */
+  if (mia && PERFIL && PERFIL.playerId && !mia.compartirId)
+    nota = 'Para que tus resultados lleguen solos a tu perfil, <a href="' + urlCuenta("privacidad") +
+           '">compártele tu ID en Ajustes → Privacidad</a>.';
+  $("notaId").classList.toggle("oculto", !nota);
+  $("notaId").innerHTML = nota;
+}
+const soyDeLaTienda = () => !!(usuario && TIENDA && ((TIENDA.miembros || {})[usuario.uid] || OWNER === usuario.uid));
+
+/* ▌BLOQUE 7 · Fotos (logo y portada) ════════════════════════════════════════════
+   Achica la imagen en el navegador y la guarda en fotos/<tienda>. */
+/* ------------------------------------------------------------ fotos */
+function pintarFotos(){
+  const b = $("portadaImg");
+  b.hidden = !FOTOS.banner;
+  if (FOTOS.banner) b.src = FOTOS.banner; else b.removeAttribute("src");
+  const nom = nombreTienda(TIENDA && TIENDA.perfil, ID), color = (TIENDA && TIENDA.perfil && TIENDA.perfil.color) || "var(--franja)";
+  [$("logo"), $("dfLogo")].forEach(el => {
+    el.style.setProperty("--c", color);
+    if (FOTOS.logo){ const i = new Image(); i.alt = ""; i.src = FOTOS.logo; el.replaceChildren(i); }
+    else el.textContent = iniciales(nom);
+  });
+  $("dfBanner").style.setProperty("--c", color);
+  if (FOTOS.banner){ const i = new Image(); i.alt = ""; i.src = FOTOS.banner; $("dfBanner").replaceChildren(i); }
+  else $("dfBanner").replaceChildren();
+  document.querySelectorAll("[data-quitar]").forEach(q => q.disabled = !FOTOS[q.dataset.quitar]);
+}
+
+/* Se achica en el navegador antes de subir: cada celular que abre la tienda
+   descarga la foto, y la base cobra por lo que se baja. WebP si el navegador
+   lo sabe escribir; si no, JPEG con fondo blanco. Las reglas topan el tamaño
+   igual, por si alguien se salta esta página. */
+const TAMANO = { banner: { ancho: 1600, alto: 900, tope: 300000 }, logo: { lado: 320, tope: 60000 } };
+const WEBP = (() => { const c = document.createElement("canvas"); c.width = c.height = 1;
+                      return c.toDataURL("image/webp").startsWith("data:image/webp"); })();
+async function achicar(archivo, o){
+  let bmp;
+  try { bmp = await createImageBitmap(archivo); } catch(e){ throw new Error("imagen"); }
+  let sx = 0, sy = 0, sw = bmp.width, sh = bmp.height, w, h;
+  if (o.lado){ const l = Math.min(sw, sh); sx = (sw - l) / 2; sy = (sh - l) / 2; sw = sh = l; w = h = Math.min(o.lado, l); }
+  else { const k = Math.min(1, o.ancho / sw, o.alto / sh); w = Math.round(sw * k); h = Math.round(sh * k); }
+  const c = document.createElement("canvas"), x = c.getContext("2d");
+  for (let vuelta = 0; vuelta < 4; vuelta++){
+    c.width = w; c.height = h;
+    if (!WEBP){ x.fillStyle = "#fff"; x.fillRect(0, 0, w, h); }
+    x.drawImage(bmp, sx, sy, sw, sh, 0, 0, w, h);
+    for (const q of [.82, .7, .58]){
+      const url = c.toDataURL(WEBP ? "image/webp" : "image/jpeg", q);
+      if (url.length <= o.tope) return url;
+    }
+    w = Math.round(w * .75); h = Math.round(h * .75);   // ni con menos calidad: más chica
+  }
+  throw new Error("grande");
+}
+const kb = url => Math.round(url.length * .75 / 1024) + " KB";
+const msgF = t => $("dfMsg").textContent = t;
+function abrirFotos(){ msgF(""); pintarFotos(); $("dlgFotos").showModal(); }
+$("dfCerrar").onclick = () => $("dlgFotos").close();
+let subir = null;
+document.querySelectorAll("[data-subir]").forEach(b => b.onclick = () => { subir = b.dataset.subir; $("dfArchivo").click(); });
+$("dfArchivo").onchange = async e => {
+  const f = e.target.files[0], tipo = subir;
+  e.target.value = "";
+  if (!f || !tipo) return;
+  msgF("Achicando la imagen…");
+  try {
+    const url = await achicar(f, TAMANO[tipo]);
+    msgF("Subiendo…");
+    await set(ref(db, "fotos/" + ID + "/" + tipo), url);
+    msgF((tipo === "logo" ? "Logo" : "Banner") + " listo: pesa " + kb(url) + ".");
+  } catch(x){
+    msgF(x.message === "imagen" ? "No se pudo leer esa imagen. Prueba con una JPG o PNG."
+       : x.message === "grande" ? "Esa imagen no se pudo achicar lo suficiente. Prueba con otra."
+       : "No se pudo subir. Revisa la conexión.");
+  }
+};
+document.querySelectorAll("[data-quitar]").forEach(b => b.onclick = async () => {
+  try { await remove(ref(db, "fotos/" + ID + "/" + b.dataset.quitar)); msgF("Quitado."); }
+  catch(e){ msgF("No se pudo quitar. Revisa la conexión."); }
+});
+/* ▌BLOQUE 8 · Seguir / dejar / favorita ═════════════════════════════════════════
+   Escribe usuarios/<uid>/tiendas/<id>; dejar de seguir borra también el ID compartido. */
+const miRef = () => "usuarios/" + usuario.uid + "/tiendas/" + ID;
+const seguir = () => set(ref(db, miRef()), { desde: Date.now(), compartirId: false });
+/* Dejar de seguir se lleva el ID compartido, igual que en el muro. */
+const dejar = () => update(ref(db), { [miRef()]: null, ["enlaces/" + ID + "/" + usuario.uid]: null });
+const favorita = v => (MIAS || {})[ID] ? update(ref(db, miRef()), { favorita: v })
+                                       : set(ref(db, miRef()), { desde: Date.now(), compartirId: false, favorita: v });
+async function accion(f){
+  $("errAccion").classList.add("oculto");
+  try { await f(); }
+  catch(e){ $("errAccion").textContent = "No se pudo guardar. Revisa la conexión."; $("errAccion").classList.remove("oculto"); }
+}
+
+/* ▌BLOQUE 9 · En vivo ═══════════════════════════════════════════════════════════
+   Reloj y ronda de la tienda, y mi mesa. */
+/* ------------------------------------------------------------ en vivo */
+const rondaActual = () => PAIR && PAIR.rounds && PAIR.rounds.length ? PAIR.rounds[PAIR.rounds.length - 1] : null;
+function hayTorneo(){
+  const corriendo = !!(ESTADO && !ESTADO.paused && ESTADO.endTime);
+  /* Emparejamientos de hace más de 12 horas son de un torneo que ya pasó. */
+  const reciente = !!(rondaActual() && Date.now() - (PAIR.updatedAt || 0) < 12 * 3600e3);
+  return corriendo || reciente;
+}
+const segundos = () => !ESTADO ? null : (ESTADO.paused || !ESTADO.endTime)
+  ? Math.round(ESTADO.remaining ?? 0) : Math.round((ESTADO.endTime - ahora()) / 1000);
+const fmt = s => (s < 0 ? "-" : "") + String(Math.floor(Math.abs(s) / 60)).padStart(2, "0") + ":" +
+                 String(Math.abs(s) % 60).padStart(2, "0");
+function pintarReloj(){
+  const r = $("vtReloj"), s = segundos();
+  if (!r || s === null) return;
+  r.textContent = fmt(s);
+  r.style.opacity = ESTADO && ESTADO.paused ? ".5" : "1";
+}
+function pintarVivo(){
+  if (!ID) return;
+  const r = rondaActual();
+  if (hayTorneo()){
+    const yo = PERFIL ? norm(PERFIL.nombre) : "";
+    const ms = (r && r.matches) || [];
+    const mia = m => !!yo && (norm(m.p1) === yo || (!!m.p2 && norm(m.p2) === yo));
+    /* Mi mesa primero, después las demás por número y el bye al final: son
+       cuatro, no la ronda entera. */
+    const orden = [...ms].sort((a, b) => (mia(b) - mia(a)) || (!a.p2 - !b.p2) || ((+a.table || 0) - (+b.table || 0)));
+    const rec = x => x ? x.w + "-" + x.l + "-" + x.t : "";
+    $("vivo").innerHTML = '<div class="envivo isla"><div>' +
+      '<div class="vivo"><span class="punto"></span>En vivo' + (r ? " · " + esc(r.etiqueta || "Ronda " + r.number) : "") + "</div>" +
+      '<div class="reloj num" id="vtReloj">--:--</div>' +
+      '<div class="nom">' + esc((PAIR && PAIR.name) || "Torneo en curso") + "</div>" +
+      '<div class="acc"><a class="btn primario" href="' + aTimer(ID, "mesas") + '">' + ICO.mesas + " Mesas</a>" +
+      '<a class="btn" href="' + aTimer(ID) + '">' + ICO.pantalla + " Timer</a></div></div>" +
+      '<div class="mesasV" aria-hidden="true">' + orden.slice(0, 4).map(m =>
+        '<div class="mesaM' + (mia(m) ? " mia" : "") + '">' +
+        '<span class="rot">MESA ' + esc(m.p2 ? m.table : "—") + "</span><b>" + esc(m.p1) + "</b><small>" + rec(m.p1rec) + "</small>" +
+        (m.p2 ? "<b>" + esc(m.p2) + "</b><small>" + rec(m.p2rec) + "</small>" : "<small>Bye</small>") + "</div>").join("") +
+      "</div></div>";
+    pintarReloj();
+  } else {
+    const prox = AG.find(e => estaVigente(e, ahora()));
+    $("vivo").innerHTML = '<div class="envivo isla"><div>' +
+      '<div class="vivo" style="color:var(--apagado)">' + (prox ? "Próxima fecha" : "Sin torneo en curso") + "</div>" +
+      '<div class="reloj texto">' + esc(prox ? cuantoFalta(prox, ahora()) : "Pronto") + "</div>" +
+      '<div class="nom">' + (prox ? esc(prox.titulo) + " · " + esc(fechaLegible(prox.fecha)) + (prox.hora ? ", " + esc(prox.hora) : "")
+                                 : "Cuando la tienda anuncie su próxima fecha, aparece acá.") + "</div>" +
+      (prox ? '<div class="acc">' + (inscAbierta(prox) ? '<a class="btn primario" href="' + urlInsc(prox) + '">Inscribirse</a>' : "") +
+              '<a class="btn' + (inscAbierta(prox) ? "" : " primario") + '" href="' + urlGoogle(prox) + '" target="_blank" rel="noopener">' + ICO.cal + " Agendar</a>" +
+              '<button class="btn" data-ir="agenda">Ver agenda</button></div>' : "") + "</div></div>";
+  }
+}
+
+/* ▌BLOQUE 10 · Clasificación ════════════════════════════════════════════════════
+   Tablas por timer y mes con clasificacion.js. */
+/* ------------------------------------------------------------ clasificación */
+function filasClas(filas, n){
+  const yo = PERFIL ? norm(PERFIL.nombre) : "";
+  return filas.slice(0, n).map((r, i) => {
+    const pos = i + 1, medalla = pos <= 3 ? " p" + pos : "";
+    const mia = (yo && norm(r.name) === yo) || (usuario && r.uid && r.uid === usuario.uid);
+    return '<div class="fila' + (r.reservado ? " reservado" : "") + (mia ? " yo" : "") + '"' +
+      '><span class="pos' + medalla + '">' + pos + '</span><div class="txt"><b>' + esc(mia && r.reservado ? "Tú · reservado" : r.name) +
+      "</b><small>" + r.torneos + (r.torneos === 1 ? " torneo" : " torneos") +
+      (r.wr === null ? "" : " · " + r.wr.toFixed(0) + "% vict.") + '</small></div><span class="der">' + r.pts + " pts</span></div>";
+  }).join("");
+}
+/* La clasificación del mes: una tabla por categoría si el mes las tuvo; si no, la de siempre. n: cuántas filas de cada una. */
+/* General o por categoría (se recuerda en este navegador, igual que en el timer). */
+let VISTA = "cat";
+try { VISTA = localStorage.getItem(VISTA_RANKING) === "general" ? "general" : "cat"; } catch(e){ console.warn("No se pudo completar una operación opcional", e); }
+function seccionesClas(ts, mes, n){
+  return rankingDelMes(ts, mes, CFG, VISTA).map(sec =>
+    (sec.nombre ? '<div class="catClas" style="margin:12px 0 4px;font-size:var(--t1);letter-spacing:.12em;font-weight:600;opacity:.7">' + esc(sec.nombre.toUpperCase()) + "</div>" : "") +
+    filasClas(sec.filas, n)).join("");
+}
+/* Una tabla por timer, con el nombre del timer. Se ven las que tienen torneos,
+   salvo las que la tienda escondió en el panel (config/tablas/<n> = false). */
+let OCULTAS = {}, TABLA = null;
+const nombreTabla = n => (n === 1 ? NOMBRE1 : TIMERS[n] && TIMERS[n].nombre) || "Timer " + n;
+function pintarClas(){
+  if (!HIST) return;
+  const tablas = [...new Set(HIST.map(timerDe))].filter(n => OCULTAS[n] !== false).sort((a, b) => a - b);
+  if (!tablas.includes(TABLA)) TABLA = tablas[0] ?? null;
+  $("tablaSel").classList.toggle("oculto", tablas.length < 2);
+  $("tablaSel").innerHTML = tablas.map(n => '<option value="' + n + '"' + (n === TABLA ? " selected" : "") + ">" + esc(nombreTabla(n)) + "</option>").join("");
+  const ts = TABLA ? deTimer(HIST, TABLA) : [], de = tablas.length > 1 ? " · " + nombreTabla(TABLA) : "";
+  const meses = mesesDe(ts);
+  if (!meses.length){
+    const v = '<div class="vacio">' + (HIST.length ? "La tienda no publica su clasificación." : "Todavía no hay torneos archivados.") + "</div>";
+    $("clasCorta").innerHTML = v; $("clasTodo").innerHTML = v; $("mesSel").classList.add("oculto"); return;
+  }
+  if (!mesSel || !meses.includes(mesSel)) mesSel = meses[0];
+  $("mesSel").classList.remove("oculto");
+  $("vistaSel").classList.toggle("oculto", clasificarPorCategoria(ts, mesSel, CFG).length < 2);
+  $("vistaSel").value = VISTA;
+  $("mesSel").innerHTML = meses.map(m => '<option value="' + m + '"' + (m === mesSel ? " selected" : "") + ">" + nombreMes(m) + "</option>").join("");
+  $("hClasCorta").textContent = "Clasificación de " + nombreMes(meses[0]).split(" ")[0] + de;
+  $("clasCorta").innerHTML = seccionesClas(ts, meses[0], 5);
+  const n = ts.filter(t => mesDe(t) === mesSel).length;
+  $("hClas").textContent = "Clasificación de " + nombreMes(mesSel) + de;
+  $("clasTodo").innerHTML = seccionesClas(ts, mesSel, Infinity);
+  $("clasNota").textContent = n + (n === 1 ? " torneo" : " torneos") + " en " + nombreMes(mesSel) + ".";
+}
+$("mesSel").onchange = e => { mesSel = e.target.value; pintarClas(); };
+$("vistaSel").onchange = e => { VISTA = e.target.value; try { localStorage.setItem(VISTA_RANKING, VISTA); } catch(x){ console.warn("No se pudo completar una operación opcional", x); } pintarClas(); };
+$("tablaSel").onchange = e => { TABLA = +e.target.value; mesSel = null; pintarClas(); };
+
+/* ▌BLOQUE 11 · Torneos y agenda ═════════════════════════════════════════════════
+   Últimos torneos archivados y próximas fechas (con «Inscribirse» si la inscripción está abierta). */
+/* ------------------------------------------------------------ torneos y agenda */
+function pintarTorneos(){
+  const ts = [...(HIST || [])].sort((a, b) => String(b.fecha || "").localeCompare(String(a.fecha || "")));
+  const fila = t => {
+    const g = (t.standings || [])[0];
+    return '<div class="fila">' + fechaBadge(t.fecha) + '<div class="txt"><b>' + chipJuego(t.juego) + esc(t.nombre || "Torneo") + "</b><small>" +
+      [t.jugadores ? t.jugadores + " jugadores" : "", g ? "ganó " + (g.reservado ? "Jugador reservado" : g.name) : ""]
+        .filter(Boolean).map(esc).join(" · ") + "</small></div></div>";
+  };
+  const v = '<div class="vacio">Todavía no hay torneos archivados.</div>';
+  $("torneosCorta").innerHTML = ts.length ? ts.slice(0, 3).map(fila).join("") : v;
+  $("torneosTodo").innerHTML = ts.length ? ts.map(fila).join("") : v;
+}
+const chipJuego = j => j ? '<span class="chipJuego">' + esc(j) + "</span>" : "";
+const inscAbierta = e => !!(e.inscripcion && e.inscripcion.abierta && (e.inicioMs || 0) > ahora());
+const urlInsc = e => "inscripcion.html?sala=" + encodeURIComponent(ID) + "&evento=" + encodeURIComponent(e.id);
+/* Con eventos de más de un juego, se puede filtrar; lo elegido se recuerda por tienda. */
+let JUEGO_SEL = "";
+try { JUEGO_SEL = localStorage.getItem("juego-" + ID) || ""; } catch(e){ console.warn("No se pudo completar una operación opcional", e); }
+function pintarAgenda(){
+  const todos = AG.filter(e => estaVigente(e, ahora()));
+  const juegos = [...new Set(todos.map(e => (e.juego || "").trim()).filter(Boolean))].sort((a, b) => a.localeCompare(b));
+  if (!juegos.includes(JUEGO_SEL)) JUEGO_SEL = "";
+  $("agFiltro").hidden = juegos.length < 2;
+  $("agFiltro").innerHTML = ["", ...juegos].map(j => '<button type="button" data-juego="' + esc(j) + '" aria-pressed="' + (j === JUEGO_SEL) + '">' +
+    esc(j || "Todos") + "</button>").join("");
+  $("agFiltro").querySelectorAll("button").forEach(b => b.onclick = () => {
+    JUEGO_SEL = b.dataset.juego;
+    try { localStorage.setItem("juego-" + ID, JUEGO_SEL); } catch(e){ console.warn("No se pudo completar una operación opcional", e); }
+    pintarAgenda();
+  });
+  const prox = JUEGO_SEL ? todos.filter(e => (e.juego || "").trim() === JUEGO_SEL) : todos;
+  /* Con inscripciones abiertas, la fila lleva a inscribirse (y desde ahí se
+     agenda); si no, directo a Google Calendar. */
+  $("agendaTodo").innerHTML = prox.length ? prox.map(e => {
+    const insc = inscAbierta(e);
+    return '<a class="fila" href="' + (insc ? urlInsc(e) + '"' : urlGoogle(e) + '" target="_blank" rel="noopener"') + ">" + fechaBadge(e.fecha) +
+    '<div class="txt"><b>' + chipJuego(e.juego) + chipJuego(e.tipo) + esc(e.titulo) +
+    "</b><small>" + esc([fechaLegible(e.fecha) + (e.hora ? ", " + e.hora : ""), e.lugar || ""].filter(Boolean).join(" · ")) +
+    '</small></div><span class="der">' + (insc ? "<b>Inscribirse</b>" : esc(cuantoFalta(e, ahora()))) + "</span></a>"; }).join("")
+    : '<div class="vacio">No hay fechas anunciadas.</div>';
+}
+
+/* ▌BLOQUE 12 · Información ══════════════════════════════════════════════════════
+   Dirección, horario, Instagram y organizadores. */
+/* ------------------------------------------------------------ información */
+function pintarInfo(){
+  const p = (TIENDA && TIENDA.perfil) || {}, mm = (TIENDA && TIENDA.miembros) || {};
+  const datos = [
+    p.direccion ? '<div class="fila">' + ICO.lugar + '<div class="txt"><b>' + esc(p.direccion) + "</b><small>" + esc(p.comuna || "") + "</small></div></div>" : "",
+    p.horario ? '<div class="fila">' + ICO.cal + '<div class="txt"><b>' + esc(p.horario) + "</b><small>Torneos</small></div></div>" : "",
+    p.instagram ? '<a class="fila" href="https://instagram.com/' + encodeURIComponent(p.instagram) + '" target="_blank" rel="noopener">' + ICO.enlace +
+      '<div class="txt"><b>@' + esc(p.instagram) + "</b><small>Instagram</small></div></a>" : "",
+  ].join("");
+  const orgs = Object.values(mm).sort((a, b) => (a.rol === "dueno" ? -1 : 0) - (b.rol === "dueno" ? -1 : 0));
+  const h = '<h2 class="gtit">Sobre la tienda</h2><div class="grupo">' +
+      (datos || '<div class="vacio" style="padding:var(--e4)">La tienda todavía no completa su información.</div>') + "</div>" +
+    (orgs.length ? '<h2 class="gtit">Organizadores</h2><div class="grupo">' + orgs.map(o =>
+      '<div class="fila"><span class="logoT org" aria-hidden="true">' + esc(iniciales(o.nombre)) + "</span>" +
+      '<div class="txt"><b>' + esc(o.nombre) + "</b><small>" + (o.rol === "dueno" ? "Dueño" : "Organizador") + "</small></div></div>").join("") + "</div>" : "");
+  $("infoLado").innerHTML = h;
+  $("infoTab").innerHTML = h;
+}
+
+/* ▌BLOQUE 13 · Pestañas ═════════════════════════════════════════════════════════
+   Cambio de pestaña del perfil. */
+/* ------------------------------------------------------------ pestañas */
+function irA(t){
+  document.querySelectorAll(".tabs button").forEach(b => b.setAttribute("aria-selected", b.dataset.tab === t));
+  document.querySelectorAll("[data-sec]").forEach(s => s.classList.toggle("oculto", s.dataset.sec !== t));
+}
+document.querySelectorAll(".tabs button").forEach(b => b.onclick = () => irA(b.dataset.tab));
+document.addEventListener("click", e => { const b = e.target.closest("[data-ir]"); if (b) irA(b.dataset.ir); });
+
+if (ID){ perfil(); if (location.hash === "#torneos") irA("torneos"); }   // «Ver todos los torneos» del muro
+else directorio();
+</script>
+</body>
+</html>

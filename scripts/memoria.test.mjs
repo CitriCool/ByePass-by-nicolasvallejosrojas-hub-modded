@@ -1,0 +1,12 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {crearPartida,visible,voltear,mejorMarca,validarContexto} from './memoria-motor.mjs';
+test('El servidor no revela las cartas ocultas',()=>{const p=crearPartida('u',{},0);assert.equal(visible(p).cartas.filter(c=>c.tipo!==null).length,0);assert.equal(new Set(p.cartas).size,6);});
+test('Otra cuenta no puede jugar la partida',()=>assert.throws(()=>voltear(crearPartida('u',{},0),'otro',0,0,100)));
+test('Indices y secuencias falsificadas se rechazan',()=>{const p=crearPartida('u',{},0);for(const i of [-1,12,1.2,'0'])assert.throws(()=>voltear(p,'u',i,0,100));assert.throws(()=>voltear(p,'u',0,8,100));});
+test('La misma carta no cuenta como pareja',()=>{const p=crearPartida('u',{},0);voltear(p,'u',0,0,100);assert.throws(()=>voltear(p,'u',0,1,200));assert.equal(p.parejas.length,0);});
+test('Un fallo obliga a esperar y suma un intento',()=>{const p=crearPartida('u',{},0);p.cartas=[0,1,2,3,4,5,0,1,2,3,4,5];voltear(p,'u',0,0,100);voltear(p,'u',1,1,200);assert.equal(p.intento,1);assert.throws(()=>voltear(p,'u',2,2,201));voltear(p,'u',2,2,1200);assert.deepEqual(p.abiertas,[2]);});
+test('Completar seis parejas calcula puntos con el reloj del servidor',()=>{const p=crearPartida('u',{},0);p.cartas=[0,0,1,1,2,2,3,3,4,4,5,5];for(let i=0;i<12;i++)voltear(p,'u',i,i,(i+1)*1000);assert.equal(p.puntos,976);assert.equal(p.intento,6);assert.equal(p.duracion,12);assert.throws(()=>voltear(p,'u',0,12,13000));});
+test('Partida vencida no puntua',()=>assert.throws(()=>voltear(crearPartida('u',{},0),'u',0,0,900001)));
+test('Una marca peor no reemplaza la mejor; desempate por tiempo',()=>{const a={puntos:800,duracion:30};assert.equal(mejorMarca(a,{puntos:100,duracion:1}),a);assert.equal(mejorMarca(a,{puntos:800,duracion:25}).duracion,25);});
+test('El servidor exige resultado publicado del perfil',()=>{assert.throws(()=>validarContexto(null,'Ana'));const p={lastRound:1,rounds:[{number:1,matches:[{p1:'Ana',p2:'Bea',result:''}]}]};assert.throws(()=>validarContexto(p,'Ana'));p.rounds[0].matches[0].result='Empate';assert.equal(validarContexto(p,'Ana').nombre,'Ana');});

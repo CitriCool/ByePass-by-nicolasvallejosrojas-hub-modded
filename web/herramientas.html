@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<!-- ▌ÍNDICE de herramientas.html (detalle y números de línea en MAPA-CODIGO.md, en la raíz del proyecto)
+      1. Estilos
+      2. Diálogo de borrar tienda
+      3. Módulos
+      4. Arranque
+      5. Mantenimiento y aviso para todos
+      6. Salas de invitado
+      7. Beta cerrada
+      8. Tiendas
+      9. Cifras, buzón y cuentas
+     10. Solicitudes de tienda
+     11. Borrar una tienda
+     12. ¿Qué está publicado?
+     13. Uso de la base
+     14. Limpieza
+-->
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#243B60">
+<script src="tema.js?v=2efd744ba33e"></script>
+<meta name="robots" content="noindex">
+<title>Herramientas de administrador — ByePass</title>
+<link rel="stylesheet" href="estilo.css?v=2efd744ba33e">
+<!-- ▌BLOQUE 1 · Estilos — Mantenimiento, beta, tiendas, cifras, buzón, cuentas y borrar. -->
+
+<link rel="stylesheet" href="/paginas/herramientas.css?v=2efd744ba33e">
+<link rel="stylesheet" href="/sistema.css?v=2efd744ba33e">
+<script src="/sistema.js?v=2efd744ba33e" defer></script>
+</head>
+<body data-pagina="herramientas">
+  <header class="sup vidrio">
+    <a class="marca bp-brand" href="index.html" data-link="inicio" aria-label="ByePass, inicio"><span class="bp-symbol" aria-hidden="true"><svg viewBox="-4 -1.5 44 44" aria-hidden="true"><g fill="var(--bp-logo-fondo,var(--pagina))" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="17" y="9" width="19" height="27" rx="3.6" transform="rotate(-42 18 38)"/><rect x="17" y="9" width="19" height="27" rx="3.6" transform="rotate(-28 18 38)"/><rect x="17" y="9" width="19" height="27" rx="3.6" transform="rotate(-14 18 38)"/><g transform="rotate(4 18 38)"><rect x="17" y="9" width="19" height="27" rx="3.6"/><path fill="none" stroke-width="1.9" stroke-linecap="round" d="M22.6 15.5v13h4.9a3.3 3.3 0 0 0 0-6.6h-4.9h4.2a3.2 3.2 0 0 0 0-6.4z"/></g></g></svg></span><span class="bp-word" aria-hidden="true">ye<span>Pass</span></span></a>
+    <a class="btn" href="estadisticas.html" data-link="estadisticas">Estadísticas</a>
+    <a class="btn" href="tienda.html" data-link="tiendas">Tiendas</a>
+    <a class="btn" href="muro.html" data-link="muro">Mi muro</a>
+  </header>
+
+  <main class="ancho">
+    <h1 class="grande">Herramientas de administrador</h1>
+    <p class="bajada" id="bajada">Cargando…</p>
+
+    <div id="herr" class="oculto">
+      <div class="cifras">
+        <div class="cifra"><b id="cfLinea">…</b><span><i class="punto"></i>En línea ahora</span><small id="cfLineaDet"></small></div>
+        <div class="cifra"><b id="cfCuentas">…</b><span>Cuentas registradas</span><small id="cfCuentasDet"></small></div>
+        <div class="cifra"><b id="cfTiendas">…</b><span>Tiendas</span><small id="cfTiendasDet"></small></div>
+        <div class="cifra"><b id="cfBuzon">…</b><span>Mensajes sin leer</span><small id="cfBuzonDet"></small></div>
+      </div>
+      <p class="nota"><a href="estadisticas.html" data-link="estadisticas">Ver las estadísticas completas</a>: visitas, cuentas, torneos y tiendas en el tiempo.</p>
+
+      <h2 class="gtit">¿Qué está publicado?</h2>
+      <div class="grupo">
+        <div class="barraAcc"><button class="btn primario" id="pubRevisar">Revisar el sitio</button>
+          <span class="nota" id="pubEstado" style="margin:0">Compara la versión de cada archivo de byepass.cl con la que piden las páginas, y prueba si las reglas nuevas ya están publicadas.</span></div>
+        <div id="pubLista"></div>
+      </div>
+
+      <h2 class="gtit">Uso de la base <span id="usoResumen"></span></h2>
+      <div class="grupo">
+        <div class="barraAcc"><button class="btn primario" id="usoMedir">Medir</button>
+          <span class="nota" id="usoEstado" style="margin:0">Baja cada tienda y sala para ver cuánto ocupa. Tarda un poco y descarga varios MB: úsalo con wifi.</span></div>
+        <div id="usoMedidor"></div>
+        <div id="usoLista"></div>
+      </div>
+      <p class="nota" style="margin:var(--e2) var(--e3) 0">El plan gratis de Firebase guarda hasta 1 GB. Las salas de invitado se pueden borrar desde acá; las tiendas, desde «Todas las tiendas».</p>
+
+      <h2 class="gtit">Buzón de sugerencias y reportes <span id="bzResumen"></span></h2>
+      <div class="grupo" id="bzLista"><div class="nota" style="padding:var(--e4)">Cargando…</div></div>
+      <p class="nota" style="margin:var(--e2) var(--e3) 0">Llegan desde Ajustes → Escríbenos (los enlaces «Sugerencias» del sitio).
+        Si dejaron un correo, «Responder» le manda la respuesta por correo, desde contacto@byepass.cl.</p>
+
+      <h2 class="gtit">Mantenimiento de todo el sitio</h2>
+      <div class="grupo"><div class="mantCaja" id="mant">
+        <div><b id="mantEstado">…</b><small id="mantDesc"></small></div>
+        <button class="btn" id="mantBtn" disabled>…</button>
+        <input id="mantMensaje" maxlength="200" placeholder="Mensaje para los jugadores (opcional)" aria-label="Mensaje de mantenimiento">
+      </div></div>
+
+      <h2 class="gtit">Aviso para todos</h2>
+      <div class="grupo"><div class="mantCaja" id="avG">
+        <div><b id="avEstado">…</b><small id="avDesc"></small></div>
+        <button class="btn" id="avBtn" disabled>…</button>
+        <input id="avTexto" maxlength="200" placeholder="Texto del aviso (ej.: Este sábado no hay torneos)" aria-label="Texto del aviso">
+        <input id="avEnlace" type="url" maxlength="300" placeholder="Enlace (opcional, https://…)" aria-label="Enlace del aviso">
+        <select id="avDura" aria-label="Cuánto dura el aviso"><option value="1">Se ve 1 día</option><option value="3">Se ve 3 días</option>
+          <option value="7" selected>Se ve 1 semana</option><option value="30">Se ve 1 mes</option></select>
+      </div></div>
+      <p class="nota" style="margin:var(--e2) var(--e3) 0">Una franja arriba de la portada, las cuentas, las tiendas, el muro y el panel. Cada persona la puede cerrar. El timer de pantalla no la muestra.</p>
+
+      <h2 class="gtit">Limpieza</h2>
+      <div class="grupo">
+        <div class="barraAcc"><button class="btn primario" id="limBuscar">Buscar</button>
+          <span class="nota" id="limEstado" style="margin:0">Inscripciones de torneos de hace más de 30 días o de eventos que ya no existen. Guardan nombre, correo y fecha de nacimiento: la política de privacidad dice que se borran.</span></div>
+        <div id="limLista"></div>
+      </div>
+
+      <h2 class="gtit">Rulings</h2>
+      <div class="grupo"><div class="mantCaja" id="rulAbierto">
+        <div><b id="ruEstado">…</b><small id="ruDesc"></small></div>
+        <button class="btn" id="ruBtn" disabled>…</button>
+      </div></div>
+
+      <h2 class="gtit">Beta cerrada <span id="btResumen"></span></h2>
+      <div class="grupo"><div class="mantCaja" id="beta">
+        <div><b id="btEstado">…</b><small id="btDesc"></small></div>
+        <button class="btn" id="btBtn" disabled>…</button>
+      </div></div>
+      <div class="grupo" style="margin-top:var(--e2)"><form class="btNuevo" id="btForm">
+        <label>Para quién es<input id="btNota" maxlength="80" placeholder="Ej.: jugadores de Cartas del Sur"></label>
+        <label>Cuántos códigos<input type="number" id="btCant" min="1" max="500" value="1" inputmode="numeric"></label>
+        <label>Usos de cada uno<input type="number" id="btMax" min="1" max="1000" value="1" inputmode="numeric"></label>
+        <button class="btn primario" type="submit">Crear</button>
+        <button class="btn" type="button" id="btCopiarLibres">Copiar enlaces disponibles</button>
+        <p class="nota" id="btMsg"></p>
+      </form></div>
+      <div class="grupo" id="btLista" style="margin-top:var(--e2)"><div class="nota" style="padding:var(--e4)">Cargando…</div></div>
+      <p class="nota" style="margin:var(--e2) var(--e3) 0">Con la beta cerrada, crear una cuenta pide un código; las cuentas que ya
+        existen entran igual. Comparte el enlace: abre el registro con el código escrito. Un código de varios usos sirve para
+        una tienda entera; al borrarlo deja de aceptar gente nueva, pero no borra las cuentas que ya lo usaron. Toda cuenta
+        creada con un código gana la insignia Beta tester.</p>
+
+      <h2 class="gtit">Salas de invitado</h2>
+      <div class="grupo"><p class="nota" id="invEstado" style="padding:var(--e4)">Revisando…</p></div>
+
+      <h2 class="gtit">Solicitudes de tienda <span id="solResumen"></span></h2>
+      <div class="grupo" id="solLista"><div class="nota" style="padding:var(--e4)">Cargando…</div></div>
+      <p class="nota" style="margin:var(--e2) var(--e3) 0">Aprobada, quien la pidió la crea desde su cuenta y queda de dueño. «Avisarle» le manda el aviso por
+        correo, desde contacto@byepass.cl. Rechazada, ve tu nota y puede mandarla de nuevo.</p>
+      <div class="barraAcc"><button class="btn" id="postAbrir">Crear el post de Instagram de una tienda nueva</button></div>
+
+      <h2 class="gtit">Todas las tiendas <span id="resumen"></span></h2>
+      <div class="grupo" id="lista"><div class="nota" style="padding:var(--e4)">Cargando…</div></div>
+      <p class="nota" style="margin:var(--e2) var(--e3) 0">Verificada: sale en el directorio y puede subir banner y logo.
+        «Panel» entra al panel del organizador de esa tienda.</p>
+
+      <h2 class="gtit">Cuentas <span id="cuResumen"></span></h2>
+      <input type="search" id="cuBuscar" placeholder="Busca una cuenta por nombre o ID de jugador" aria-label="Buscar cuentas">
+      <div class="grupo" id="cuLista"><div class="nota" style="padding:var(--e4)">Cargando…</div></div>
+      <p class="nota" style="margin:var(--e2) var(--e3) 0">Eliminar borra sus datos del sitio. El acceso (correo y contraseña) vive
+        en Firebase y se borra desde la consola: al eliminar te queda su UID para buscarlo ahí.</p>
+    </div>
+  </main>
+
+  <dialog class="hoja" id="dlgCorreo" aria-labelledby="dcTit">
+    <h2 id="dcTit">Correo</h2>
+    <label>Para <input id="dcPara" readonly></label>
+    <label>Asunto <input id="dcAsunto" maxlength="150"></label>
+    <label>Mensaje <textarea id="dcTexto" spellcheck="true"></textarea></label>
+    <p class="nota" id="dcNota"></p>
+    <p class="nota" id="dcEstado" role="status" style="font-weight:600"></p>
+    <div class="pie">
+      <button class="btn" type="button" id="dcCopiaPara">Copiar el correo</button>
+      <button class="btn" type="button" id="dcCopiaTexto">Copiar el mensaje</button>
+      <button class="btn primario" type="button" id="dcEnviar">Enviar el correo</button>
+      <button class="btn" type="button" id="dcCierra">Cerrar</button>
+    </div>
+  </dialog>
+  <dialog class="hoja" id="dlgPost" aria-labelledby="dpTit">
+    <h2 id="dpTit">Post de «nueva tienda»</h2>
+    <div id="dpVista" aria-live="polite"></div>
+    <label>Nombre de la tienda <input id="dpNombre" maxlength="60" autocomplete="off"></label>
+    <label>Comuna o ciudad <input id="dpComuna" maxlength="60" autocomplete="off"></label>
+    <label>Instagram de la tienda (opcional) <input id="dpIg" maxlength="60" autocomplete="off" autocapitalize="off" placeholder="@tienda"></label>
+    <label>Logo (opcional) <input id="dpLogo" type="file" accept="image/*"></label>
+    <label>Fondo <select id="dpTema"><option value="claro">Claro</option><option value="oscuro">Oscuro</option></select></label>
+    <label>Texto para acompañar la imagen <textarea id="dpTexto" spellcheck="true" style="min-height:170px"></textarea></label>
+    <p class="nota" id="dpMsg" role="status"></p>
+    <div class="pie">
+      <button class="btn" type="button" id="dpCopia">Copiar el texto</button>
+      <button class="btn primario" type="button" id="dpBaja">Descargar la imagen</button>
+      <button class="btn" type="button" id="dpCierra">Cerrar</button>
+    </div>
+  </dialog>
+
+  <!-- ▌BLOQUE 2 · Diálogo de borrar tienda — Confirmación antes de borrar una tienda entera. -->
+  <dialog class="hoja" id="dlgBorrar" aria-labelledby="dbTit">
+    <h2 id="dbTit">Eliminar la tienda</h2>
+    <p class="nota" style="font-size:var(--t3);color:var(--texto)">Se borra entera y <b>no se puede deshacer</b>:</p>
+    <ul id="dbQue"></ul>
+    <p class="nota">Antes de borrar se descarga un respaldo (un archivo .json) a este equipo.
+      Quienes la seguían la dejan de ver en su muro.</p>
+    <label>Para confirmar, escribe <b id="dbId"></b>
+      <input id="dbConfirma" autocomplete="off" autocapitalize="off" spellcheck="false"></label>
+    <p class="nota" id="dbMsg" role="status"></p>
+    <div class="pie"><button class="btn" id="dbNo">Cancelar</button>
+      <button class="btn" id="dbSi" disabled>Descargar respaldo y eliminar</button></div>
+  </dialog>
+
+<script src="config.js?v=2efd744ba33e"></script>
+<!-- ▌BLOQUE 3 · Módulos — Imports. -->
+<script type="module">
+import { avisarError } from "./errores.js?v=2efd744ba33e";
+import { ref, onValue, get, set, update, remove, push, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { db, auth, enEmulador, urlCuenta, urlMuro } from "./sesion.js?v=2efd744ba33e";
+import { nombreTienda, iniciales, salaDeTimer, MAX_TIMERS } from "./sala.js?v=2efd744ba33e";
+import { estoyEnLinea, contarEnLinea } from "./presencia.js?v=2efd744ba33e";
+import { mensajeAceptada, asuntoAceptada, canalDe, mensajeRespuesta, asuntoRespuesta } from "./avisotienda.js?v=2efd744ba33e";
+estoyEnLinea(db, "herramientas");
+
+const $ = id => document.getElementById(id);
+/* ▌BLOQUE 4 · Arranque ══════════════════════════════════════════════════════════
+   Solo para admins (admins/<uid>); las reglas son la protección real. */
+/* El ?emu=1 viaja en cada enlace: sin eso, una prueba local abriría la base real. */
+const EMU = enEmulador() ? "emu=1&" : "";
+const aTienda = id => "tienda.html?" + EMU + "sala=" + encodeURIComponent(id);
+const aPanel  = id => "admin.html?" + EMU + "sala=" + encodeURIComponent(id);
+const DEST = { inicio: "index.html" + (EMU ? "?emu=1" : ""), tiendas: "tienda.html" + (EMU ? "?emu=1" : ""), muro: urlMuro(),
+               estadisticas: "estadisticas.html" + (EMU ? "?emu=1" : "") };
+document.querySelectorAll("[data-link]").forEach(a => a.href = DEST[a.dataset.link]);
+
+onAuthStateChanged(auth, async u => {
+  $("herr").classList.add("oculto");
+  if (!u){
+    $("bajada").innerHTML = 'Entra con tu cuenta de administrador. <a href="' + urlCuenta("ingresar") + '">Entrar</a>';
+    return;
+  }
+  let admin = false;
+  try { admin = (await get(ref(db, "admins/" + u.uid))).val() === true; } catch(e){ console.warn("No se pudo completar una operación opcional", e); }
+  if (!admin){
+    $("bajada").textContent = "Esta página es solo para quien administra el sitio. Tu cuenta no tiene ese permiso.";
+    return;
+  }
+  $("bajada").textContent = "Solo las ven las cuentas de administrador del sitio.";
+  $("herr").classList.remove("oculto");
+  escucharMantenimiento();
+  escucharBeta(); escucharRulings();
+  escucharSolicitudes();
+  limpiarInvitados();
+  escucharCifras();
+  pintarTiendas();
+});
+
+/* ▌BLOQUE 5 · Mantenimiento y aviso para todos ══════════════════════════════════
+   Activa o desactiva sistema/mantenimiento con un mensaje, y publica o quita sistema/aviso. */
+/* ------------------------------------------------------------ mantenimiento
+   Lo que cierra de verdad son las reglas: con el sitio cerrado, nadie que no
+   administre lee ni escribe nada. */
+let MANT = {}, escuchando = false;
+function escucharMantenimiento(){
+  if (escuchando) return;
+  escuchando = true;
+  onValue(ref(db, "sistema/mantenimiento"), s => {
+    MANT = s.val() || {};
+    const cerrado = MANT.activo === true;
+    $("mant").classList.toggle("cerrado", cerrado);
+    $("mantEstado").textContent = cerrado ? "Cerrado por mantenimiento" : "Sitio abierto";
+    $("mantDesc").textContent = cerrado
+      ? "Todas las páginas y todas las tiendas muestran la pantalla de mantenimiento. Solo los administradores ven el sitio."
+      : "Cierra todas las páginas de todas las tiendas: portada, cuentas, perfiles, paneles y timers.";
+    if (document.activeElement !== $("mantMensaje")) $("mantMensaje").value = MANT.mensaje || "";
+    $("mantBtn").textContent = cerrado ? "Abrir el sitio" : "Cerrar por mantenimiento";
+    $("mantBtn").classList.toggle("primario", cerrado);
+    $("mantBtn").disabled = false;
+  }, () => {});
+  onValue(ref(db, "sistema/aviso"), s => {
+    AVISO = s.val();
+    const vivo = !!AVISO && AVISO.hasta > Date.now();
+    $("avEstado").textContent = vivo ? "Aviso publicado" : "Sin aviso";
+    $("avDesc").textContent = vivo ? "«" + AVISO.texto + "» · se ve hasta el " + new Date(AVISO.hasta).toLocaleString("es-CL", { dateStyle: "medium", timeStyle: "short" })
+      : "Escribe un texto corto y publícalo: lo ven todas las páginas hasta la fecha que elijas.";
+    $("avBtn").textContent = vivo ? "Quitar el aviso" : "Publicar";
+    $("avBtn").classList.toggle("primario", !vivo);
+    $("avBtn").disabled = false;
+  }, () => {});
+}
+/* ------------------------------------------------------------ aviso para todos
+   sistema/aviso: lo muestra mantenimiento.js arriba de cada página. */
+let AVISO = null;
+$("avBtn").onclick = async () => {
+  const vivo = !!AVISO && AVISO.hasta > Date.now();
+  const texto = $("avTexto").value.trim().slice(0, 200), enlace = $("avEnlace").value.trim();
+  if (!vivo && !texto) return $("avDesc").textContent = "Escribe el texto del aviso.";
+  if (!vivo && enlace && !/^https:\/\/\S+$/.test(enlace)) return $("avDesc").textContent = "El enlace tiene que empezar con https://";
+  const ahora = Date.now(), v = { texto, desde: ahora, hasta: ahora + Number($("avDura").value) * 864e5 };
+  if (enlace) v.enlace = enlace.slice(0, 300);
+  $("avBtn").disabled = true;
+  try { await set(ref(db, "sistema/aviso"), vivo ? null : v); if (!vivo){ $("avTexto").value = ""; $("avEnlace").value = ""; } }
+  catch(e){ $("avBtn").disabled = false; $("avDesc").textContent = "No se pudo guardar. Revisa la conexión."; }
+};
+$("mantBtn").onclick = async () => {
+  const cerrar = MANT.activo !== true;
+  if (cerrar && !confirm("¿Cerrar TODO el sitio por mantenimiento? Nadie que no administre va a poder entrar a ninguna página ni a ninguna tienda hasta que lo abras.")) return;
+  const v = { activo: cerrar, desde: Date.now() }, msg = $("mantMensaje").value.trim();
+  if (msg) v.mensaje = msg.slice(0, 200);
+  $("mantBtn").disabled = true;
+  try { await set(ref(db, "sistema/mantenimiento"), v); }
+  catch(e){ $("mantBtn").disabled = false; $("mantDesc").textContent = "No se pudo cambiar. Revisa la conexión."; }
+};
+
+/* ▌BLOQUE 6 · Salas de invitado ═════════════════════════════════════════════════
+   Borra las salas de invitado vencidas. */
+/* ------------------------------------------------------------ salas de invitado
+   El timer sin cuenta (invitado.html) abre salas inv-xxxxxx que duran 24 h.
+   Al vencer las reglas ya no dejan leerlas; acá se borran de verdad (la sala,
+   su base de jugadores y su entrada en la lista), cada vez que se abre esta
+   página. */
+async function limpiarInvitados(){
+  let lista = {};
+  try { lista = (await get(ref(db, "invitados"))).val() || {}; }
+  catch(e){ $("invEstado").textContent = "No se pudo leer. ¿Publicaste las reglas nuevas?"; return; }
+  const ahora = Date.now(), vencidas = Object.keys(lista).filter(c => lista[c] < ahora);
+  const rutas = {};
+  vencidas.forEach(c => ["salas/", "jugadores/", "invitados/"].forEach(n => rutas[n + c] = null));
+  let borradas = 0;
+  if (vencidas.length){ try { await update(ref(db), rutas); borradas = vencidas.length; } catch(e){ console.warn("No se pudo completar una operación opcional", e); } }
+  const abiertas = Object.keys(lista).length - vencidas.length;
+  $("invEstado").textContent = (abiertas === 1 ? "1 sala abierta" : abiertas + " salas abiertas") + " ahora" +
+    (borradas ? " · se borraron " + borradas + (borradas === 1 ? " vencida" : " vencidas") : "") +
+    ". Duran 24 horas; al vencer se cierran solas y se borran al abrir esta página.";
+}
+
+/* ▌BLOQUE 7 · Beta cerrada ══════════════════════════════════════════════════════
+   Activa la beta, crea lotes de códigos de invitación y copia sus enlaces. */
+/* ------------------------------------------------------------ beta cerrada
+   beta/activa abre o cierra el registro. Cada código (beta/codigos/<CÓDIGO>)
+   tiene cuántos usos permite y cuántos lleva; las reglas cuentan cada uso junto
+   con el perfil nuevo, así que no se puede pasar del máximo ni saltarse el código. */
+let BETA = { activa: false, codigos: {} }, betaEscuchando = false;
+function escucharBeta(){
+  if (betaEscuchando) return;
+  betaEscuchando = true;
+  onValue(ref(db, "beta/activa"), s => {
+    BETA.activa = s.val() === true;
+    $("beta").classList.toggle("cerrado", BETA.activa);
+    $("btEstado").textContent = BETA.activa ? "Beta cerrada: registro solo con invitación" : "Registro abierto";
+    $("btDesc").textContent = BETA.activa
+      ? "Para crear una cuenta hay que tener un código de los de abajo. Las cuentas existentes no se ven afectadas."
+      : "Cualquiera puede crear una cuenta. Al cerrar la beta, el registro pide un código de invitación.";
+    $("btBtn").textContent = BETA.activa ? "Abrir el registro" : "Cerrar la beta";
+    $("btBtn").classList.toggle("primario", BETA.activa);
+    $("btBtn").disabled = false;
+  }, () => {});
+  onValue(ref(db, "beta/codigos"), s => { BETA.codigos = s.val() || {}; pintarCodigos(); },
+    () => { $("btLista").innerHTML = '<div class="nota" style="padding:var(--e4)">No se pudo leer. ¿Publicaste las reglas nuevas?</div>'; });
+}
+$("btBtn").onclick = async () => {
+  const cerrar = !BETA.activa;
+  if (cerrar && !Object.keys(BETA.codigos).length && !confirm("Todavía no hay códigos: nadie va a poder crear una cuenta. ¿Cerrar la beta igual?")) return;
+  $("btBtn").disabled = true;
+  try { await set(ref(db, "beta/activa"), cerrar); }
+  catch(e){ $("btBtn").disabled = false; $("btDesc").textContent = "No se pudo cambiar. ¿Publicaste las reglas nuevas?"; }
+};
+/* Rulings: mientras sistema/rulingsAbierto no sea true, la página solo la ven y la usan los admins (las reglas cierran el foro
+   a los demás). Abrirla la muestra a todos y suma «Rulings» al menú del muro. */
+let RUL_ABIERTO = false;
+function escucharRulings(){
+  onValue(ref(db, "sistema/rulingsAbierto"), s => {
+    RUL_ABIERTO = s.val() === true;
+    $("ruEstado").textContent = RUL_ABIERTO ? "Abierta a todos" : "En construcción: solo la ven los admins";
+    $("ruDesc").textContent = RUL_ABIERTO ? "Cualquiera la ve en el menú del muro y puede escribir en el foro con su cuenta."
+      : "Los demás ven un aviso de que está en construcción. Ábrela cuando estén cargados y revisados los rulings.";
+    $("ruBtn").textContent = RUL_ABIERTO ? "Volver a cerrarla" : "Abrirla a todos";
+    $("ruBtn").classList.toggle("primario", !RUL_ABIERTO);
+    $("ruBtn").disabled = false;
+  }, () => { $("ruDesc").textContent = "No se pudo leer. ¿Publicaste las reglas nuevas?"; });
+}
+$("ruBtn").onclick = async () => {
+  if (!RUL_ABIERTO && !confirm("¿Abrir Rulings a todos? Aparece en el menú del muro y cualquiera con cuenta puede escribir en el foro.")) return;
+  $("ruBtn").disabled = true;
+  try { await set(ref(db, "sistema/rulingsAbierto"), RUL_ABIERTO ? null : true); }
+  catch(e){ $("ruBtn").disabled = false; $("ruDesc").textContent = "No se pudo cambiar. ¿Publicaste las reglas nuevas?"; }
+};
+/* 10 caracteres sin los que se confunden (0/O, 1/I/L): se dictan y se escriben a mano. */
+function codigoNuevo(){
+  const A = "ABCDEFGHJKMNPQRSTUVWXYZ23456789", r = crypto.getRandomValues(new Uint32Array(10));
+  return [...r].map(n => A[n % A.length]).join("");
+}
+const enlaceBeta = c => new URL("cuenta.html?" + EMU + "invitacion=" + c + "#crear", location.href).href;
+/* Los enlaces van uno por línea: se pegan tal cual en una planilla o un chat. */
+async function copiarEnlaces(codigos, boton, texto){
+  const txt = codigos.map(enlaceBeta).join("\n");
+  try { await navigator.clipboard.writeText(txt); boton.textContent = codigos.length + " copiados"; }
+  catch(e){ prompt("Copia los enlaces:", txt); }
+  setTimeout(() => boton.textContent = texto, 1800);
+}
+/* Un lote entero va en un solo update: o se crean todos o ninguno. */
+$("btForm").onsubmit = async e => {
+  e.preventDefault();
+  const max = Math.min(1000, Math.max(1, parseInt($("btMax").value, 10) || 1));
+  const cant = Math.min(500, Math.max(1, parseInt($("btCant").value, 10) || 1));
+  const v = { max, usados: 0, creado: Date.now() }, nota = $("btNota").value.trim();
+  if (nota) v.nota = nota.slice(0, 80);
+  const lote = new Set();
+  while (lote.size < cant){ const c = codigoNuevo(); if (!BETA.codigos[c]) lote.add(c); }
+  const rutas = {};
+  lote.forEach(c => rutas["beta/codigos/" + c] = v);
+  try {
+    await update(ref(db), rutas);
+    $("btNota").value = ""; $("btMax").value = 1; $("btCant").value = 1;
+    const cods = [...lote];
+    $("btMsg").innerHTML = (cant === 1 ? "Código " + cods[0] + " creado. " : cant + " códigos creados. ") +
+      '<button class="btn chico primario" type="button" id="btCopiarLote">Copiar ' + (cant === 1 ? "su enlace" : "sus " + cant + " enlaces") + "</button>";
+    const b = $("btCopiarLote"), t = b.textContent;
+    b.onclick = () => copiarEnlaces(cods, b, t);
+  } catch(err){ $("btMsg").textContent = "No se pudo crear. ¿Publicaste las reglas nuevas?"; }
+};
+$("btCopiarLibres").onclick = () => {
+  const libres = Object.entries(BETA.codigos).filter(([, x]) => (x.usados || 0) < x.max).map(([c]) => c);
+  if (!libres.length){ $("btMsg").textContent = "No hay códigos disponibles."; return; }
+  copiarEnlaces(libres, $("btCopiarLibres"), "Copiar enlaces disponibles");
+};
+function pintarCodigos(){
+  const filas = Object.entries(BETA.codigos).sort(([, a], [, b]) => (b.creado || 0) - (a.creado || 0));
+  const usos = filas.reduce((n, [, c]) => n + (c.usados || 0), 0);
+  $("btResumen").textContent = filas.length ? filas.length + (filas.length === 1 ? " código · " : " códigos · ") + usos + (usos === 1 ? " cuenta" : " cuentas") : "";
+  $("btLista").innerHTML = filas.map(([c, x]) => {
+    const quienes = Object.keys(x.quienes || {}).map(uid => (CU[uid] || {}).nombre || "cuenta borrada");
+    const lleno = (x.usados || 0) >= x.max;
+    return '<div class="tfila"><span></span><div><b class="codigo">' + esc(c) + "</b>" +
+      "<small>" + esc([x.nota, (x.usados || 0) + " de " + x.max + (x.max === 1 ? " uso" : " usos"),
+        x.creado && "creado el " + new Date(x.creado).toLocaleDateString("es-CL")].filter(Boolean).join(" · ")) + "</small>" +
+      (quienes.length ? "<small>Lo usaron: " + esc(quienes.join(", ")) + "</small>" : "") + "</div>" +
+      '<span class="estado ' + (lleno ? "" : "e1") + '">' + (lleno ? "Sin cupos" : "Disponible") + "</span>" +
+      '<div class="acc"><button class="btn chico primario" data-btcopiar="' + esc(c) + '">Copiar enlace</button>' +
+      '<button class="btn chico peligro" data-btborrar="' + esc(c) + '">Borrar</button></div></div>';
+  }).join("") || '<div class="nota" style="padding:var(--e4)">Todavía no hay códigos.</div>';
+  $("btLista").querySelectorAll("[data-btcopiar]").forEach(b => b.onclick = async () => {
+    const url = enlaceBeta(b.dataset.btcopiar);
+    try { await navigator.clipboard.writeText(url); b.textContent = "Copiado"; } catch(e){ prompt("Copia el enlace:", url); }
+    setTimeout(() => b.textContent = "Copiar enlace", 1500);
+  });
+  $("btLista").querySelectorAll("[data-btborrar]").forEach(b => b.onclick = () => {
+    if (confirm("¿Borrar el código " + b.dataset.btborrar + "? Nadie más podrá usarlo; las cuentas que ya lo usaron siguen igual."))
+      remove(ref(db, "beta/codigos/" + b.dataset.btborrar)).catch(e => avisarError(e));
+  });
+}
+
+/* ▌BLOQUE 8 · Tiendas ═══════════════════════════════════════════════════════════
+   Lista todas las tiendas y marca verificadas. */
+/* ------------------------------------------------------------ tiendas
+   Las que nadie ha revisado, primero. verificada: true sale en el directorio;
+   false, revisada y no; sin el campo, por revisar. */
+const ESTADO = t => t.verificada === true ? 1 : t.verificada === false ? 2 : 0;
+let TODAS = {};
+const LOGOS = {};
+async function pintarTiendas(){
+  try { TODAS = (await get(ref(db, "tiendas"))).val() || {}; }
+  catch(e){ $("lista").innerHTML = '<div class="nota" style="padding:var(--e4)">No se pudo cargar la lista.</div>'; return; }
+  pintarCuentas();   // quién es dueño de qué, para la lista de cuentas
+  const filas = Object.entries(TODAS).map(([id, t]) => ({ id, t, p: t.perfil || {} }))
+    .sort((a, b) => ESTADO(a.t) - ESTADO(b.t) || nombreTienda(a.p, a.id).localeCompare(nombreTienda(b.p, b.id)));
+  const porRevisar = filas.filter(f => !ESTADO(f.t)).length;
+  $("cfTiendas").textContent = filas.length;
+  $("cfTiendasDet").textContent = filas.filter(f => ESTADO(f.t) === 1).length + " verificadas" + (porRevisar ? " · " + porRevisar + " por revisar" : "");
+  $("resumen").textContent = filas.length + (filas.length === 1 ? " tienda" : " tiendas") +
+    (porRevisar ? " · " + porRevisar + " por revisar" : "");
+  $("lista").innerHTML = filas.map(({ id, t, p }) => {
+    const mm = Object.values(t.miembros || {}), dueno = mm.find(m => m.rol === "dueno"), e = ESTADO(t);
+    const orgs = mm.length - (dueno ? 1 : 0);
+    const datos = [p.comuna, dueno && "dueño: " + dueno.nombre,
+      orgs && orgs + (orgs === 1 ? " organizador" : " organizadores"),
+      p.creada && "creada el " + new Date(p.creada).toLocaleDateString("es-CL")].filter(Boolean).join(" · ");
+    return '<div class="tfila"><span class="logoT" style="--c:' + esc(p.color || "var(--franja)") + '" aria-hidden="true">' +
+      (LOGOS[id] ? '<img src="' + esc(LOGOS[id]) + '" alt="">' : esc(iniciales(nombreTienda(p, id)))) + "</span>" +
+      "<div><b>" + esc(nombreTienda(p, id)) + "</b><small>" + esc(datos || "Sin datos todavía") + "</small>" +
+      '<small><a href="' + aTienda(id) + '" target="_blank" rel="noopener">Ver el perfil</a>' +
+      (p.instagram ? '<a href="https://instagram.com/' + encodeURIComponent(p.instagram) + '" target="_blank" rel="noopener">@' + esc(p.instagram) + "</a>" : "") +
+      "</small></div>" +
+      '<span class="estado e' + e + '">' + ["Por revisar", "Verificada", "No verificada"][e] + "</span>" +
+      '<div class="acc">' +
+      (e !== 1 ? '<button class="btn chico primario" data-verif="' + esc(id) + '" data-v="1">Verificar</button>' : "") +
+      (e !== 2 ? '<button class="btn chico" data-verif="' + esc(id) + '" data-v="0">' + (e ? "Quitar verificación" : "No verificar") + "</button>" : "") +
+      '<a class="btn chico" href="' + aPanel(id) + '">Panel</a>' +
+      '<button class="btn chico peligro" data-borrar="' + esc(id) + '">Eliminar</button></div></div>';
+  }).join("") || '<div class="nota" style="padding:var(--e4)">Todavía no hay tiendas.</div>';
+  $("lista").querySelectorAll("[data-verif]").forEach(b => b.onclick = async () => {
+    b.disabled = true;
+    try { await set(ref(db, "tiendas/" + b.dataset.verif + "/verificada"), b.dataset.v === "1"); pintarTiendas(); }
+    catch(e){ b.disabled = false; $("resumen").textContent = "No se pudo guardar. Revisa la conexión."; }
+  });
+  $("lista").querySelectorAll("[data-borrar]").forEach(b => b.onclick = () => abrirBorrar(b.dataset.borrar));
+  /* Los logos, aparte y una vez cada uno: la lista no baja todas las fotos. */
+  filas.forEach(({ id }) => {
+    if (id in LOGOS) return;
+    LOGOS[id] = null;
+    get(ref(db, "fotos/" + id + "/logo")).then(s => { if (s.val()){ LOGOS[id] = s.val(); pintarTiendas(); } }, () => {});
+  });
+}
+
+/* ▌BLOQUE 9 · Cifras, buzón y cuentas ═══════════════════════════════════════════
+   En línea y visitas, mensajes del buzón, buscar y eliminar cuentas. */
+/* ------------------------------------------------------------ cifras, buzón y cuentas
+   En línea: presencia.js. Cuentas: usuarios/ (solo quien administra la lee).
+   El buzón: lo que mandan desde Ajustes → Escríbenos. */
+const PAGINAS = { portada: "portada", cuenta: "cuenta", muro: "muro", tiendas: "tiendas", timer: "timers",
+                  panel: "paneles", herramientas: "herramientas" };
+let cifrasEscuchando = false, BZ = {}, CU = {};
+function escucharCifras(){
+  if (cifrasEscuchando) return;
+  cifrasEscuchando = true;
+  contarEnLinea(db, (n, por) => {
+    $("cfLinea").textContent = n == null ? "—" : n;
+    $("cfLineaDet").textContent = n ? Object.entries(por).sort((a, b) => b[1] - a[1])
+      .map(([p, k]) => k + " en " + (PAGINAS[p] || p)).join(" · ") : "";
+  });
+  onValue(ref(db, "usuarios"), s => {
+    CU = s.val() || {};
+    const ids = Object.keys(CU), hoy = new Date(); hoy.setHours(0, 0, 0, 0);
+    const semana = ids.filter(u => (CU[u].creado || 0) >= hoy.getTime() - 6 * 86400000).length;
+    $("cfCuentas").textContent = ids.length;
+    $("cfCuentasDet").textContent = (semana ? semana + " en los últimos 7 días · " : "") +
+      ids.filter(u => CU[u].playerId).length + " con ID de jugador";
+    pintarCuentas(); pintarCodigos();
+  }, () => { $("cfCuentas").textContent = "—"; $("cuLista").innerHTML = '<div class="nota" style="padding:var(--e4)">No se pudo leer. ¿Publicaste las reglas nuevas?</div>'; });
+  onValue(ref(db, "buzon"), s => { BZ = s.val() || {}; pintarBuzon(); },
+    () => { $("cfBuzon").textContent = "—"; $("bzLista").innerHTML = '<div class="nota" style="padding:var(--e4)">No se pudo leer. ¿Publicaste las reglas nuevas?</div>'; });
+  $("cuBuscar").oninput = pintarCuentas;
+}
+
+const TIPOS = { sugerencia: "Sugerencia", error: "Algo no funciona", reporte: "Reporte", otro: "Otra cosa" };
+const fechaHora = ms => ms ? new Date(ms).toLocaleString("es-CL", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }) : "";
+function pintarBuzon(){
+  const filas = Object.entries(BZ).sort(([, a], [, b]) => (!!a.leido - !!b.leido) || (b.creado || 0) - (a.creado || 0));
+  const nuevos = filas.filter(([, m]) => !m.leido).length;
+  $("cfBuzon").textContent = nuevos;
+  $("cfBuzonDet").textContent = filas.length + (filas.length === 1 ? " mensaje en total" : " mensajes en total");
+  $("bzResumen").textContent = nuevos ? nuevos + " sin leer" : "";
+  $("bzLista").innerHTML = filas.map(([id, m]) => {
+    /* A quién responderle: el correo que escribió en «contacto»; si no puso uno, el de su cuenta (guardado, o el que busca la función
+       con su uid en los mensajes de antes, que no lo guardaban). */
+    const esCorreo = t => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(t || ""), dir = esCorreo(m.contacto) ? m.contacto.trim() : esCorreo(m.correo) ? m.correo : m.uid ? "el correo de su cuenta" : "";
+    return '<div class="msg' + (m.leido ? "" : " nuevo") + '"><div class="cab"><span class="tipo ' + esc(m.tipo) + '">' + esc(TIPOS[m.tipo] || m.tipo) +
+      "</span><b>" + esc(m.nombre || "Sin nombre") + "</b><span>" + esc(fechaHora(m.creado)) + "</span>" +
+      (m.pagina ? '<span>desde <a href="' + esc(m.pagina) + '" target="_blank" rel="noopener">' + esc(m.pagina.split("?")[0]) + "</a></span>" : "") + "</div>" +
+      "<p>" + esc(m.texto) + "</p>" +
+      '<div class="acc">' +
+      (m.respondido ? '<span class="nota" style="margin:0;color:var(--ok)">Respondido el ' + esc(fechaHora(m.respondido)) + "</span>" : "") +
+      (dir ? '<span class="nota" style="margin:0">Responder ' + (esCorreo(dir) ? "a <b>" + esc(dir) + "</b>" : "al correo de su cuenta") + "</span>" +
+             '<button class="btn chico primario" data-responder="' + esc(id) + '" title="Deja listo el mensaje que confirma que lo leímos y lo recibimos">Responder</button>'
+           : m.contacto ? '<span class="nota" style="margin:0">Contacto: ' + esc(m.contacto) + "</span>" : "") +
+      '<button class="btn chico" data-leido="' + esc(id) + '" data-v="' + (m.leido ? 0 : 1) + '">' + (m.leido ? "Marcar sin leer" : "Marcar leído") + "</button>" +
+      '<button class="btn chico peligro" data-bzborrar="' + esc(id) + '">Borrar</button></div></div>';
+  }).join("") || '<div class="nota" style="padding:var(--e4)">No hay mensajes.</div>';
+  $("bzLista").querySelectorAll("[data-leido]").forEach(b => b.onclick = () =>
+    set(ref(db, "buzon/" + b.dataset.leido + "/leido"), b.dataset.v === "1").catch(e => avisarError(e)));
+  $("bzLista").querySelectorAll("[data-bzborrar]").forEach(b => b.onclick = () => {
+    if (confirm("¿Borrar este mensaje?")) remove(ref(db, "buzon/" + b.dataset.bzborrar)).catch(e => avisarError(e));
+  });
+  $("bzLista").querySelectorAll("[data-responder]").forEach(b => b.onclick = () => {
+    const m = BZ[b.dataset.responder]; if (!m) return;
+    const esCorreo = t => /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(t || "");
+    abrirCorreo({ titulo: "Responder a " + (m.nombre || "quien escribió"), para: esCorreo(m.contacto) ? m.contacto.trim() : m.correo || "", cuenta: m.uid,
+      asunto: asuntoRespuesta(), texto: mensajeRespuesta(m), buzon: b.dataset.responder,
+      nota: m.respondido ? "Ya le respondiste el " + fechaHora(m.respondido) + ". " : "Al enviarlo, el mensaje queda como leído. " });
+  });
+}
+
+const copiarTxt = async (txt, b) => {
+  const antes = b.textContent;
+  try { await navigator.clipboard.writeText(txt); b.textContent = "Copiado ✓"; } catch(e){ b.textContent = "No se pudo copiar"; }
+  setTimeout(() => b.textContent = antes, 1800);
+};
+/* «Enviar el correo»: se deja en correosSalida/<id> y la función enviarCorreo (functions/correo.js) lo manda con Brevo desde
+   contacto@byepass.cl; las respuestas de la persona llegan a esa misma dirección. Acá se espera su estado: "enviado" o "error". */
+let CORREO_DE = {}, dejarEstado = null;
+function abrirCorreo({ titulo, para, asunto, texto, nota, solicitud, buzon, cuenta }){
+  $("dcTit").textContent = titulo; $("dcPara").value = para || ""; $("dcAsunto").value = asunto; $("dcTexto").value = texto;
+  /* sin correo a la vista (solicitudes y mensajes de antes): va al correo con que se registró, que busca la función con su uid */
+  $("dcPara").placeholder = cuenta ? "El correo con que se registró (lo busca ByePass al enviar)" : "";
+  $("dcCopiaPara").disabled = !para;
+  $("dcNota").textContent = (nota || "") + "Sale desde contacto@byepass.cl y, si responde, te llega ahí.";
+  $("dcEstado").textContent = ""; $("dcEnviar").disabled = false;
+  CORREO_DE = { ...(solicitud ? { solicitud } : {}), ...(buzon ? { buzon } : {}), ...(!para && cuenta ? { cuenta } : {}) };
+  $("dlgCorreo").showModal();
+}
+$("dcEnviar").onclick = async () => {
+  const para = $("dcPara").value.trim(), asunto = $("dcAsunto").value.trim(), texto = $("dcTexto").value.trim(), estado = $("dcEstado");
+  if (!(para ? /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(para) : CORREO_DE.cuenta)) return (estado.textContent = "El destinatario no es un correo válido.");
+  if (!asunto || !texto) return (estado.textContent = "Escribe el asunto y el mensaje.");
+  $("dcEnviar").disabled = true; estado.textContent = "Enviando…";
+  const r = push(ref(db, "correosSalida"));
+  try { await set(r, { ...(para ? { para } : {}), asunto: asunto.slice(0, 150), texto: texto.slice(0, 5000), por: auth.currentUser.uid, creado: serverTimestamp(), ...CORREO_DE }); }
+  catch(e){ $("dcEnviar").disabled = false; return (estado.textContent = "No se pudo dejar en cola. ¿Publicaste las reglas nuevas?"); }
+  if (dejarEstado) dejarEstado();
+  const tope = setTimeout(() => { if (dejarEstado) dejarEstado(); dejarEstado = null;
+    estado.textContent = "Quedó en cola, pero no hubo respuesta en 30 s. ¿Está desplegada la función enviarCorreo?"; }, 30000);
+  dejarEstado = onValue(r, s => {
+    const v = s.val() || {};
+    if (!v.estado) return;
+    clearTimeout(tope); dejarEstado(); dejarEstado = null;
+    if (v.estado === "enviado") estado.textContent = "Enviado a " + (v.enviadoA || para) + " ✓";
+    else { estado.textContent = "No se envió: " + (v.error || "error desconocido") + ". Puedes copiar el mensaje y mandarlo a mano."; $("dcEnviar").disabled = false; }
+  }, () => {});
+};
+$("dcCopiaPara").onclick = e => copiarTxt($("dcPara").value, e.currentTarget);
+$("dcCopiaTexto").onclick = e => copiarTxt($("dcTexto").value, e.currentTarget);
+$("dcCierra").onclick = () => $("dlgCorreo").close();
+
+/* El post: la imagen se vuelve a dibujar con cada cambio (la última manda); el texto se rehace solo mientras no lo hayas editado a mano. */
+let POST_N = 0, POST_LOGO = null, POST_EDITADO = false, POST_MOD = null;
+const postMod = () => POST_MOD || (POST_MOD = import("./postnuevatienda.js?v=2efd744ba33e"));
+const datosPost = () => ({ nombre: $("dpNombre").value, comuna: $("dpComuna").value, instagram: $("dpIg").value, logo: POST_LOGO, tema: $("dpTema").value });
+async function pintarPost(){
+  const n = ++POST_N, m = await postMod(), d = datosPost();
+  if (!POST_EDITADO) $("dpTexto").value = m.textoPost(d);
+  const cv = await m.dibujarPost(d);
+  if (n === POST_N) $("dpVista").replaceChildren(cv);
+}
+function abrirPost({ nombre = "", comuna = "", instagram = "" } = {}){
+  $("dpNombre").value = nombre; $("dpComuna").value = comuna; $("dpIg").value = instagram ? "@" + instagram : "";
+  $("dpLogo").value = ""; POST_LOGO = null; POST_EDITADO = false; $("dpMsg").textContent = "";
+  $("dlgPost").showModal(); pintarPost();
+}
+["dpNombre", "dpComuna", "dpIg", "dpTema"].forEach(id => $(id).oninput = pintarPost);
+$("dpTexto").oninput = () => { POST_EDITADO = true; };
+$("dpLogo").onchange = () => {
+  const f = $("dpLogo").files[0]; POST_LOGO = null;
+  if (!f) return pintarPost();
+  const url = URL.createObjectURL(f), i = new Image();
+  i.onload = () => { POST_LOGO = i; pintarPost(); URL.revokeObjectURL(url); };
+  i.onerror = () => { $("dpMsg").textContent = "No se pudo leer ese archivo como imagen."; URL.revokeObjectURL(url); };
+  i.src = url;
+};
+$("dpCopia").onclick = e => copiarTxt($("dpTexto").value, e.currentTarget);
+$("dpBaja").onclick = async () => {
+  if (!$("dpNombre").value.trim()) return ($("dpMsg").textContent = "Escribe el nombre de la tienda.");
+  $("dpMsg").textContent = "";
+  try { await (await postMod()).entregarPost(datosPost()); } catch(e){ $("dpMsg").textContent = "No se pudo generar la imagen."; }
+};
+$("dpCierra").onclick = () => $("dlgPost").close();
+$("postAbrir").onclick = () => abrirPost();
+
+/* Las cuentas: se buscan por nombre y se eliminan. Borra lo suyo del sitio
+   en una sola escritura (perfil, lo público, su alta, lo que organiza, su
+   solicitud, sus IDs compartidos y su lugar en las tiendas). Su acceso vive en
+   Firebase Authentication, que desde el navegador no se puede borrar: queda el
+   UID para buscarlo en la consola. */
+const CONSOLA = "https://console.firebase.google.com/project/demo-byepass/authentication/users";
+function pintarCuentas(){
+  const q = $("cuBuscar").value.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  const filas = Object.entries(CU).map(([uid, c]) => ({ uid, ...c }))
+    .filter(c => !q || String(c.nombre || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").includes(q) || String(c.playerId || "") === q)
+    .sort((a, b) => (b.creado || 0) - (a.creado || 0));
+  $("cuResumen").textContent = q ? filas.length + " de " + Object.keys(CU).length : "";
+  $("cuLista").innerHTML = filas.slice(0, 50).map(c => {
+    const dueno = Object.entries(TODAS).filter(([, t]) => ((t.miembros || {})[c.uid] || {}).rol === "dueno").map(([id, t]) => nombreTienda(t.perfil, id));
+    const datos = [c.creado && "desde el " + new Date(c.creado).toLocaleDateString("es-CL"),
+      c.playerId ? "ID " + c.playerId + (PERMISOS[c.uid] ? " (puede corregirlo)" : "") : "sin ID", Object.keys(c.tiendas || {}).length + " tiendas seguidas",
+      dueno.length && "dueño de " + dueno.join(", ")].filter(Boolean).join(" · ");
+    return '<div class="tfila"><span class="logoT" style="--c:var(--sup-alta);color:var(--texto)" aria-hidden="true">' + esc(iniciales(c.nombre)) + "</span>" +
+      "<div><b>" + esc(c.nombre || "Sin nombre") + "</b><small>" + esc(datos) + '</small><small class="uid">' + esc(c.uid) + "</small></div><span></span>" +
+      '<div class="acc">' + (c.playerId ? '<button class="btn chico" data-permiso="' + esc(c.uid) + '">' + (PERMISOS[c.uid] ? "Quitar el permiso de corregir el ID" : "Permitir corregir el ID (una vez)") + "</button>" : "") +
+      '<button class="btn chico peligro" data-cuborrar="' + esc(c.uid) + '">Eliminar cuenta</button></div></div>';
+  }).join("") || '<div class="nota" style="padding:var(--e4)">' + (q ? "Ninguna cuenta con ese nombre." : "Todavía no hay cuentas.") + "</div>";
+  $("cuLista").querySelectorAll("[data-cuborrar]").forEach(b => b.onclick = () => eliminarCuenta(b.dataset.cuborrar));
+  /* El permiso es de un solo uso: lo gasta la cuenta al corregir su ID (cuenta.html, Ajustes). */
+  $("cuLista").querySelectorAll("[data-permiso]").forEach(b => b.onclick = async () => {
+    const uid = b.dataset.permiso, c = CU[uid] || {};
+    if (!PERMISOS[uid] && !confirm("¿Dejar que «" + (c.nombre || uid) + "» corrija su ID de jugador (" + c.playerId + ") una vez?\n\nLo cambia desde su cuenta, en Ajustes.")) return;
+    try { await set(ref(db, "permisoId/" + uid), PERMISOS[uid] ? null : true); } catch(e){ alert("No se pudo cambiar el permiso. Revisa la conexión."); }
+  });
+}
+/* Quién tiene permiso para corregir su ID (permisoId/<uid> = true). */
+let PERMISOS = {};
+onAuthStateChanged(auth, u => { if (u) onValue(ref(db, "permisoId"), s => { PERMISOS = s.val() || {}; if (Object.keys(CU || {}).length) pintarCuentas(); }, () => {}); });
+async function eliminarCuenta(uid){
+  const c = CU[uid] || {}, nom = c.nombre || uid;
+  const duenas = Object.entries(TODAS).filter(([, t]) => ((t.miembros || {})[uid] || {}).rol === "dueno");
+  const escrito = prompt("Se borran los datos de «" + nom + "» del sitio" +
+    (duenas.length ? ". OJO: es dueño de " + duenas.map(([id, t]) => nombreTienda(t.perfil, id)).join(", ") + " (la tienda sigue, sin ese dueño)" : "") +
+    ".\n\nPara confirmar, escribe su nombre:", "");
+  if (escrito === null) return;
+  if (escrito.trim() !== String(c.nombre || "").trim()) return alert("El nombre no coincide. No se borró nada.");
+  const rutas = {};
+  ["usuarios", "perfilPublico", "altas", "organiza", "solicitudes", "beta/testers", "mazos"].forEach(n => rutas[n + "/" + uid] = null);
+  if (PERMISOS[uid]) rutas["permisoId/" + uid] = null;
+  /* Su timer personal (mi-xxxxxx) y la base de jugadores de ese timer. */
+  const miSala = c.sala;
+  if (/^mi-[a-z0-9]{6}$/.test(miSala || "")) { rutas["salas/" + miSala] = null; rutas["jugadores/" + miSala] = null; }
+  const tiendas = new Set([...Object.keys(TODAS), ...Object.keys(c.tiendas || {})]);
+  tiendas.forEach(t => rutas["enlaces/" + t + "/" + uid] = null);
+  Object.entries(TODAS).forEach(([t, d]) => { if ((d.miembros || {})[uid]) rutas["tiendas/" + t + "/miembros/" + uid] = null; });
+  try {
+    await update(ref(db), rutas);
+    prompt("Listo: sus datos se borraron. Falta su acceso: en Firebase → Authentication, busca este UID y elimínalo.\n\n" + CONSOLA, uid);
+    pintarTiendas();
+  } catch(e){ alert("No se pudo eliminar (no se borró nada). Revisa la conexión."); }
+}
+
+/* ▌BLOQUE 10 · Solicitudes de tienda ════════════════════════════════════════════
+   Aprobar o rechazar los pedidos de tienda. */
+/* ------------------------------------------------------------ solicitudes
+   Quien quiere una tienda la pide desde el panel. Aprobarla deja que esa
+   cuenta reclame ESE id (lo exigen las reglas); rechazarla le muestra la nota.
+   Las por revisar primero, las más antiguas arriba. */
+let SOL = {}, solEscuchando = false;
+function escucharSolicitudes(){
+  if (solEscuchando) return;
+  solEscuchando = true;
+  onValue(ref(db, "solicitudes"), s => { SOL = s.val() || {}; pintarSolicitudes(); },
+    () => { $("solLista").innerHTML = '<div class="nota" style="padding:var(--e4)">No se pudo cargar. ¿Publicaste las reglas nuevas?</div>'; });
+}
+const ESTADO_SOL = x => x.aprobada ? 1 : x.rechazada ? 2 : 0;
+function pintarSolicitudes(){
+  const filas = Object.entries(SOL).sort(([, a], [, b]) => (ESTADO_SOL(a) > 0) - (ESTADO_SOL(b) > 0) || (a.creada || 0) - (b.creada || 0));
+  const pend = filas.filter(([, x]) => !ESTADO_SOL(x)).length;
+  $("solResumen").textContent = pend ? pend + " por revisar" : "";
+  $("solLista").innerHTML = filas.map(([uid, x]) => {
+    const e = ESTADO_SOL(x);
+    const datos = [x.id, x.comuna, x.quien && "la pide " + x.quien,
+      x.creada && "el " + new Date(x.creada).toLocaleDateString("es-CL")].filter(Boolean).join(" · ");
+    return '<div class="tfila"><span class="logoT" aria-hidden="true">' + esc(iniciales(x.nombre)) + "</span>" +
+      "<div><b>" + esc(x.nombre) + "</b><small>" + esc(datos) + "</small>" +
+      (x.correo ? "<small>Correo de su cuenta: " + esc(x.correo) + "</small>" : "") +
+      "<small>Contacto: " + esc(x.contacto) + "</small>" +
+      (x.mensaje ? "<small>«" + esc(x.mensaje) + "»</small>" : "") +
+      (x.nota ? "<small>Tu nota: " + esc(x.nota) + "</small>" : "") +
+      (x.avisada ? '<small style="color:var(--ok)">Avisada por correo el ' + esc(fechaHora(x.avisada)) + "</small>" : "") + "</div>" +
+      '<span class="estado e' + e + '">' + ["Por revisar", "Aprobada", "Rechazada"][e] + "</span>" +
+      '<div class="acc">' +
+      (e === 1 ? '<button class="btn chico primario" data-avisar="' + esc(uid) + '" title="Le manda por correo el aviso de «tu tienda fue aceptada»">Avisarle</button>' +
+        '<button class="btn chico" data-post="' + esc(uid) + '" title="La imagen y el texto de Instagram para anunciar que la tienda se sumó">Post de Instagram</button>' : "") +
+      (e !== 1 ? '<button class="btn chico primario" data-aprobar="' + esc(uid) + '">Aprobar</button>' : "") +
+      (e !== 2 ? '<button class="btn chico" data-rechazar="' + esc(uid) + '">Rechazar</button>' : "") + "</div></div>";
+  }).join("") || '<div class="nota" style="padding:var(--e4)">No hay solicitudes.</div>';
+  $("solLista").querySelectorAll("[data-aprobar]").forEach(b => b.onclick = async () => {
+    b.disabled = true;
+    try { await update(ref(db, "solicitudes/" + b.dataset.aprobar), { aprobada: true, rechazada: null, nota: null }); }
+    catch(e){ b.disabled = false; $("solResumen").textContent = "No se pudo guardar. Revisa la conexión."; }
+  });
+  /* «Avisarle»: el mensaje de tienda aceptada, por correo. Va al correo de su cuenta guardado en la solicitud (las reglas aseguran que es
+     suyo), si no, a su contacto si es un correo, y si no, al correo con que se registró (las solicitudes de antes no lo guardaban: lo
+     busca la función con su uid y lo deja guardado en la solicitud). */
+  $("solLista").querySelectorAll("[data-avisar]").forEach(b => b.onclick = async () => {
+    const x = SOL[b.dataset.avisar]; if (!x) return;
+    const c = canalDe(x.contacto), para = x.correo || (c.tipo === "correo" ? c.destino : "");
+    abrirCorreo({ titulo: "Avisarle a " + x.nombre, para, cuenta: b.dataset.avisar, asunto: asuntoAceptada(x), texto: mensajeAceptada(x, location.origin, INSTAGRAM_BYEPASS),
+      solicitud: b.dataset.avisar,
+      nota: (x.avisada ? "Ya le avisaste el " + fechaHora(x.avisada) + ". " : "") + (x.correo ? "Es el correo de la cuenta con la que pidió la tienda. " : !para ? "Va al correo con que se registró quien la pidió. " : "") +
+        (x.contacto && x.contacto !== para ? "También dejó este contacto: " + x.contacto + ". " : "") });
+  });
+  $("solLista").querySelectorAll("[data-post]").forEach(b => b.onclick = () => {
+    const x = SOL[b.dataset.post]; if (!x) return;
+    const c = canalDe(x.contacto);
+    abrirPost({ nombre: x.nombre, comuna: x.comuna, instagram: c.tipo === "instagram" ? c.destino : "" });
+  });
+  $("solLista").querySelectorAll("[data-rechazar]").forEach(b => b.onclick = async () => {
+    const nota = prompt("¿Por qué? Lo ve quien la pidió (opcional):", "");
+    if (nota === null) return;
+    b.disabled = true;
+    try { await update(ref(db, "solicitudes/" + b.dataset.rechazar), { rechazada: true, aprobada: null, nota: nota.trim().slice(0, 200) || null }); }
+    catch(e){ b.disabled = false; $("solResumen").textContent = "No se pudo guardar. Revisa la conexión."; }
+  });
+}
+
+/* ▌BLOQUE 11 · Borrar una tienda ════════════════════════════════════════════════
+   Borra la tienda y todos sus nodos. */
+/* ------------------------------------------------------------ eliminar
+   Todo lo que cuelga del id de la tienda, en una sola escritura: o se borra
+   todo o no se borra nada. Lo de cada jugador (a quién sigue, su vitrina)
+   queda en su cuenta, que nadie más puede tocar; las páginas ignoran una
+   tienda que ya no existe. */
+const NODOS = ["tiendas", "salas", "invitaciones", "enlaces", "idsHistorial", "fotos", "jugadores", "posts", "rifas", "rifaCodigos", "rifaUsos", "salaStaff", "salaChat", "fcmTokens"];
+let BORRAR = null;
+async function abrirBorrar(id){
+  BORRAR = null;
+  const t = TODAS[id] || {}, nom = nombreTienda(t.perfil, id);
+  $("dbTit").textContent = "Eliminar «" + nom + "»";
+  $("dbId").textContent = id;
+  $("dbConfirma").value = ""; $("dbSi").disabled = true; $("dbMsg").textContent = "";
+  $("dbQue").innerHTML = "<li>Contando lo que tiene…</li>";
+  $("dlgBorrar").showModal();
+  const datos = {};
+  await Promise.all(NODOS.map(n => get(ref(db, n + "/" + id)).then(s => datos[n] = s.val(), () => datos[n] = null)));
+  /* Sus timers extra (<id>-t2 …): se van con ella. */
+  datos.timers = {};
+  await Promise.all(Array.from({ length: MAX_TIMERS - 1 }, (_, i) => salaDeTimer(id, i + 2)).map(t =>
+    get(ref(db, "salas/" + t)).then(s => { if (s.exists()) datos.timers[t] = s.val(); }, () => {})));
+  const nt = Object.keys(datos.timers).length + 1;
+  const s = datos.salas || {}, n = Object.keys(s.historial || {}).length, ag = Object.keys(s.agenda || {}).length;
+  const mm = Object.keys((datos.tiendas || {}).miembros || {}).length, en = Object.keys(datos.enlaces || {}).length;
+  const bj = Object.keys(datos.jugadores || {}).length;
+  $("dbQue").innerHTML = [
+    n + (n === 1 ? " torneo archivado" : " torneos archivados") + " y su clasificación",
+    (nt === 1 ? "Su timer" : "Sus " + nt + " timers") + ", los emparejamientos publicados y el diseño de la pantalla",
+    ag + (ag === 1 ? " fecha" : " fechas") + " de la agenda",
+    mm + (mm === 1 ? " organizador" : " organizadores") + " y las invitaciones pendientes",
+    en + (en === 1 ? " ID de jugador compartido" : " IDs de jugador compartidos"),
+    bj + (bj === 1 ? " jugador en su base" : " jugadores en su base") + " (los de los torneos de la página)",
+    "Su staff de sala con el chat, sus rifas y sus publicaciones",
+    "El perfil, la verificación, las insignias de la tienda, el banner y el logo",
+  ].map(x => "<li>" + esc(x) + "</li>").join("");
+  BORRAR = { id, datos };
+  $("dbConfirma").oninput = () => $("dbSi").disabled = $("dbConfirma").value.trim() !== id;
+  $("dbConfirma").focus();
+}
+$("dbNo").onclick = () => $("dlgBorrar").close();
+$("dbSi").onclick = async () => {
+  if (!BORRAR || $("dbConfirma").value.trim() !== BORRAR.id) return;
+  const { id, datos } = BORRAR;
+  $("dbSi").disabled = true;
+  /* El respaldo primero: si algo sale mal después, los datos están en el equipo. */
+  const hoy = new Date().toISOString().slice(0, 10);
+  const blob = new Blob([JSON.stringify({ tienda: id, respaldado: new Date().toISOString(), ...datos }, null, 2)],
+                        { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download = "respaldo-" + id + "-" + hoy + ".json";
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 10000);
+  const rutas = Object.fromEntries(NODOS.map(n => [n + "/" + id, null]));
+  Object.keys(datos.timers || {}).forEach(t => rutas["salas/" + t] = null);
+  /* El espejo de «qué tiendas organizo» de cada miembro, y del dueño de antes. */
+  Object.keys((datos.tiendas || {}).miembros || {}).forEach(uid => rutas["organiza/" + uid + "/" + id] = null);
+  if (datos.salas && typeof datos.salas.owner === "string") rutas["organiza/" + datos.salas.owner + "/" + id] = null;
+  /* El código de staff vive también en un índice por código (staffCodigos/<código> = <tienda>). */
+  if (datos.salaStaff && typeof datos.salaStaff.codigo === "string") rutas["staffCodigos/" + datos.salaStaff.codigo] = null;
+  $("dbMsg").textContent = "Eliminando…";
+  try {
+    await update(ref(db), rutas);
+    $("dlgBorrar").close();
+    delete TODAS[id];
+    pintarTiendas();
+  } catch(e){
+    $("dbMsg").textContent = "No se pudo eliminar (no se borró nada). El respaldo ya quedó descargado.";
+    $("dbSi").disabled = false;
+  }
+};
+
+/* ▌BLOQUE 12 · ¿Qué está publicado? ═════════════════════════════════════════════
+   Compara el ?v= que piden las páginas de byepass.cl con la versión de cada archivo, y prueba si
+   las reglas nuevas ya están publicadas. */
+const PAGS_SITIO = ["index.html", "cuenta.html", "muro.html", "tienda.html", "timer-view.html", "tele.html", "admin.html", "inscripcion.html",
+                 "invitado.html", "estadisticas.html", "herramientas.html", "widget.html", "privacidad.html", "terminos.html", "rifa.html", "staff.html", "afiche.html", "mazos.html", "rulings.html", "404.html"];
+/* El archivo tal como está publicado ahora (sin copias guardadas). */
+const bajar = archivo => fetch(archivo + (archivo.includes("?") ? "&" : "?") + "revisar=" + Date.now(), { cache: "no-store" }).then(r => r.ok ? r.text() : null).catch(() => null);
+/* Lo que pide un archivo: «./clasificacion.js?v=2efd744ba33e», «estilo.css?v=2efd744ba33e»… → [archivo, versión]. */
+const pide = txt => [...String(txt).matchAll(/["'(]\.?\/?([a-z0-9-]+\.(?:js|css))\?v=(\d+)/g)].map(m => [m[1], +m[2]]);
+const versionDe = txt => { const m = /Versión actual: v=(\d+)/.exec(txt || ""); return m ? +m[1] : null; };
+const lineaPub = (tipo, titulo, det) => '<div class="linea ' + tipo + '"><i>' + (tipo === "ok" ? "✓" : tipo === "mal" ? "✗" : "!") + "</i><b>" + esc(titulo) + "</b>" + (det ? "<small>" + esc(det) + "</small>" : "") + "</div>";
+
+/* Las reglas no se pueden leer desde la página: se prueban. Lo que se escribe se borra al tiro. */
+async function probarReglas(){
+  const uid = auth.currentUser.uid, S = "zz-comprobar-reglas", puede = p => p.then(() => true, () => false);
+  await puede(set(ref(db, "salas/" + S + "/owner"), uid));
+  const cat = await puede(set(ref(db, "salas/" + S + "/pairings/standings/0"), { place: 1, name: "Prueba", w: 0, l: 0, t: 0, pts: 0, cat: 2 }));
+  const timerAbierto = await puede(set(ref(db, "salas/" + S + "/timer/basura"), "x"));
+  const indice = await puede(set(ref(db, "invitadoDe/" + uid), "inv-zzzzzz"));
+  await puede(remove(ref(db, "invitadoDe/" + uid)));
+  await puede(remove(ref(db, "salas/" + S)));
+  return [
+    cat ? lineaPub("ok", "Reglas de categorías (17-10)", "Aceptan la categoría en la tabla final.")
+        : lineaPub("mal", "Reglas de categorías (17-10): no están publicadas", "Publica reglas-firebase.json: sin esto, publicar o archivar un torneo con categorías falla."),
+    !timerAbierto && indice ? lineaPub("ok", "Reglas de seguridad (19-10)", "timer cerrado, un cupo y una sala de invitado por cuenta.")
+        : lineaPub("mal", "Reglas de seguridad (19-10): no están publicadas", "Publica reglas-firebase.json junto con admin.html, inscripcion.html e invitado.html."),
+  ];
+}
+
+$("pubRevisar").onclick = async () => {
+  $("pubRevisar").disabled = true; $("pubEstado").textContent = "Revisando…"; $("pubLista").innerHTML = "";
+  /* quién pide qué: archivo → [{ quien, v }], recorriendo páginas y, adentro, los módulos que importan */
+  const textos = {}, piden = {}, cola = [...PAGS_SITIO];
+  while (cola.length){
+    const a = cola.shift();
+    if (a in textos) continue;
+    textos[a] = await bajar(a);
+    $("pubEstado").textContent = "Revisando " + a + "…";
+    pide(textos[a] || "").forEach(([f, v]) => { (piden[f] = piden[f] || []).push({ quien: a, v }); if (f.endsWith(".js") && !(f in textos)) cola.push(f); });
+  }
+  const lineas = [];
+  PAGS_SITIO.filter(p => textos[p] === null).forEach(p => lineas.push(lineaPub("mal", p + " no se pudo bajar", "¿Está subido?")));
+  Object.keys(piden).sort().forEach(f => {
+    const pub = textos[f] !== undefined ? versionDe(textos[f]) : null, lista = piden[f];
+    if (textos[f] === null) return lineas.push(lineaPub("mal", f + " no está en el sitio", "Lo piden " + [...new Set(lista.map(x => x.quien))].join(", ") + ". Súbelo."));
+    const max = Math.max(...lista.map(x => x.v));
+    if (pub != null && pub < max) return lineas.push(lineaPub("mal", "Falta subir " + f, "Publicado: v=" + pub + ". " + lista.filter(x => x.v > pub).map(x => x.quien).join(", ") + " pide v=" + max + "."));
+    const viejos = lista.filter(x => x.v < (pub != null ? pub : max));
+    if (viejos.length) return lineas.push(lineaPub("aviso", "Páginas con " + f + " viejo", "Súbelas de nuevo: " + [...new Set(viejos.map(x => x.quien + " (pide v=" + x.v + ")"))].join(", ") + ". Va la v=" + (pub != null ? pub : max) + "."));
+  });
+  if (!lineas.length) lineas.push(lineaPub("ok", "Archivos al día", "Cada página pide la misma versión que está publicada."));
+  try { lineas.push(...await probarReglas()); } catch(e){ lineas.push(lineaPub("aviso", "No se pudieron probar las reglas", "Revisa la conexión.")); }
+  $("pubLista").innerHTML = lineas.join("");
+  $("pubEstado").textContent = "Revisado a las " + new Date().toLocaleTimeString("es-CL", { hour: "2-digit", minute: "2-digit", hour12: false });
+  $("pubRevisar").disabled = false;
+};
+
+/* ▌BLOQUE 13 · Uso de la base ═══════════════════════════════════════════════════
+   Cuánto ocupa cada tienda, timer, sala personal y sala de invitado, y lo global; las salas de
+   invitado se borran desde acá. */
+const MB = n => n < 1048576 ? Math.max(1, Math.round(n / 1024)) + " KB" : (n / 1048576).toFixed(1) + " MB";
+const pesoDe = v => v == null ? 0 : new Blob([JSON.stringify(v)]).size;
+const PARTES = [["timer", "imágenes y diseño"], ["historial", "historial"], ["pairings", "mesas"], ["torneo", "torneo de la página"], ["sorteo", "sorteo"], ["agenda", "agenda"]];
+
+$("usoMedir").onclick = async () => {
+  $("usoMedir").disabled = true; $("usoLista").innerHTML = ""; $("usoMedidor").innerHTML = "";
+  const tiendas = TODAS && Object.keys(TODAS).length ? TODAS : ((await get(ref(db, "tiendas")).catch(() => null))?.val() || {});
+  const [inv, usu] = await Promise.all([get(ref(db, "invitados")).then(x => x.val() || {}, () => ({})), get(ref(db, "usuarios")).then(x => x.val() || {}, () => ({}))]);
+  /* qué medir: [sala, a quién pertenece, tipo] */
+  const salas = [];
+  Object.keys(tiendas).forEach(t => { for (let n = 1; n <= MAX_TIMERS; n++) salas.push([salaDeTimer(t, n), t, "tienda"]); });
+  Object.keys(inv).forEach(c => salas.push([c, "invitado", "invitado"]));
+  Object.values(usu).forEach(u => { if (u && /^mi-[a-z0-9]{6}$/.test(u.sala || "")) salas.push([u.sala, u.nombre || "cuenta", "personal"]); });
+  const filas = [];
+  let total = 0, i = 0;
+  for (const [sala, de, tipo] of salas){
+    $("usoEstado").textContent = "Midiendo " + (++i) + " de " + salas.length + "…";
+    const v = (await get(ref(db, "salas/" + sala)).catch(() => null))?.val();
+    if (!v) continue;
+    const peso = pesoDe(v);
+    total += peso;
+    filas.push({ sala, de, tipo, peso, partes: PARTES.map(([k, nom]) => [nom, pesoDe(v[k])]).filter(([, p]) => p > 2048) });
+  }
+  /* además de las salas: lo de cada tienda fuera de su sala y lo global */
+  const extra = [];
+  for (const [nodo, nom] of [["fotos", "fotos de tiendas"], ["jugadores", "bases de jugadores"], ["usuarios", "cuentas"], ["presencia", "en línea"], ["stats", "estadísticas"], ["buzon", "buzón"], ["altas", "altas"]]){
+    $("usoEstado").textContent = "Midiendo " + nom + "…";
+    let p = 0;
+    if (nodo === "usuarios") p = pesoDe(usu);
+    else if (nodo === "fotos" || nodo === "jugadores"){ for (const t of Object.keys(tiendas)) p += pesoDe((await get(ref(db, nodo + "/" + t)).catch(() => null))?.val()); }
+    else p = pesoDe((await get(ref(db, nodo)).catch(() => null))?.val());
+    total += p; extra.push([nom, p]);
+  }
+  filas.sort((a, b) => b.peso - a.peso);
+  const pct = Math.min(100, total / 1073741824 * 100);
+  $("usoResumen").textContent = MB(total) + " de 1 GB";
+  $("usoMedidor").innerHTML = '<div class="medidor" title="' + pct.toFixed(1) + ' %"><b style="width:' + Math.max(.5, pct) + '%"></b></div>';
+  const TIPO = { tienda: "Tienda", invitado: "Sala de invitado", personal: "Mi timer" };
+  $("usoLista").innerHTML = filas.slice(0, 25).map(f =>
+    '<div class="tfila"><span class="logoT" style="width:34px;height:34px;font-size:12px">' + esc(f.tipo === "tienda" ? iniciales(nombreTienda((tiendas[f.de] || {}).perfil || null, f.de)) : f.tipo === "invitado" ? "IN" : "MI") + "</span>" +
+    "<div><b>" + esc(f.sala) + "</b><small>" + esc(TIPO[f.tipo] + (f.tipo === "tienda" ? "" : " · " + f.de)) +
+    (f.partes.length ? " · " + esc(f.partes.map(([n, p]) => n + " " + MB(p)).join(", ")) : "") + "</small></div>" +
+    '<span class="peso">' + MB(f.peso) + "</span>" +
+    '<div class="acc">' + (f.tipo === "invitado" ? '<button class="btn peligro" data-borrar-inv="' + esc(f.sala) + '">Borrar esta sala</button>'
+      : '<a class="btn" href="' + aPanel(f.sala) + '">Panel</a>') + "</div></div>").join("") +
+    '<div class="linea"><i>·</i><b>Fuera de las salas</b><small>' + esc(extra.map(([n, p]) => n + " " + MB(p)).join(" · ")) + "</small></div>";
+  $("usoLista").querySelectorAll("[data-borrar-inv]").forEach(b => b.onclick = async () => {
+    const c = b.dataset.borrarInv;
+    if (!confirm("¿Borrar la sala de invitado " + c + "? Quien la usa la pierde.")) return;
+    try { await update(ref(db), { ["salas/" + c]: null, ["jugadores/" + c]: null, ["invitados/" + c]: null }); b.closest(".tfila").remove(); }
+    catch(e){ alert("No se pudo borrar. Revisa la conexión."); }
+  });
+  $("usoEstado").textContent = salas.length + " salas revisadas. Ordenadas de mayor a menor (las 25 más grandes).";
+  $("usoMedir").disabled = false;
+};
+
+/* ▌BLOQUE 14 · Limpieza ═════════════════════════════════════════════════════════
+   Borra las inscripciones (y sus plazas) de torneos de hace más de 30 días o cuyo evento ya no
+   existe: lo promete privacidad.html §8. */
+const PLAZO_INSC = 30 * 864e5;
+/* Los eventos de una tienda con inscripciones o plazas que ya no sirven. Sin fecha de inicio
+   no se toca (no se puede saber si pasó). */
+const vencidos = (agenda, ins, cup, ahora) => [...new Set(Object.keys(ins || {}).concat(Object.keys(cup || {})))]
+  .filter(ev => { const e = (agenda || {})[ev]; return !e || (typeof e.inicioMs === "number" && e.inicioMs < ahora - PLAZO_INSC); });
+let LIMPIAR = {};
+$("limBuscar").onclick = async () => {
+  $("limBuscar").disabled = true; $("limLista").innerHTML = ""; LIMPIAR = {};
+  const leer = r => get(ref(db, r)).then(x => x.val(), () => null);
+  const [tiendas, ins, cup] = await Promise.all([TODAS && Object.keys(TODAS).length ? TODAS : leer("tiendas"), leer("inscripciones"), leer("cupos")]);
+  const filas = [];
+  let personas = 0;
+  for (const t of new Set(Object.keys(ins || {}).concat(Object.keys(cup || {})))){
+    const agenda = await leer("salas/" + t + "/agenda");
+    const evs = vencidos(agenda, (ins || {})[t], (cup || {})[t], Date.now());
+    if (!evs.length) continue;
+    const n = evs.reduce((a, ev) => a + Object.keys(((ins || {})[t] || {})[ev] || {}).length, 0);
+    evs.forEach(ev => { LIMPIAR["inscripciones/" + t + "/" + ev] = null; LIMPIAR["cupos/" + t + "/" + ev] = null; });
+    personas += n;
+    filas.push('<div class="linea aviso"><i>·</i><b>' + esc(nombreTienda(((tiendas || {})[t] || {}).perfil || null, t)) + "</b><small>" +
+      evs.length + (evs.length === 1 ? " evento · " : " eventos · ") + n + (n === 1 ? " inscripción" : " inscripciones") + "</small></div>");
+  }
+  $("limLista").innerHTML = filas.join("") + (filas.length ? '<div class="barraAcc"><button class="btn peligro" id="limBorrar">Borrar ' + personas +
+    (personas === 1 ? " inscripción" : " inscripciones") + "</button></div>" : "");
+  $("limEstado").textContent = filas.length ? "Esto encontré. Borrarlas no cambia los resultados de los torneos."
+    : "No hay nada que limpiar.";
+  if (filas.length) $("limBorrar").onclick = async () => {
+    if (!confirm("¿Borrar " + personas + " inscripciones vencidas? No se pueden recuperar.")) return;
+    $("limBorrar").disabled = true;
+    try { await update(ref(db), LIMPIAR); $("limLista").innerHTML = ""; $("limEstado").textContent = "Listo: se borraron " + personas + " inscripciones."; }
+    catch(e){ $("limBorrar").disabled = false; $("limEstado").textContent = "No se pudo borrar. Revisa la conexión."; }
+  };
+  $("limBuscar").disabled = false;
+};
+</script>
+</body>
+</html>
