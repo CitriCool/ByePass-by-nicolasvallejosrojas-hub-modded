@@ -87,6 +87,13 @@
     </div>
     <article class="rulings-feature oculto" id="pasoRulings"><div><h3>¿Una duda en plena partida?</h3><p>Consulta rulings de Pokémon TCG en español, con el original en inglés al lado.</p></div><a class="btn secundario" href="rulings.html?emu=1" data-link="rulings">Buscar un ruling <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></article>
   </section>
+  <section class="wrap noticias oculto" id="noticias" aria-labelledby="noticiasTitulo">
+    <div class="section-head"><div><p class="eyebrow">Pokémon TCG</p><h2 id="noticiasTitulo">Lo último del TCG.</h2></div>
+      <div class="noticias-lengua seg" role="group" aria-label="Idioma de las noticias"><button type="button" data-lengua="es" aria-pressed="true">Español</button><button type="button" data-lengua="en" aria-pressed="false">English</button></div></div>
+    <ul class="noticias-lista" id="noticiasLista"></ul>
+    <div class="noticias-pie"><button class="btn secundario" type="button" id="noticiasMas" hidden>Ver más noticias</button>
+      <p><span id="noticiasNota"></span> Fuente: <a href="https://www.pokebeach.com/" target="_blank" rel="noopener">PokéBeach</a>.</p></div>
+  </section>
   <section class="organizer wrap" id="para-tiendas" aria-labelledby="organizerTitle">
     <div><p class="eyebrow">Para quienes hacen que todo pase</p><h2 id="organizerTitle">Tú reúne a la comunidad.<br>Nosotros te ayudamos con el torneo.</h2><p>Rondas, emparejamientos y clasificación en un solo lugar. Dale a tu tienda más tiempo para lo que importa: su gente.</p></div>
     <div class="organizer-actions"><a class="btn" href="cuenta.html?emu=1#tienda" data-link="pedir">Quiero organizar <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a><a href="invitado.html?emu=1">Probar un timer sin cuenta</a></div>
@@ -157,6 +164,7 @@
 <noscript><p class="wrap">Activa JavaScript para iniciar sesión y consultar los datos de tu tienda.</p></noscript>
 <script src="config.js?v=2efd744ba33e"></script>
 <script src="portada.js?v=2efd744ba33e"></script>
+<script src="noticias.js?v=2efd744ba33e"></script>
 <script type="module" src="portada-auth.js?v=2efd744ba33e"></script>
 </body>
 </html>

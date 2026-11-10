@@ -1,0 +1,40 @@
+# Actualiza web/noticias.json (noticias de Pokémon TCG para la portada) cada 3 horas.
+# La traducción usa el secreto DEEPL_API_KEY del repo; sin él, las noticias quedan en inglés.
+name: Noticias TCG
+
+on:
+  schedule:
+    - cron: "17 */3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: noticias
+  cancel-in-progress: false
+
+jobs:
+  actualizar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Leer el feed y traducir
+        env:
+          DEEPL_API_KEY: ${{ secrets.DEEPL_API_KEY }}
+        run: node scripts/noticias.mjs
+      - name: Guardar si cambió
+        run: |
+          if git diff --quiet -- web/noticias.json && git ls-files --error-unmatch web/noticias.json >/dev/null 2>&1; then
+            echo "Sin cambios."; exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add web/noticias.json
+          git commit -m "Actualizar noticias TCG"
+          git pull --rebase origin "${GITHUB_REF_NAME}"
+          git push
