@@ -3,8 +3,22 @@
   "nombre": "PokéBeach",
   "url": "https://www.pokebeach.com/"
  },
- "actualizado": "2026-11-10T15:44:45.699Z",
+ "actualizado": "2026-11-10T23:16:18.549Z",
  "noticias": [
+  {
+   "id": "157145",
+   "url": "https://www.pokebeach.com/forums/threads/kecleon-from-%E2%80%9Caura-seeker%E2%80%9D-revealed.157145/",
+   "fecha": "2026-11-10T21:40:19.000Z",
+   "autor": "Water Pokémon Master",
+   "en": {
+    "titulo": "Kecleon from “Aura Seeker” Revealed!",
+    "resumen": "More daily card reveals! A new Kecleon has just been revealed from Aura Seeker. The set will release in Japan on November 27th. In English we'll get the cards in our Flowing Fists set on February 5th. Kecleon - 80 HP - [C] Basic Pokemon..."
+   },
+   "es": {
+    "titulo": "¡Se desvela el Kecleon de «Aura Seeker»!",
+    "resumen": "¡Más revelaciones diarias de cartas! Acaban de desvelar un nuevo Kecleon de la expansión «Aura Seeker». La expansión saldrá a la venta en Japón el 27 de noviembre. En inglés, las cartas formarán parte de nuestra expansión «Flowing Fists», que saldrá el 5 de febrero. Kecleon - 80 PS - [C] Pokémon básico..."
+   }
+  },
   {
    "id": "157140",
    "url": "https://www.pokebeach.com/forums/threads/creatures-announces-another-price-increases-for-booster-packs-starting-in-may.157140/",
@@ -17,20 +31,6 @@
    "es": {
     "titulo": "Creatures anuncia una nueva subida de precios para los sobres de cartas a partir de mayo",
     "resumen": "A partir de las nuevas series que saldrán a la venta en mayo de 2027, Creatures aumentará el PVP de los sobres japoneses en un 15 %, pasando de 200 yenes a 230 yenes. Esto supondría que el precio de una caja de 30 sobres pasaría de 6.000 yenes a 6.900 yenes. Al igual que en ocasiones anteriores, la empresa alega «el aumento de los costes de las materias primas y otros factores» como motivo."
-   }
-  },
-  {
-   "id": "157145",
-   "url": "https://www.pokebeach.com/forums/threads/kecleon-from-%E2%80%9Caura-seeker%E2%80%9D-revealed.157145/",
-   "fecha": "2026-11-10T15:00:48.000Z",
-   "autor": "Water Pokémon Master",
-   "en": {
-    "titulo": "Kecleon from “Aura Seeker” Revealed!",
-    "resumen": "More daily card reveals! A new Kecleon has just been revealed from Aura Seeker. The set will release in Japan on November 27th. In English we'll get the cards in our Flowing Fists set on February 5th. Kecleon - 80 HP - [C] Basic Pokemon..."
-   },
-   "es": {
-    "titulo": "¡Se desvela el Kecleon de «Aura Seeker»!",
-    "resumen": "¡Más revelaciones diarias de cartas! Acaban de desvelar un nuevo Kecleon de la expansión «Aura Seeker». La expansión saldrá a la venta en Japón el 27 de noviembre. En inglés, las cartas formarán parte de nuestra expansión «Flowing Fists», que saldrá el 5 de febrero. Kecleon - 80 PS - [C] Pokémon básico..."
    }
   },
   {
@@ -124,11 +124,11 @@
    "autor": "Water Pokémon Master",
    "en": {
     "titulo": "McDonald’s Pokemon TCG Promotion Starts November 10th, Features Mini Happy Meal Box Toys and 15 Cards!",
-    "resumen": "We can now reveal this year's McDonald's x Pokemon TCG promotion will feature plastic toys of 15 different Pokemon as mini Happy Meal boxes! Each toy has an extendable keyring so you can clip it to backpacks and pants. This year, the actual Happy Meal boxes will feature Pikachu, Umbreon, and Torchic."
+    "resumen": "We can now reveal this year's McDonald's x Pokemon TCG promotion will feature plastic toys of 15 different Pokemon as mini Happy Meal boxes! Each toy has an extendable keyring, which can also be positioned to display a Pokemon card. This year, the actual Happy Meal boxes will feature Pikachu, Umbreon, and Torchic."
    },
    "es": {
-    "titulo": "¡La promoción del juego de cartas de Pokémon de McDonald’s comienza el 10 de noviembre e incluye mini juguetes de Happy Meal y 15 cartas!",
-    "resumen": "¡Ya podemos desvelar que la promoción de este año de McDonald's x Juego de Cartas de Pokémon incluirá juguetes de plástico de 15 Pokémon diferentes en forma de minicajas de Happy Meal! Cada juguete tiene un llavero extensible para que puedas engancharlo a mochilas y pantalones. Este año, las cajas del Happy Meal llevarán impresos a Pikachu, Umbreon y Torchic."
+    "titulo": "¡La promoción del juego de cartas de Pokémon de McDonald’s comienza el 10 de noviembre e incluye mini juguetes de la Happy Meal y 15 cartas!",
+    "resumen": "¡Ya podemos desvelar que la promoción de este año de McDonald's x Juego de Cartas de Pokémon incluirá juguetes de plástico de 15 Pokémon diferentes en forma de minicajas de Happy Meal! Cada juguete tiene un llavero extensible, que también se puede colocar de forma que se vea una carta de Pokémon. Este año, las cajas del Happy Meal llevarán impresos a Pikachu, Umbreon y Torchic."
    }
   },
   {
