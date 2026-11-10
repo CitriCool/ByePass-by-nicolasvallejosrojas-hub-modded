@@ -24,10 +24,12 @@ export const decodificar = s => s.replace(/&(#x[0-9a-f]+|#\d+|\w+);/gi, (m, e) =
 const sinCdata = s => s.replace(/^\s*<!\[CDATA\[([\s\S]*?)\]\]>\s*$/, '$1');
 const campo = (item, tag) => { const m = item.match(new RegExp(`<${tag}(?:\\s[^>]*)?>([\\s\\S]*?)</${tag}>`, 'i')); return m ? sinCdata(m[1]) : ''; };
 
-/* HTML del foro → texto plano: sin citas, imágenes, scripts ni el "Click to expand..." de XenForo. */
+/* HTML del foro → texto plano, sin imágenes, scripts ni el "Click to expand..." de XenForo. PokéBeach pone el
+   texto de la noticia dentro de un <blockquote>, así que ese no se quita. */
 export function aTexto(html){
   return decodificar(html
-    .replace(/<(script|style|blockquote)[\s\S]*?<\/\1>/gi, ' ')
+    .replace(/<(script|style)[\s\S]*?<\/\1>/gi, ' ')
+    .replace(/<div class="bbCodeBlock-expandLink[\s\S]*?<\/div>/gi, ' ')
     .replace(/<br\s*\/?>|<\/(p|div|li|h\d)>/gi, '\n')
     .replace(/<[^>]+>/g, ' '))
     .replace(/Click to expand\.{3}|Read more…?/gi, ' ')
