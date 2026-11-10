@@ -16,7 +16,7 @@ Las reglas candidatas del laboratorio incluyen lectura pública del logo y escri
 
 Esta etapa reemplaza el selector manual y las criaturas originales del piloto anterior. El juego reconoce la sesion de Firebase local, toma el nombre del perfil y vincula las marcas al UID autenticado. Para habilitarlo, el nombre del perfil debe coincidir con un jugador unico de la ultima ronda y tener resultado publicado. Si hay duplicados o el organizador uso otro nombre, no se ofrece elegir otra identidad: se debe corregir la vinculacion del perfil. Todavia falta un vinculo explicito por UID entre todos los formatos de torneos e inscripciones.
 
-El tablero utiliza seis ilustraciones de cartas Pokemon del catalogo TCGdex ya usado por la web. Se verifico respuesta HTTP 200 para las seis imagenes. Son imagenes externas; se necesita conexion para cargarlas. Los nombres se mantienen como alternativa cuando una imagen falla. No se incorporaron sprites, musica ni recursos descargados de juegos comerciales.
+El tablero usa seis cartas Full Art (ilustraciones raras de la colección 151 de TCGdex: Bulbasaur, Charmeleon, Wartortle, Pikachu, Psyduck y Dragonair) en alta resolución. Cada casilla tiene la proporción real de una carta (63 × 88): la ilustración se ve completa y el dorso muestra el logo de ByePass. Son imágenes externas y se necesita conexión. Si una imagen falla, se muestra el nombre. npm.cmd run verify:cartas comprueba en TCGdex nombre, rareza e imagen de cada carta.
 
 ### Puntajes y privacidad
 

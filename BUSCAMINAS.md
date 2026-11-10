@@ -6,7 +6,9 @@ Todo corresponde a tests. No se modificó la web ni Firebase de producción.
 
 En timer-view.html, Mesas > Jugar mientras espero > Buscaminas. Igual que el memorice y Salta, Magikarp, requiere una cuenta cuyo nombre de perfil coincida con un jugador único de la ronda y con resultado publicado. La sala memoria-cuentas-demo permite probar con las cuentas ficticias del README.
 
-Campo de 6 × 6 con seis minas. La primera casilla y sus vecinas siempre son seguras: las minas se siembran en el servidor después del primer toque. Los botones Destapar y Bandera eligen la acción al tocar; en escritorio también sirve el clic derecho y la tecla F. Las flechas mueven el foco por el campo. Cerrar, cambiar de pestaña o empezar una ronda nueva abandona la partida sin guardar.
+Campo de pasto alto de 6 × 6 con seis Voltorb escondidos (las minas). Las casillas abiertas son un sendero de tierra y cada número aparece dentro de un Rattata, que indica cuántos Voltorb hay alrededor. Las marcas son Poké Balls (seis como máximo). Al ganar, los Voltorb aparecen atrapados en Poké Balls; al perder, el que explotó se destaca. Los dibujos de Voltorb, Rattata y Poké Ball son SVG propios, sin sprites de los juegos.
+
+La primera casilla y sus vecinas siempre son seguras: las minas se siembran en el servidor después del primer toque. Los botones Explorar y Poké Ball eligen la acción al tocar; en escritorio también sirve el clic derecho y la tecla F. Las flechas mueven el foco por el campo. Cerrar, cambiar de pestaña o empezar una ronda nueva abandona la partida sin guardar.
 
 ## Puntaje y servidor
 
@@ -18,7 +20,7 @@ Mejor victoria, contador de partidas y las diez más recientes se conservan en d
 
 ## Escritorio y teléfono
 
-Revisado en navegador a 390 × 844, 844 × 390 y 1280 × 720, sin desbordamiento horizontal. En teléfonos horizontales el campo pasa a la izquierda y los controles a la derecha. Las casillas por descubrir usan un verde azulado más oscuro para distinguirlas de las abiertas. Al ganar, las minas se muestran como banderas verdes; al perder, en coral con la que explotó destacada. Las animaciones respetan movimiento reducido.
+Revisado en navegador a 390 × 844, 844 × 390 y 1280 × 720, sin desbordamiento horizontal. En teléfonos horizontales el campo pasa a la izquierda y los controles a la derecha. Las animaciones respetan movimiento reducido.
 
 ## Verificación
 

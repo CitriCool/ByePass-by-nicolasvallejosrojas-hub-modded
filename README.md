@@ -123,9 +123,9 @@ En la vista del torneo, Mesas > Jugar mientras espero. Para jugar hay que tener 
 
 | Juego | Cómo se juega | Detalle |
 | --- | --- | --- |
-| Memorice Pokémon | Encontrar seis parejas con ilustraciones de cartas (TCGdex) en pocos intentos y poco tiempo. Al terminar aparece una pantalla de victoria. | [USABILIDAD.md](USABILIDAD.md) |
+| Memorice Pokémon | Encontrar seis parejas de cartas Full Art (TCGdex), con casillas del tamaño de una carta, en pocos intentos y poco tiempo. Al terminar aparece una pantalla de victoria. | [USABILIDAD.md](USABILIDAD.md) |
 | Salta, Magikarp | Un lanzamiento y tres impulsos de precisión. La altura se calcula con las cuatro precisiones. | [MAGIKARP.md](MAGIKARP.md) |
-| Buscaminas | Campo de 6×6 con seis minas. La primera casilla siempre es segura. Funciona con toque, clic derecho o teclado. | [BUSCAMINAS.md](BUSCAMINAS.md) |
+| Buscaminas | Pasto alto de 6×6 con seis Voltorb escondidos. Los Rattata indican cuántos hay cerca y se marcan con Poké Balls. La primera casilla siempre es segura. Funciona con toque, clic derecho o teclado. | [BUSCAMINAS.md](BUSCAMINAS.md) |
 
 <p align="center">
   <img src="docs/capturas/victoria-movil.png" alt="Victoria en el memorice" width="22%">
@@ -171,6 +171,7 @@ Para detenerlo, presiona Ctrl+C y espera a que Firebase exporte los datos a `dat
 | `npm run test:memoria:api` / `test:salto:api` / `test:minas:api` | Juegos completos con cuentas reales del emulador: privacidad, reintentos, ranking y nueva ronda. |
 | `npm run test:registro:emuladores` / `test:sistema:emuladores` | Laboratorios con reglas restrictivas, cupos concurrentes y un torneo completo. |
 | `npm run verify:ui` | Hojas de estilo de las 20 páginas. |
+| `npm run verify:cartas` | Nombre, rareza Full Art e imagen de las cartas del memorice en TCGdex (requiere internet). |
 | `npm run verify` | Aislamiento, cabeceras, CRUD local y cuentas de prueba (con la web arrancada). |
 
 `npm run verify` también compara la copia con los archivos originales. Si no tienes la carpeta del proyecto original junto a esta (`../timertorneosbyepass-main/`), esa parte falla. Lo mismo vale para `prepare.py`, que creó `web/` a partir del original.

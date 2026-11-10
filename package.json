@@ -19,7 +19,8 @@
     "test:salto": "node --test scripts/salto.test.mjs",
     "test:salto:api": "node scripts/test-salto-api.mjs",
     "test:minas": "node --test scripts/minas.test.mjs",
-    "test:minas:api": "node scripts/test-minas-api.mjs"
+    "test:minas:api": "node scripts/test-minas-api.mjs",
+    "verify:cartas": "node scripts/verificar-cartas.mjs"
   },
   "dependencies": {
     "firebase-tools": "15.35.0"

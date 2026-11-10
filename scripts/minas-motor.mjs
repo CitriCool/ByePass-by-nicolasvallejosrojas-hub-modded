@@ -11,9 +11,9 @@ export function jugarCampo(p,uid,secuencia,indice,accion,ahora=Date.now()){
  if(secuencia!==p.secuencia||!Number.isInteger(secuencia)||!Number.isInteger(indice)||indice<0||indice>=LADO*LADO||!['destapar','bandera'].includes(accion))throw Error('Movimiento inválido.');
  if(p.abiertas.includes(indice))throw Error('Esta casilla ya está abierta.');
  if(accion==='bandera'){
-  if(p.banderas.includes(indice))p.banderas=p.banderas.filter(i=>i!==indice);else {if(p.banderas.length===MINAS)throw Error('Ya marcaste las seis banderas.');p.banderas.push(indice);}
+  if(p.banderas.includes(indice))p.banderas=p.banderas.filter(i=>i!==indice);else {if(p.banderas.length===MINAS)throw Error('Ya usaste las seis Poké Balls.');p.banderas.push(indice);}
  }else{
-  if(p.banderas.includes(indice))throw Error('Quita la bandera antes de destapar esta casilla.');
+  if(p.banderas.includes(indice))throw Error('Quita la Poké Ball antes de explorar esta casilla.');
   if(p.minas===null){sembrar(p,indice);p.inicio=ahora;}
   if(p.minas.includes(indice)){p.exploto=indice;p.terminada=true;}
   else{
