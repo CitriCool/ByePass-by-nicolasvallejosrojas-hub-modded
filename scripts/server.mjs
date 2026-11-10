@@ -21,7 +21,7 @@ export const policy = [
   "object-src 'none'", "base-uri 'self'", "form-action 'self'", "frame-src 'self' http://127.0.0.1:9000", "frame-ancestors 'self'",
 ].join('; ');
 const mime = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json',
-  '.svg': 'image/svg+xml', '.png': 'image/png', '.webmanifest': 'application/manifest+json' };
+  '.svg': 'image/svg+xml', '.png': 'image/png', '.webp': 'image/webp', '.jpg': 'image/jpeg', '.webmanifest': 'application/manifest+json' };
 export function startServer(port = 8001, { apiSalto = saltoApi, apiMinas = minasApi } = {}) {
   const web = path.join(root, 'web');
   const server = http.createServer(async (req, res) => {

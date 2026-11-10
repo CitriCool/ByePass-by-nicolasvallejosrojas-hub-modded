@@ -236,3 +236,26 @@ h1,h2,h3,p {margin:0}
 @media (prefers-reduced-motion:reduce) {
   html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}
 }
+
+/* Ilustración de fondo de la portada: una partida en la tienda. Se desvanece hacia el texto
+   para que el título y los botones conserven el contraste. */
+html {overflow-x:clip}
+.hero {position:relative;isolation:isolate}
+.hero::before {content:"";position:absolute;z-index:-1;top:0;bottom:0;left:50%;width:100vw;transform:translateX(-50%);
+  background:
+    linear-gradient(90deg,var(--pagina) 0%,color-mix(in srgb,var(--pagina) 92%,transparent) 34%,color-mix(in srgb,var(--pagina) 35%,transparent) 62%,color-mix(in srgb,var(--pagina) 15%,transparent) 100%),
+    linear-gradient(180deg,transparent 70%,var(--pagina) 100%),
+    url("fondo-portada.webp") center right/cover no-repeat}
+:root[data-tema="noche"] .hero::before {
+  background:
+    linear-gradient(90deg,var(--pagina) 0%,color-mix(in srgb,var(--pagina) 92%,transparent) 32%,color-mix(in srgb,var(--pagina) 72%,transparent) 65%,color-mix(in srgb,var(--pagina) 60%,transparent) 100%),
+    linear-gradient(180deg,transparent 70%,var(--pagina) 100%),
+    url("fondo-portada.webp") center right/cover no-repeat;filter:saturate(.7)}
+@media(max-width:800px){
+  .hero::before {background:
+    linear-gradient(180deg,color-mix(in srgb,var(--pagina) 45%,transparent) 0%,color-mix(in srgb,var(--pagina) 85%,transparent) 26%,var(--pagina) 44%),
+    url("fondo-portada-movil.webp") 32% top/auto 46% no-repeat,var(--pagina)}
+  :root[data-tema="noche"] .hero::before {background:
+    linear-gradient(180deg,color-mix(in srgb,var(--pagina) 65%,transparent) 0%,color-mix(in srgb,var(--pagina) 90%,transparent) 26%,var(--pagina) 44%),
+    url("fondo-portada-movil.webp") 32% top/auto 46% no-repeat,var(--pagina)}
+}

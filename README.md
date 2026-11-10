@@ -95,6 +95,10 @@ El abanico de cartas con la «B» reemplaza al logo de flechas, en las cabeceras
 
 <p align="center"><img src="docs/capturas/logo-cabeceras.png" alt="El nuevo logo en las cabeceras, en tema claro y oscuro" width="420"></p>
 
+### Ilustración de fondo en la portada
+
+La portada lleva de fondo una ilustración de una partida en una tienda (`web/fondo-portada.webp`, con una versión liviana para el celular). Se desvanece hacia el lado del texto para que el título y los botones se lean bien, y en modo oscuro queda bajo un velo azul.
+
 ### 4. Registro recuperable
 
 - El registro distingue un rechazo confirmado de una interrupción con resultado incierto, y nunca borra una cuenta que quedó bien guardada.
