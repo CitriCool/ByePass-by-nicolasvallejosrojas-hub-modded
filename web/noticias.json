@@ -3,8 +3,22 @@
   "nombre": "PokéBeach",
   "url": "https://www.pokebeach.com/"
  },
- "actualizado": "2026-11-11T21:55:09.327Z",
+ "actualizado": "2026-11-12T07:05:55.556Z",
  "noticias": [
+  {
+   "id": "157142",
+   "url": "https://www.pokebeach.com/forums/threads/kubfu-single-strike-urshifu-and-rapid-strike-urshifu-revealed-from-%E2%80%9Caura-seeker-%E2%80%9D.157142/",
+   "fecha": "2026-11-12T04:58:09.000Z",
+   "autor": "Water Pokémon Master",
+   "en": {
+    "titulo": "Kubfu, Single Strike Urshifu, and Rapid Strike Urshifu Revealed from “Aura Seeker!”",
+    "resumen": "A new Kubfu, Single Strike Urshifu, and Rapid Strike Urshifu have been revealed from Aura Seeker! The set will release in Japan on November 27th. In English we'll get the cards in our Flowing Fists set on February 5th. Kubfu - 80 HP - [F] Basic Pokemon..."
+   },
+   "es": {
+    "titulo": "¡Se desvelan Kubfu, Urshifu de Golpe Único y Urshifu de Golpe Rápido en «Aura Seeker»!",
+    "resumen": "¡Se han desvelado un nuevo Kubfu, un Urshifu de Golpe Único y un Urshifu de Golpe Rápido de la expansión «Aura Seeker»! La expansión saldrá a la venta en Japón el 27 de noviembre. En inglés, las cartas estarán disponibles en nuestra expansión «Flowing Fists» el 5 de febrero. Kubfu - 80 PS - [F] Pokémon básico..."
+   }
+  },
   {
    "id": "157143",
    "url": "https://www.pokebeach.com/forums/threads/vulpix-and-ninetales-from-%E2%80%9Caura-seeker%E2%80%9D-revealed.157143/",
@@ -59,20 +73,6 @@
    "es": {
     "titulo": "Creatures anuncia una nueva subida de precios para los sobres de cartas a partir de mayo",
     "resumen": "A partir de las nuevas series que saldrán a la venta en mayo de 2027, Creatures aumentará el PVP de los sobres japoneses en un 15 %, pasando de 200 yenes a 230 yenes. Esto supondría que el precio de una caja de 30 sobres pasaría de 6.000 yenes a 6.900 yenes. Al igual que en ocasiones anteriores, la empresa alega «el aumento de los costes de las materias primas y otros factores» como motivo."
-   }
-  },
-  {
-   "id": "157142",
-   "url": "https://www.pokebeach.com/forums/threads/kubfu-single-strike-urshifu-and-rapid-strike-urshifu-revealed-from-%E2%80%9Caura-seeker-%E2%80%9D.157142/",
-   "fecha": "2026-11-10T12:43:13.000Z",
-   "autor": "Water Pokémon Master",
-   "en": {
-    "titulo": "Kubfu, Single Strike Urshifu, and Rapid Strike Urshifu Revealed from “Aura Seeker!”",
-    "resumen": "A new Kubfu, Single Strike Urshifu, and Rapid Strike Urshifu have been revealed from Aura Seeker! The set will release in Japan on November 27th. In English we'll get the cards in our Flowing Fists set on February 5th. Kubfu - 80 HP - [F] Basic Pokemon..."
-   },
-   "es": {
-    "titulo": "¡Se desvelan Kubfu, Urshifu de Golpe Único y Urshifu de Golpe Rápido en «Aura Seeker»!",
-    "resumen": "¡Se han desvelado un nuevo Kubfu, un Urshifu de Golpe Único y un Urshifu de Golpe Rápido de la expansión «Aura Seeker»! La expansión saldrá a la venta en Japón el 27 de noviembre. En inglés, las cartas estarán disponibles en nuestra expansión «Flowing Fists» el 5 de febrero. Kubfu - 80 PS - [F] Pokémon básico..."
    }
   },
   {
