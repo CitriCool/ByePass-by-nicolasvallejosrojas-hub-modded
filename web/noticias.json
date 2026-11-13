@@ -3,26 +3,12 @@
   "nombre": "PokéBeach",
   "url": "https://www.pokebeach.com/"
  },
- "actualizado": "2026-11-13T06:37:42.427Z",
+ "actualizado": "2026-11-13T17:10:36.313Z",
  "noticias": [
-  {
-   "id": "157147",
-   "url": "https://www.pokebeach.com/forums/threads/%E2%80%9Cpokemon-day-2027-collection%E2%80%9D-revealed-for-january.157147/",
-   "fecha": "2026-11-13T06:09:46.000Z",
-   "autor": "Water Pokémon Master",
-   "en": {
-    "titulo": "“Pokemon Day 2027 Collection” Revealed for January!",
-    "resumen": "Like last year, a new \"Pokemon Day 2027 Collection\" will release on January 29th for $14.99! It will come with a holo Pikachu from Ascended Heroes with a special \"Pokemon Day 2027\" stamp, three booster packs, a metallic coin, and a code card. The Pikachu should be printed on cosmos holofoil. ..."
-   },
-   "es": {
-    "titulo": "¡Se desvela la «Colección del Día de Pokémon 2027» para enero!",
-    "resumen": "Al igual que el año pasado, el 29 de enero saldrá a la venta una nueva «Colección del Día de Pokémon 2027» por 14,99 dólares. Incluirá un Pikachu holográfico de «Ascended Heroes» con un sello especial del «Día de los Pokémon 2027», tres sobres de cartas, una moneda metálica y una tarjeta con código. El Pikachu debería estar impreso en papel holográfico «cosmos». ..."
-   }
-  },
   {
    "id": "157145",
    "url": "https://www.pokebeach.com/forums/threads/kecleon-from-%E2%80%9Caura-seeker%E2%80%9D-revealed.157145/",
-   "fecha": "2026-11-12T16:00:03.000Z",
+   "fecha": "2026-11-13T15:37:57.000Z",
    "autor": "Water Pokémon Master",
    "en": {
     "titulo": "Kecleon from “Aura Seeker” Revealed!",
@@ -31,6 +17,48 @@
    "es": {
     "titulo": "¡Se desvela el Kecleon de «Aura Seeker»!",
     "resumen": "¡Más revelaciones diarias de cartas! Acaban de desvelar un nuevo Kecleon de la expansión «Aura Seeker». La expansión saldrá a la venta en Japón el 27 de noviembre. En inglés, las cartas formarán parte de nuestra expansión «Flowing Fists», que saldrá el 5 de febrero. Kecleon - 80 PS - [C] Pokémon básico..."
+   }
+  },
+  {
+   "id": "157142",
+   "url": "https://www.pokebeach.com/forums/threads/kubfu-single-strike-urshifu-and-rapid-strike-urshifu-revealed-from-%E2%80%9Caura-seeker-%E2%80%9D.157142/",
+   "fecha": "2026-11-13T15:13:28.000Z",
+   "autor": "Water Pokémon Master",
+   "en": {
+    "titulo": "Kubfu, Single Strike Urshifu, and Rapid Strike Urshifu Revealed from “Aura Seeker!”",
+    "resumen": "A new Kubfu, Single Strike Urshifu, and Rapid Strike Urshifu have been revealed from Aura Seeker! The set will release in Japan on November 27th. In English we'll get the cards in our Flowing Fists set on February 5th. Kubfu - 80 HP - [F] Basic Pokemon..."
+   },
+   "es": {
+    "titulo": "¡Se desvelan Kubfu, Urshifu de Golpe Único y Urshifu de Golpe Rápido en «Aura Seeker»!",
+    "resumen": "¡Se han desvelado un nuevo Kubfu, un Urshifu de Golpe Único y un Urshifu de Golpe Rápido de la expansión «Aura Seeker»! La expansión saldrá a la venta en Japón el 27 de noviembre. En inglés, las cartas estarán disponibles en nuestra expansión «Flowing Fists» el 5 de febrero. Kubfu - 80 PS - [F] Pokémon básico..."
+   }
+  },
+  {
+   "id": "157141",
+   "url": "https://www.pokebeach.com/forums/threads/meowth-and-persian-revealed-from-%E2%80%9Caura-seeker-%E2%80%9D.157141/",
+   "fecha": "2026-11-13T15:09:47.000Z",
+   "autor": "Water Pokémon Master",
+   "en": {
+    "titulo": "Meowth and Persian Revealed from “Aura Seeker!”",
+    "resumen": "The daily reveals for Aura Seeker have begun, starting with Meowth and Persian! The set will release in Japan on November 27th. In English we'll get the cards in our Flowing Fists set on February 5th. Meowth - 80 HP - [C] Basic Pokemon..."
+   },
+   "es": {
+    "titulo": "¡Se han desvelado Meowth y Persian en «Aura Seeker!»",
+    "resumen": "¡Ya han comenzado las revelaciones diarias de «Aura Seeker», empezando por Meowth y Persian! La colección saldrá a la venta en Japón el 27 de noviembre. En inglés, las cartas formarán parte de nuestra colección «Flowing Fists» a partir del 5 de febrero. Meowth - 80 PS - [C] Pokémon básico..."
+   }
+  },
+  {
+   "id": "157147",
+   "url": "https://www.pokebeach.com/forums/threads/%E2%80%9Cpokemon-day-2027-collection%E2%80%9D-revealed-for-january.157147/",
+   "fecha": "2026-11-13T14:05:52.000Z",
+   "autor": "Water Pokémon Master",
+   "en": {
+    "titulo": "“Pokemon Day 2027 Collection” Revealed for January!",
+    "resumen": "Like last year, a new \"Pokemon Day 2027 Collection\" will release on January 29th for $14.99! It will come with a holo Pikachu from Ascended Heroes with a special \"Pokemon Day 2027\" stamp, three booster packs, a metallic coin, and a code card. The Pikachu should be printed on cosmos holofoil. ..."
+   },
+   "es": {
+    "titulo": "¡Se desvela la «Colección del Día de Pokémon 2027» para enero!",
+    "resumen": "Al igual que el año pasado, el 29 de enero saldrá a la venta una nueva «Colección del Día de Pokémon 2027» por 14,99 dólares. Incluirá un Pikachu holográfico de «Ascended Heroes» con un sello especial del «Día de los Pokémon 2027», tres sobres de cartas, una moneda metálica y una tarjeta con código. El Pikachu debería estar impreso en papel holográfico «cosmos». ..."
    }
   },
   {
@@ -59,20 +87,6 @@
    "es": {
     "titulo": "¡Se han revelado las ilustraciones oficiales de todas las megaevoluciones de «Legends: Z-A»!",
     "resumen": "La Pokédex oficial japonesa ha revelado todas las ilustraciones de «Ken Sugimori» correspondientes a las nuevas megaevoluciones de Legends: Z-A. El juego base salió a la venta hace 90 días, mientras que el contenido descargable, Mega Dimension, salió hace 34 días. Aún no se ha revelado la ilustración de Mega Garchomp Z, por lo que es la única que falta."
-   }
-  },
-  {
-   "id": "157142",
-   "url": "https://www.pokebeach.com/forums/threads/kubfu-single-strike-urshifu-and-rapid-strike-urshifu-revealed-from-%E2%80%9Caura-seeker-%E2%80%9D.157142/",
-   "fecha": "2026-11-12T04:58:09.000Z",
-   "autor": "Water Pokémon Master",
-   "en": {
-    "titulo": "Kubfu, Single Strike Urshifu, and Rapid Strike Urshifu Revealed from “Aura Seeker!”",
-    "resumen": "A new Kubfu, Single Strike Urshifu, and Rapid Strike Urshifu have been revealed from Aura Seeker! The set will release in Japan on November 27th. In English we'll get the cards in our Flowing Fists set on February 5th. Kubfu - 80 HP - [F] Basic Pokemon..."
-   },
-   "es": {
-    "titulo": "¡Se desvelan Kubfu, Urshifu de Golpe Único y Urshifu de Golpe Rápido en «Aura Seeker»!",
-    "resumen": "¡Se han desvelado un nuevo Kubfu, un Urshifu de Golpe Único y un Urshifu de Golpe Rápido de la expansión «Aura Seeker»! La expansión saldrá a la venta en Japón el 27 de noviembre. En inglés, las cartas estarán disponibles en nuestra expansión «Flowing Fists» el 5 de febrero. Kubfu - 80 PS - [F] Pokémon básico..."
    }
   },
   {
@@ -115,20 +129,6 @@
    "es": {
     "titulo": "Creatures anuncia una nueva subida de precios para los sobres de cartas a partir de mayo",
     "resumen": "A partir de las nuevas series que saldrán a la venta en mayo de 2027, Creatures aumentará el PVP de los sobres japoneses en un 15 %, pasando de 200 yenes a 230 yenes. Esto supondría que el precio de una caja de 30 sobres pasaría de 6.000 yenes a 6.900 yenes. Al igual que en ocasiones anteriores, la empresa alega «el aumento de los costes de las materias primas y otros factores» como motivo."
-   }
-  },
-  {
-   "id": "157141",
-   "url": "https://www.pokebeach.com/forums/threads/meowth-and-persian-revealed-from-%E2%80%9Caura-seeker-%E2%80%9D.157141/",
-   "fecha": "2026-11-09T21:57:34.000Z",
-   "autor": "Water Pokémon Master",
-   "en": {
-    "titulo": "Meowth and Persian Revealed from “Aura Seeker!”",
-    "resumen": "The daily reveals for Aura Seeker have begun, starting with Meowth and Persian! The set will release in Japan on November 27th. In English we'll get the cards in our Flowing Fists set on February 5th. Meowth - 80 HP - [C] Basic Pokemon..."
-   },
-   "es": {
-    "titulo": "¡Se han desvelado Meowth y Persian en «Aura Seeker!»",
-    "resumen": "¡Ya han comenzado las revelaciones diarias de «Aura Seeker», empezando por Meowth y Persian! La colección saldrá a la venta en Japón el 27 de noviembre. En inglés, las cartas formarán parte de nuestra colección «Flowing Fists» a partir del 5 de febrero. Meowth - 80 PS - [C] Pokémon básico..."
    }
   },
   {
