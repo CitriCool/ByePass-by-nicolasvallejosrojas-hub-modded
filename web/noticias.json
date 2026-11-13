@@ -3,8 +3,22 @@
   "nombre": "PokéBeach",
   "url": "https://www.pokebeach.com/"
  },
- "actualizado": "2026-11-13T17:10:36.313Z",
+ "actualizado": "2026-11-13T23:30:19.889Z",
  "noticias": [
+  {
+   "id": "157147",
+   "url": "https://www.pokebeach.com/forums/threads/%E2%80%9Cpokemon-day-2027-collection%E2%80%9D-revealed-for-january.157147/",
+   "fecha": "2026-11-13T18:02:27.000Z",
+   "autor": "Water Pokémon Master",
+   "en": {
+    "titulo": "“Pokemon Day 2027 Collection” Revealed for January!",
+    "resumen": "Like last year, a new \"Pokemon Day 2027 Collection\" will release on January 29th for $14.99! It will come with a holo Pikachu from Ascended Heroes with a special \"Pokemon Day 2027\" stamp, three booster packs, a metallic coin, and a code card. The Pikachu should be printed on cosmos holofoil. ..."
+   },
+   "es": {
+    "titulo": "¡Se desvela la «Colección del Día de Pokémon 2027» para enero!",
+    "resumen": "Al igual que el año pasado, el 29 de enero saldrá a la venta una nueva «Colección del Día de Pokémon 2027» por 14,99 dólares. Incluirá un Pikachu holográfico de «Ascended Heroes» con un sello especial del «Día de los Pokémon 2027», tres sobres de cartas, una moneda metálica y una tarjeta con código. El Pikachu debería estar impreso en papel holográfico «cosmos». ..."
+   }
+  },
   {
    "id": "157145",
    "url": "https://www.pokebeach.com/forums/threads/kecleon-from-%E2%80%9Caura-seeker%E2%80%9D-revealed.157145/",
@@ -45,20 +59,6 @@
    "es": {
     "titulo": "¡Se han desvelado Meowth y Persian en «Aura Seeker!»",
     "resumen": "¡Ya han comenzado las revelaciones diarias de «Aura Seeker», empezando por Meowth y Persian! La colección saldrá a la venta en Japón el 27 de noviembre. En inglés, las cartas formarán parte de nuestra colección «Flowing Fists» a partir del 5 de febrero. Meowth - 80 PS - [C] Pokémon básico..."
-   }
-  },
-  {
-   "id": "157147",
-   "url": "https://www.pokebeach.com/forums/threads/%E2%80%9Cpokemon-day-2027-collection%E2%80%9D-revealed-for-january.157147/",
-   "fecha": "2026-11-13T14:05:52.000Z",
-   "autor": "Water Pokémon Master",
-   "en": {
-    "titulo": "“Pokemon Day 2027 Collection” Revealed for January!",
-    "resumen": "Like last year, a new \"Pokemon Day 2027 Collection\" will release on January 29th for $14.99! It will come with a holo Pikachu from Ascended Heroes with a special \"Pokemon Day 2027\" stamp, three booster packs, a metallic coin, and a code card. The Pikachu should be printed on cosmos holofoil. ..."
-   },
-   "es": {
-    "titulo": "¡Se desvela la «Colección del Día de Pokémon 2027» para enero!",
-    "resumen": "Al igual que el año pasado, el 29 de enero saldrá a la venta una nueva «Colección del Día de Pokémon 2027» por 14,99 dólares. Incluirá un Pikachu holográfico de «Ascended Heroes» con un sello especial del «Día de los Pokémon 2027», tres sobres de cartas, una moneda metálica y una tarjeta con código. El Pikachu debería estar impreso en papel holográfico «cosmos». ..."
    }
   },
   {
