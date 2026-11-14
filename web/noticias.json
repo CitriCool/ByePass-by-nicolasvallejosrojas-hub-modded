@@ -3,12 +3,26 @@
   "nombre": "PokéBeach",
   "url": "https://www.pokebeach.com/"
  },
- "actualizado": "2026-11-13T23:30:19.889Z",
+ "actualizado": "2026-11-14T13:31:44.238Z",
  "noticias": [
+  {
+   "id": "156625",
+   "url": "https://www.pokebeach.com/forums/threads/official-artwork-of-all-%E2%80%9Clegends-z-a%E2%80%9D-mega-evolutions-revealed.156625/",
+   "fecha": "2026-11-14T09:13:23.000Z",
+   "autor": "Water Pokémon Master",
+   "en": {
+    "titulo": "Official Artwork of All “Legends: Z-A” Mega Evolutions Revealed!",
+    "resumen": "All of the \"Ken Sugimori\" artwork of the new Mega Evolutions from Legends: Z-A have been revealed by the official Japanese Pokedex. The base game released 90 days ago while the DLC, Mega Dimension, released 34 days ago. Mega Garchomp Z's artwork hasn't been revealed yet, so it's the only one missing."
+   },
+   "es": {
+    "titulo": "¡Se han revelado las ilustraciones oficiales de todas las megaevoluciones de «Legends: Z-A»!",
+    "resumen": "La Pokédex oficial japonesa ha revelado todas las ilustraciones de «Ken Sugimori» correspondientes a las nuevas megaevoluciones de Legends: Z-A. El juego base salió a la venta hace 90 días, mientras que el contenido descargable, Mega Dimension, salió hace 34 días. Aún no se ha revelado la ilustración de Mega Garchomp Z, por lo que es la única que falta."
+   }
+  },
   {
    "id": "157147",
    "url": "https://www.pokebeach.com/forums/threads/%E2%80%9Cpokemon-day-2027-collection%E2%80%9D-revealed-for-january.157147/",
-   "fecha": "2026-11-13T18:02:27.000Z",
+   "fecha": "2026-11-14T09:05:38.000Z",
    "autor": "Water Pokémon Master",
    "en": {
     "titulo": "“Pokemon Day 2027 Collection” Revealed for January!",
@@ -73,20 +87,6 @@
    "es": {
     "titulo": "¡El nombre del set «Aura Seeker» ya es una marca registrada para el Juego de Cartas Coleccionables de Pokémon!",
     "resumen": "Hemos descubierto que Pokémon ha solicitado el registro de una nueva marca comercial para «Aura Seeker» (ハドウシーカー Hadou Seeker). Está registrada bajo las mismas clasificaciones de productos que se han utilizado en el pasado para los nombres de las expansiones del Juego de Cartas de Pokémon."
-   }
-  },
-  {
-   "id": "156625",
-   "url": "https://www.pokebeach.com/forums/threads/official-artwork-of-all-%E2%80%9Clegends-z-a%E2%80%9D-mega-evolutions-revealed.156625/",
-   "fecha": "2026-11-12T11:30:52.000Z",
-   "autor": "Water Pokémon Master",
-   "en": {
-    "titulo": "Official Artwork of All “Legends: Z-A” Mega Evolutions Revealed!",
-    "resumen": "All of the \"Ken Sugimori\" artwork of the new Mega Evolutions from Legends: Z-A have been revealed by the official Japanese Pokedex. The base game released 90 days ago while the DLC, Mega Dimension, released 34 days ago. Mega Garchomp Z's artwork hasn't been revealed yet, so it's the only one missing."
-   },
-   "es": {
-    "titulo": "¡Se han revelado las ilustraciones oficiales de todas las megaevoluciones de «Legends: Z-A»!",
-    "resumen": "La Pokédex oficial japonesa ha revelado todas las ilustraciones de «Ken Sugimori» correspondientes a las nuevas megaevoluciones de Legends: Z-A. El juego base salió a la venta hace 90 días, mientras que el contenido descargable, Mega Dimension, salió hace 34 días. Aún no se ha revelado la ilustración de Mega Garchomp Z, por lo que es la única que falta."
    }
   },
   {
