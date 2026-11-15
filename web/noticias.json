@@ -3,8 +3,22 @@
   "nombre": "PokéBeach",
   "url": "https://www.pokebeach.com/"
  },
- "actualizado": "2026-11-14T19:55:16.843Z",
+ "actualizado": "2026-11-15T01:00:33.898Z",
  "noticias": [
+  {
+   "id": "157148",
+   "url": "https://www.pokebeach.com/forums/threads/a-shocking-revelation-%E2%80%94-can-quad-iron-thorns-ex-complete-in-2026.157148/",
+   "fecha": "2026-11-15T00:51:52.000Z",
+   "autor": "PMJ",
+   "en": {
+    "titulo": "A Shocking Revelation — Can Quad Iron Thorns ex Complete in 2026?",
+    "resumen": "Hey PokeBeach readers! It’s Michael, and I am happy to be back with another article. Last time, I discussed a brand new way to play both Mega Charizard X ex and Mega Charizard Y ex alongside some cards from November's Delta Reign."
+   },
+   "es": {
+    "titulo": "Una revelación impactante: ¿podrá «Quad Iron Thorns ex» completarse en 2026?",
+    "resumen": "¡Hola, lectores de PokeBeach! Soy Michael, y me alegro de volver con otro artículo. La última vez hablé de una forma totalmente nueva de jugar tanto con Mega Charizard X ex como con Mega Charizard Y ex, junto con algunas cartas de la expansión «Delta Reign» de noviembre."
+   }
+  },
   {
    "id": "156625",
    "url": "https://www.pokebeach.com/forums/threads/official-artwork-of-all-%E2%80%9Clegends-z-a%E2%80%9D-mega-evolutions-revealed.156625/",
@@ -157,20 +171,6 @@
    "es": {
     "titulo": "¡Se desvelan el ex de Floatzel, Crasher Wake, dibujado por un famoso artista de manga, y más detalles de «Aura Seeker»!",
     "resumen": "Acaban de revelarse varias cartas nuevas de «Aura Seeker», que saldrá a la venta en Japón el 27 de noviembre. En inglés, las cartas formarán parte de nuestra expansión «Flowing Fists», que saldrá el 5 de febrero. Wooper: 70 PS - [W] Pokémon básico..."
-   }
-  },
-  {
-   "id": "157136",
-   "url": "https://www.pokebeach.com/forums/threads/badge-quest-%E2%80%94-gym-leader-challenge-part-2.157136/",
-   "fecha": "2026-11-06T21:30:04.000Z",
-   "autor": "PMJ",
-   "en": {
-    "titulo": "Badge Quest — Gym Leader Challenge Part 2",
-    "resumen": "Hello PokeBeach Readers! Isaiah here and I am happy to be writing another article for you all! Last time, I discussed my experience playing Dragapult ex at the Louisville Regional Championships and what I learned by doing so."
-   },
-   "es": {
-    "titulo": "La búsqueda de insignias: el desafío de los líderes de gimnasio, 2.ª parte",
-    "resumen": "¡Hola, lectores de PokeBeach! Soy Isaiah y estoy encantado de escribir otro artículo para todos vosotros. La última vez os conté mi experiencia jugando con Dragapult ex en el Campeonato Regional de Louisville y lo que aprendí al hacerlo."
    }
   }
  ]
