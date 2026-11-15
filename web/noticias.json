@@ -3,26 +3,12 @@
   "nombre": "PokéBeach",
   "url": "https://www.pokebeach.com/"
  },
- "actualizado": "2026-11-15T10:46:55.643Z",
+ "actualizado": "2026-11-15T18:48:37.967Z",
  "noticias": [
-  {
-   "id": "157134",
-   "url": "https://www.pokebeach.com/forums/threads/all-mega-evolution-cards-now-known-ahead-of-final-mega-set-several-may-never-be-printed.157134/",
-   "fecha": "2026-11-15T08:37:44.000Z",
-   "autor": "Water Pokémon Master",
-   "en": {
-    "titulo": "All Mega Evolution Cards Now Known Ahead of Final MEGA Set, Several May Never Be Printed",
-    "resumen": "We can exclusively reveal Mega Glimmora ex and Floatzel ex will appear in Aura Seeker! Images have yet to be revealed. Based on its Rock/Poison typing in the video games, Mega Glimmora ex will either be a Fighting or Darkness-type card."
-   },
-   "es": {
-    "titulo": "Ya se conocen todas las cartas de megaevolución antes del lanzamiento de la última colección MEGA; es posible que algunas nunca lleguen a imprimirse",
-    "resumen": "¡Podemos revelar en exclusiva que Mega Glimmora ex y Floatzel ex aparecerán en «Aura Seeker»! Aún no se han publicado imágenes. Teniendo en cuenta su tipo Roca/Veneno en los videojuegos, Mega Glimmora ex será una carta de tipo Lucha u Oscuridad."
-   }
-  },
   {
    "id": "157148",
    "url": "https://www.pokebeach.com/forums/threads/a-shocking-revelation-%E2%80%94-can-quad-iron-thorns-ex-compete-in-2026.157148/",
-   "fecha": "2026-11-15T04:49:42.000Z",
+   "fecha": "2026-11-15T16:29:08.000Z",
    "autor": "PMJ",
    "en": {
     "titulo": "A Shocking Revelation — Can Quad Iron Thorns ex Compete in 2026?",
@@ -157,6 +143,20 @@
    "es": {
     "titulo": "Creatures anuncia una nueva subida de precios para los sobres de cartas a partir de mayo",
     "resumen": "A partir de las nuevas series que saldrán a la venta en mayo de 2027, Creatures aumentará el PVP de los sobres japoneses en un 15 %, pasando de 200 yenes a 230 yenes. Esto supondría que el precio de una caja de 30 sobres pasaría de 6.000 yenes a 6.900 yenes. Al igual que en ocasiones anteriores, la empresa alega «el aumento de los costes de las materias primas y otros factores» como motivo."
+   }
+  },
+  {
+   "id": "157134",
+   "url": "https://www.pokebeach.com/forums/threads/all-mega-evolution-cards-now-known-ahead-of-final-mega-set-several-may-never-be-printed.157134/",
+   "fecha": "2026-11-08T12:14:17.000Z",
+   "autor": "Water Pokémon Master",
+   "en": {
+    "titulo": "All Mega Evolution Cards Now Known Ahead of Final MEGA Set, Several May Never Be Printed",
+    "resumen": "We can exclusively reveal Mega Glimmora ex and Floatzel ex will appear in Aura Seeker! Images have yet to be revealed. Based on its Rock/Poison typing in the video games, Mega Glimmora ex will either be a Fighting or Darkness-type card."
+   },
+   "es": {
+    "titulo": "Ya se conocen todas las cartas de megaevolución antes del lanzamiento de la última colección MEGA; es posible que algunas nunca lleguen a imprimirse",
+    "resumen": "¡Podemos revelar en exclusiva que Mega Glimmora ex y Floatzel ex aparecerán en «Aura Seeker»! Aún no se han publicado imágenes. Teniendo en cuenta su tipo Roca/Veneno en los videojuegos, Mega Glimmora ex será una carta de tipo Lucha u Oscuridad."
    }
   },
   {
