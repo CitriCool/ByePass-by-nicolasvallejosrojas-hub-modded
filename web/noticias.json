@@ -3,12 +3,26 @@
   "nombre": "PokéBeach",
   "url": "https://www.pokebeach.com/"
  },
- "actualizado": "2026-11-16T21:58:08.064Z",
+ "actualizado": "2026-11-17T07:50:31.045Z",
  "noticias": [
+  {
+   "id": "157153",
+   "url": "https://www.pokebeach.com/forums/threads/%E2%80%9Cmagma-heartbeat-%E2%80%9D-%E2%80%9Clightning-impact-%E2%80%9D-and-%E2%80%9Caurora-ripples%E2%80%9D-to-launch-pokemon-ex%E2%98%85-series-in-may-2027.157153/",
+   "fecha": "2026-11-17T07:46:39.000Z",
+   "autor": "Water Pokémon Master",
+   "en": {
+    "titulo": "“Magma Heartbeat,” “Lightning Impact,” and “Aurora Ripples” to Launch Pokemon ex★ Series in May 2027!",
+    "resumen": "We can now reveal Magma Heartbeat, Lightning Impact, and Aurora Ripples will release in Japan on May 21st, 2027! The three sets will feature Entei, Suicune, and Raikou. We first discovered the sets' trademarks last month."
+   },
+   "es": {
+    "titulo": "«Magma Heartbeat», «Lightning Impact» y «Aurora Ripples» marcarán el inicio de la serie Pokémon ex★ en mayo de 2027.",
+    "resumen": "¡Ya podemos revelar que «Magma Heartbeat», «Lightning Impact» y «Aurora Ripples» saldrán a la venta en Japón el 21 de mayo de 2027! Las tres series contarán con Entei, Suicune y Raikou. Descubrimos por primera vez las marcas registradas de estas series el mes pasado."
+   }
+  },
   {
    "id": "157151",
    "url": "https://www.pokebeach.com/forums/threads/%E2%80%9Cwonderful-waters%E2%80%9D-mini-tins-revealed-for-january.157151/",
-   "fecha": "2026-11-16T21:46:56.000Z",
+   "fecha": "2026-11-17T02:41:43.000Z",
    "autor": "Water Pokémon Master",
    "en": {
     "titulo": "“Wonderful Waters” Mini Tins Revealed for January!",
@@ -157,20 +171,6 @@
    "es": {
     "titulo": "¡El nombre del set «Aura Seeker» ya es una marca registrada para el Juego de Cartas Coleccionables de Pokémon!",
     "resumen": "Hemos descubierto que Pokémon ha solicitado el registro de una nueva marca comercial para «Aura Seeker» (ハドウシーカー Hadou Seeker). Está registrada bajo las mismas clasificaciones de productos que se han utilizado en el pasado para los nombres de las expansiones del Juego de Cartas de Pokémon."
-   }
-  },
-  {
-   "id": "157143",
-   "url": "https://www.pokebeach.com/forums/threads/vulpix-and-ninetales-from-%E2%80%9Caura-seeker%E2%80%9D-revealed.157143/",
-   "fecha": "2026-11-11T20:46:19.000Z",
-   "autor": "Water Pokémon Master",
-   "en": {
-    "titulo": "Vulpix and Ninetales from “Aura Seeker” Revealed!",
-    "resumen": "A new Vulpix and Ninetales have just been revealed from Aura Seeker! The set will release in Japan on November 27th. In English we'll get the cards in our Flowing Fists set on February 5th. Vulpix - 70 HP - [R] Basic Pokemon..."
-   },
-   "es": {
-    "titulo": "¡Se han desvelado Vulpix y Ninetales de «Aura Seeker»!",
-    "resumen": "¡Acaban de revelarse un nuevo Vulpix y un nuevo Ninetales de la expansión «Aura Seeker»! La expansión saldrá a la venta en Japón el 27 de noviembre. En inglés, las cartas estarán disponibles en nuestra expansión «Flowing Fists» el 5 de febrero. Vulpix - 70 PS - [R] Pokémon básico..."
    }
   }
  ]
