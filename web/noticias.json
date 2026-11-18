@@ -3,12 +3,26 @@
   "nombre": "PokéBeach",
   "url": "https://www.pokebeach.com/"
  },
- "actualizado": "2026-11-18T02:52:50.446Z",
+ "actualizado": "2026-11-18T11:34:51.871Z",
  "noticias": [
+  {
+   "id": "157151",
+   "url": "https://www.pokebeach.com/forums/threads/%E2%80%9Cwonderful-waters%E2%80%9D-mini-tins-revealed-for-january.157151/",
+   "fecha": "2026-11-18T07:54:00.000Z",
+   "autor": "Water Pokémon Master",
+   "en": {
+    "titulo": "“Wonderful Waters” Mini Tins Revealed for January!",
+    "resumen": "A new set of TCG mini tins named \"Wonderful Waters\" will release on January 29th! As usual, they will cost $9.99 each. They'll include two booster packs, a sticker sheet, an art card of the tin's artwork, and a code card. ..."
+   },
+   "es": {
+    "titulo": "¡Ya se han presentado las minilatas «Wonderful Waters» de enero!",
+    "resumen": "¡El 29 de enero saldrá a la venta una nueva colección de minicajas de TCG llamada «Wonderful Waters»! Como es habitual, costarán 9,99 dólares cada una. Incluirán dos sobres, una hoja de pegatinas, una tarjeta con la ilustración de la caja y una tarjeta con un código. ..."
+   }
+  },
   {
    "id": "157153",
    "url": "https://www.pokebeach.com/forums/threads/%E2%80%9Cmagma-heartbeat-%E2%80%9D-%E2%80%9Clightning-impact-%E2%80%9D-and-%E2%80%9Caurora-ripples%E2%80%9D-to-launch-pokemon-ex%E2%98%85-series-in-may-2027.157153/",
-   "fecha": "2026-11-18T02:51:44.000Z",
+   "fecha": "2026-11-18T07:23:13.000Z",
    "autor": "Water Pokémon Master",
    "en": {
     "titulo": "“Magma Heartbeat,” “Lightning Impact,” and “Aurora Ripples” to Launch Pokemon ex★ Series in May 2027!",
@@ -20,17 +34,17 @@
    }
   },
   {
-   "id": "157151",
-   "url": "https://www.pokebeach.com/forums/threads/%E2%80%9Cwonderful-waters%E2%80%9D-mini-tins-revealed-for-january.157151/",
-   "fecha": "2026-11-17T02:41:43.000Z",
+   "id": "157112",
+   "url": "https://www.pokebeach.com/forums/threads/%E2%80%9Caura-seeker%E2%80%9D-set-starring-mega-lucario-z-ex-officially-revealed.157112/",
+   "fecha": "2026-11-18T03:25:33.000Z",
    "autor": "Water Pokémon Master",
    "en": {
-    "titulo": "“Wonderful Waters” Mini Tins Revealed for January!",
-    "resumen": "A new set of TCG mini tins named \"Wonderful Waters\" will release on January 29th! As usual, they will cost $9.99 each. They'll include two booster packs, a sticker sheet, an art card of the tin's artwork, and a code card. ..."
+    "titulo": "“Aura Seeker” Set Starring Mega Lucario Z ex Officially Revealed!",
+    "resumen": "Aura Seeker starring Mega Lucario Z ex has now been officially revealed! As posted before, it will release in Japan on November 27th as their M7 set. This is the first set to feature the Z Mega Evolutions from the Mega Dimension DLC. Aura Seeker will feature 78 cards in its main set, plus another..."
    },
    "es": {
-    "titulo": "¡Ya se han presentado las minilatas «Wonderful Waters» de enero!",
-    "resumen": "¡El 29 de enero saldrá a la venta una nueva colección de minicajas de TCG llamada «Wonderful Waters»! Como es habitual, costarán 9,99 dólares cada una. Incluirán dos sobres, una hoja de pegatinas, una tarjeta con la ilustración de la caja y una tarjeta con un código. ..."
+    "titulo": "¡Se ha desvelado oficialmente el set «Aura Seeker», protagonizado por Mega Lucario Z ex!",
+    "resumen": "¡Ya se ha presentado oficialmente «Aura Seeker», protagonizado por Mega Lucario Z ex! Tal y como ya se había anunciado, saldrá a la venta en Japón el 27 de noviembre como parte de la colección M7. Se trata de la primera colección que incluye las megaevoluciones Z del DLC «Mega Dimension». «Aura Seeker» contará con 78 cartas en su colección principal, además de otras..."
    }
   },
   {
@@ -45,20 +59,6 @@
    "es": {
     "titulo": "Una revelación impactante: ¿podrá el equipo «Quad Iron Thorns» (antiguo) competir en 2026?",
     "resumen": "¡Hola, lectores de PokeBeach! Soy Michael, y me alegro de volver con otro artículo. La última vez hablé de una forma totalmente nueva de jugar tanto con Mega Charizard X ex como con Mega Charizard Y ex, junto con algunas cartas de la expansión «Delta Reign» de noviembre."
-   }
-  },
-  {
-   "id": "157112",
-   "url": "https://www.pokebeach.com/forums/threads/%E2%80%9Caura-seeker%E2%80%9D-set-starring-mega-lucario-z-ex-officially-revealed.157112/",
-   "fecha": "2026-11-16T18:13:12.000Z",
-   "autor": "Water Pokémon Master",
-   "en": {
-    "titulo": "“Aura Seeker” Set Starring Mega Lucario Z ex Officially Revealed!",
-    "resumen": "Aura Seeker starring Mega Lucario Z ex has now been officially revealed! As posted before, it will release in Japan on November 27th as their M7 set. This is the first set to feature the Z Mega Evolutions from the Mega Dimension DLC. Aura Seeker will feature 78 cards in its main set, plus another..."
-   },
-   "es": {
-    "titulo": "¡Se ha desvelado oficialmente el set «Aura Seeker», protagonizado por Mega Lucario Z ex!",
-    "resumen": "¡Ya se ha presentado oficialmente «Aura Seeker», protagonizado por Mega Lucario Z ex! Tal y como ya se había anunciado, saldrá a la venta en Japón el 27 de noviembre como parte de la colección M7. Se trata de la primera colección que incluye las megaevoluciones Z del DLC «Mega Dimension». «Aura Seeker» contará con 78 cartas en su colección principal, además de otras..."
    }
   },
   {
