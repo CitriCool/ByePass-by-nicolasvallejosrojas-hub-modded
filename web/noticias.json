@@ -3,12 +3,26 @@
   "nombre": "PokéBeach",
   "url": "https://www.pokebeach.com/"
  },
- "actualizado": "2026-11-19T11:33:12.274Z",
+ "actualizado": "2026-11-19T20:30:24.553Z",
  "noticias": [
+  {
+   "id": "157155",
+   "url": "https://www.pokebeach.com/forums/threads/%E2%80%9Cflowing-fists%E2%80%9D-tcg-set-officially-revealed-for-february-full-product-lineup-revealed.157155/",
+   "fecha": "2026-11-19T20:24:20.000Z",
+   "autor": "Water Pokémon Master",
+   "en": {
+    "titulo": "“Flowing Fists” TCG Set Officially Revealed for February, Full Product Lineup Revealed!",
+    "resumen": "Flowing Fists starring Mega Lucario Z ex has now been officially revealed! It will release on Saturday, February 6th as our seventh English Mega Evolution set. This marks the first time a set will release on a Saturday. TPCi has announced future Pokemon TCG sets will also release on Saturdays."
+   },
+   "es": {
+    "titulo": "¡Se ha presentado oficialmente la colección de cartas «Flowing Fists» para febrero y se ha desvelado la gama completa de productos!",
+    "resumen": "¡Ya se ha presentado oficialmente «Flowing Fists», protagonizada por Mega Lucario Z ex! Saldrá a la venta el sábado 6 de febrero como nuestra séptima colección de megaevoluciones en inglés. Es la primera vez que una colección sale a la venta un sábado. TPCi ha anunciado que las futuras colecciones del Juego de Cartas de Pokémon también saldrán a la venta los sábados."
+   }
+  },
   {
    "id": "157154",
    "url": "https://www.pokebeach.com/forums/threads/gold-silver-tcg-products-to-release-alongside-pokemon-ex%E2%98%85-series.157154/",
-   "fecha": "2026-11-19T08:10:44.000Z",
+   "fecha": "2026-11-19T18:22:18.000Z",
    "autor": "Water Pokémon Master",
    "en": {
     "titulo": "Gold & Silver TCG Products to Release Alongside Pokemon ex★ Series!",
@@ -157,20 +171,6 @@
    "es": {
     "titulo": "¡Se desvelan Kubfu, Urshifu de Golpe Único y Urshifu de Golpe Rápido en «Aura Seeker»!",
     "resumen": "¡Se han desvelado un nuevo Kubfu, un Urshifu de Golpe Único y un Urshifu de Golpe Rápido de la expansión «Aura Seeker»! La expansión saldrá a la venta en Japón el 27 de noviembre. En inglés, las cartas estarán disponibles en nuestra expansión «Flowing Fists» el 5 de febrero. Kubfu - 80 PS - [F] Pokémon básico..."
-   }
-  },
-  {
-   "id": "157141",
-   "url": "https://www.pokebeach.com/forums/threads/meowth-and-persian-revealed-from-%E2%80%9Caura-seeker-%E2%80%9D.157141/",
-   "fecha": "2026-11-13T15:09:47.000Z",
-   "autor": "Water Pokémon Master",
-   "en": {
-    "titulo": "Meowth and Persian Revealed from “Aura Seeker!”",
-    "resumen": "The daily reveals for Aura Seeker have begun, starting with Meowth and Persian! The set will release in Japan on November 27th. In English we'll get the cards in our Flowing Fists set on February 5th. Meowth - 80 HP - [C] Basic Pokemon..."
-   },
-   "es": {
-    "titulo": "¡Se han desvelado Meowth y Persian en «Aura Seeker!»",
-    "resumen": "¡Ya han comenzado las revelaciones diarias de «Aura Seeker», empezando por Meowth y Persian! La colección saldrá a la venta en Japón el 27 de noviembre. En inglés, las cartas formarán parte de nuestra colección «Flowing Fists» a partir del 5 de febrero. Meowth - 80 PS - [C] Pokémon básico..."
    }
   }
  ]
