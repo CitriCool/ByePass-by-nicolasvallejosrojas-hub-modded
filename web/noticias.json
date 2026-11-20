@@ -3,12 +3,26 @@
   "nombre": "PokéBeach",
   "url": "https://www.pokebeach.com/"
  },
- "actualizado": "2026-11-20T11:29:45.973Z",
+ "actualizado": "2026-11-20T20:08:58.152Z",
  "noticias": [
+  {
+   "id": "157155",
+   "url": "https://www.pokebeach.com/forums/threads/%E2%80%9Cflowing-fists%E2%80%9D-tcg-set-officially-revealed-for-february-full-product-lineup-revealed.157155/",
+   "fecha": "2026-11-20T18:39:11.000Z",
+   "autor": "Water Pokémon Master",
+   "en": {
+    "titulo": "“Flowing Fists” TCG Set Officially Revealed for February, Full Product Lineup Revealed!",
+    "resumen": "Flowing Fists starring Mega Lucario Z ex has now been officially revealed! It will release on Saturday, February 6th as our seventh English Mega Evolution set. This marks the first time a set will release on a Saturday. TPCi has announced future Pokemon TCG sets will also release on Saturdays."
+   },
+   "es": {
+    "titulo": "¡Se ha presentado oficialmente la colección de cartas «Flowing Fists» para febrero y se ha desvelado la gama completa de productos!",
+    "resumen": "¡Ya se ha presentado oficialmente «Flowing Fists», protagonizada por Mega Lucario Z ex! Saldrá a la venta el sábado 6 de febrero como nuestra séptima colección de megaevoluciones en inglés. Es la primera vez que una colección sale a la venta un sábado. TPCi ha anunciado que las futuras colecciones del Juego de Cartas de Pokémon también saldrán a la venta los sábados."
+   }
+  },
   {
    "id": "157157",
    "url": "https://www.pokebeach.com/forums/threads/%E2%80%9Caura-seeker%E2%80%9D-all-78-main-set-cards-revealed.157157/",
-   "fecha": "2026-11-20T11:08:59.000Z",
+   "fecha": "2026-11-20T18:32:51.000Z",
    "autor": "Water Pokémon Master",
    "en": {
     "titulo": "“Aura Seeker” All 78 Main Set Cards Revealed!",
@@ -31,20 +45,6 @@
    "es": {
     "titulo": "¡Los productos de la colección de cartas de Oro y Plata saldrán a la venta junto con la serie Pokémon ex★!",
     "resumen": "Tal y como se informó a principios de esta semana, la nueva serie Pokémon ex★ saldrá a la venta en Japón el 21 de mayo con tres colecciones: «Magma Heartbeat», «Lightning Impact» y «Aurora Ripples», protagonizadas por Entei, Raikou y Suicune, respectivamente. Esta es la primera vez que se lanzan tres colecciones del juego de cartas el mismo día. ..."
-   }
-  },
-  {
-   "id": "157155",
-   "url": "https://www.pokebeach.com/forums/threads/%E2%80%9Cflowing-fists%E2%80%9D-tcg-set-officially-revealed-for-february-full-product-lineup-revealed.157155/",
-   "fecha": "2026-11-20T09:41:52.000Z",
-   "autor": "Water Pokémon Master",
-   "en": {
-    "titulo": "“Flowing Fists” TCG Set Officially Revealed for February, Full Product Lineup Revealed!",
-    "resumen": "Flowing Fists starring Mega Lucario Z ex has now been officially revealed! It will release on Saturday, February 6th as our seventh English Mega Evolution set. This marks the first time a set will release on a Saturday. TPCi has announced future Pokemon TCG sets will also release on Saturdays."
-   },
-   "es": {
-    "titulo": "¡Se ha presentado oficialmente la colección de cartas «Flowing Fists» para febrero y se ha desvelado la gama completa de productos!",
-    "resumen": "¡Ya se ha presentado oficialmente «Flowing Fists», protagonizada por Mega Lucario Z ex! Saldrá a la venta el sábado 6 de febrero como nuestra séptima colección de megaevoluciones en inglés. Es la primera vez que una colección sale a la venta un sábado. TPCi ha anunciado que las futuras colecciones del Juego de Cartas de Pokémon también saldrán a la venta los sábados."
    }
   },
   {
