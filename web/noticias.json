@@ -3,8 +3,22 @@
   "nombre": "PokéBeach",
   "url": "https://www.pokebeach.com/"
  },
- "actualizado": "2026-11-20T20:08:58.152Z",
+ "actualizado": "2026-11-21T02:11:12.484Z",
  "noticias": [
+  {
+   "id": "157157",
+   "url": "https://www.pokebeach.com/forums/threads/%E2%80%9Caura-seeker%E2%80%9D-all-78-main-set-cards-revealed.157157/",
+   "fecha": "2026-11-21T01:56:52.000Z",
+   "autor": "Water Pokémon Master",
+   "en": {
+    "titulo": "“Aura Seeker” All 78 Main Set Cards Revealed!",
+    "resumen": "All 78 main set cards from Aura Seeker have been officially revealed! The set stars Mega Lucario Z ex and will release in Japan on November 27th as their seventh Mega Evolution set. This is the first set to feature the Z Mega Evolutions from the Mega Dimension DLC. ..."
+   },
+   "es": {
+    "titulo": "«Aura Seeker»: ¡Se han revelado las 78 cartas de la colección principal!",
+    "resumen": "¡Ya se han revelado oficialmente las 78 cartas principales de la expansión «Aura Seeker»! La expansión tiene como protagonista a Mega Lucario Z ex y saldrá a la venta en Japón el 27 de noviembre como su séptima expansión de megaevoluciones. Se trata de la primera expansión que incluye las megaevoluciones Z del DLC «Mega Dimension». ..."
+   }
+  },
   {
    "id": "157155",
    "url": "https://www.pokebeach.com/forums/threads/%E2%80%9Cflowing-fists%E2%80%9D-tcg-set-officially-revealed-for-february-full-product-lineup-revealed.157155/",
@@ -17,20 +31,6 @@
    "es": {
     "titulo": "¡Se ha presentado oficialmente la colección de cartas «Flowing Fists» para febrero y se ha desvelado la gama completa de productos!",
     "resumen": "¡Ya se ha presentado oficialmente «Flowing Fists», protagonizada por Mega Lucario Z ex! Saldrá a la venta el sábado 6 de febrero como nuestra séptima colección de megaevoluciones en inglés. Es la primera vez que una colección sale a la venta un sábado. TPCi ha anunciado que las futuras colecciones del Juego de Cartas de Pokémon también saldrán a la venta los sábados."
-   }
-  },
-  {
-   "id": "157157",
-   "url": "https://www.pokebeach.com/forums/threads/%E2%80%9Caura-seeker%E2%80%9D-all-78-main-set-cards-revealed.157157/",
-   "fecha": "2026-11-20T18:32:51.000Z",
-   "autor": "Water Pokémon Master",
-   "en": {
-    "titulo": "“Aura Seeker” All 78 Main Set Cards Revealed!",
-    "resumen": "All 78 main set cards from Aura Seeker have been officially revealed! The set stars Mega Lucario Z ex and will release in Japan on November 27th as their seventh Mega Evolution set. This is the first set to feature the Z Mega Evolutions from the Mega Dimension DLC. ..."
-   },
-   "es": {
-    "titulo": "«Aura Seeker»: ¡Se han revelado las 78 cartas de la colección principal!",
-    "resumen": "¡Ya se han revelado oficialmente las 78 cartas principales de la expansión «Aura Seeker»! La expansión tiene como protagonista a Mega Lucario Z ex y saldrá a la venta en Japón el 27 de noviembre como su séptima expansión de megaevoluciones. Se trata de la primera expansión que incluye las megaevoluciones Z del DLC «Mega Dimension». ..."
    }
   },
   {
