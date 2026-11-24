@@ -3,26 +3,12 @@
   "nombre": "PokéBeach",
   "url": "https://www.pokebeach.com/"
  },
- "actualizado": "2026-11-24T02:10:54.629Z",
+ "actualizado": "2026-11-24T13:37:03.989Z",
  "noticias": [
-  {
-   "id": "157161",
-   "url": "https://www.pokebeach.com/forums/threads/four-%E2%80%9Caura-seeker%E2%80%9D-secret-rares-revealed-blastoise-hatterene-hawlucha-mega-lucario-z-ex.157161/",
-   "fecha": "2026-11-24T00:37:10.000Z",
-   "autor": "Water Pokémon Master",
-   "en": {
-    "titulo": "Four “Aura Seeker” Secret Rares Revealed: Blastoise, Hatterene, Hawlucha, Mega Lucario Z ex!",
-    "resumen": "Creatures has officially revealed three Illustration Rares and one Special Illustration Rare from Aura Seeker. The set will release in Japan on November 27th. In English we'll get the cards in our Flowing Fists set on February 5th. #081: Blastoise[/b]Rarity: ARIllus. Nurikabe..."
-   },
-   "es": {
-    "titulo": "Se revelan cuatro cartas «Aura Seeker» de rareza secreta: ¡Blastoise, Hatterene, Hawlucha y Mega Lucario Z ex!",
-    "resumen": "Creatures ha revelado oficialmente tres cartas raras con ilustración y una carta rara con ilustración especial de «Aura Seeker». La expansión saldrá a la venta en Japón el 27 de noviembre. En inglés, las cartas se incluirán en nuestra colección «Flowing Fists» el 5 de febrero. #081: Blastoise[/b]Rareza: ARIllus. Nurikabe..."
-   }
-  },
   {
    "id": "157163",
    "url": "https://www.pokebeach.com/forums/threads/pokemon-china-unveils-30-pure-gold-pikachu-cards-for-30th-anniversary-celebration.157163/",
-   "fecha": "2026-11-23T23:26:26.000Z",
+   "fecha": "2026-11-24T11:57:30.000Z",
    "autor": "Water Pokémon Master",
    "en": {
     "titulo": "Pokemon China Unveils 30 Pure Gold Pikachu Cards for 30th Anniversary Celebration!",
@@ -31,6 +17,20 @@
    "es": {
     "titulo": "¡Pokémon China presenta 30 cartas de Pikachu de oro puro para celebrar el 30.º aniversario!",
     "resumen": "Como parte de las celebraciones del 30.º aniversario de Pokémon, Pokémon China ha creado versiones de oro puro de las 30 cartas de Pikachu de la colección «30th Celebration». Las cartas se expondrán en la «Exposición de ilustraciones artísticas de cartas de Pokémon», que tendrá lugar en el Centro Cultural y Artístico Lafayette de Shanghái del 28 de noviembre al 27 de diciembre. ..."
+   }
+  },
+  {
+   "id": "157161",
+   "url": "https://www.pokebeach.com/forums/threads/four-%E2%80%9Caura-seeker%E2%80%9D-secret-rares-revealed-blastoise-hatterene-hawlucha-mega-lucario-z-ex.157161/",
+   "fecha": "2026-11-24T07:41:35.000Z",
+   "autor": "Water Pokémon Master",
+   "en": {
+    "titulo": "Four “Aura Seeker” Secret Rares Revealed: Blastoise, Hatterene, Hawlucha, Mega Lucario Z ex!",
+    "resumen": "Creatures has officially revealed three Illustration Rares and one Special Illustration Rare from Aura Seeker. The set will release in Japan on November 27th. In English we'll get the cards in our Flowing Fists set on February 5th. #081: Blastoise[/b]Rarity: ARIllus. Nurikabe..."
+   },
+   "es": {
+    "titulo": "Se revelan cuatro cartas «Aura Seeker» de rareza secreta: ¡Blastoise, Hatterene, Hawlucha y Mega Lucario Z ex!",
+    "resumen": "Creatures ha revelado oficialmente tres cartas raras con ilustración y una carta rara con ilustración especial de «Aura Seeker». La expansión saldrá a la venta en Japón el 27 de noviembre. En inglés, las cartas se incluirán en nuestra colección «Flowing Fists» el 5 de febrero. #081: Blastoise[/b]Rareza: ARIllus. Nurikabe..."
    }
   },
   {
