@@ -3,12 +3,12 @@
   "nombre": "PokéBeach",
   "url": "https://www.pokebeach.com/"
  },
- "actualizado": "2026-11-23T12:26:59.692Z",
+ "actualizado": "2026-11-24T02:10:54.629Z",
  "noticias": [
   {
    "id": "157161",
    "url": "https://www.pokebeach.com/forums/threads/four-%E2%80%9Caura-seeker%E2%80%9D-secret-rares-revealed-blastoise-hatterene-hawlucha-mega-lucario-z-ex.157161/",
-   "fecha": "2026-11-23T11:02:05.000Z",
+   "fecha": "2026-11-24T00:37:10.000Z",
    "autor": "Water Pokémon Master",
    "en": {
     "titulo": "Four “Aura Seeker” Secret Rares Revealed: Blastoise, Hatterene, Hawlucha, Mega Lucario Z ex!",
@@ -20,9 +20,23 @@
    }
   },
   {
+   "id": "157163",
+   "url": "https://www.pokebeach.com/forums/threads/pokemon-china-unveils-30-pure-gold-pikachu-cards-for-30th-anniversary-celebration.157163/",
+   "fecha": "2026-11-23T23:26:26.000Z",
+   "autor": "Water Pokémon Master",
+   "en": {
+    "titulo": "Pokemon China Unveils 30 Pure Gold Pikachu Cards for 30th Anniversary Celebration!",
+    "resumen": "As part of Pokemon's 30th anniversary celebrations, Pokemon China has created pure gold versions of all 30 Pikachu cards from 30th Celebration. The cards will be displayed at a \" Pokemon Card Art Illustration Exhibition \" at Shanghai's Lafayette Culture and Arts Center from November 28th through December 27th. ..."
+   },
+   "es": {
+    "titulo": "¡Pokémon China presenta 30 cartas de Pikachu de oro puro para celebrar el 30.º aniversario!",
+    "resumen": "Como parte de las celebraciones del 30.º aniversario de Pokémon, Pokémon China ha creado versiones de oro puro de las 30 cartas de Pikachu de la colección «30th Celebration». Las cartas se expondrán en la «Exposición de ilustraciones artísticas de cartas de Pokémon», que tendrá lugar en el Centro Cultural y Artístico Lafayette de Shanghái del 28 de noviembre al 27 de diciembre. ..."
+   }
+  },
+  {
    "id": "157157",
    "url": "https://www.pokebeach.com/forums/threads/%E2%80%9Caura-seeker%E2%80%9D-all-78-main-set-cards-revealed.157157/",
-   "fecha": "2026-11-23T10:38:49.000Z",
+   "fecha": "2026-11-23T20:25:25.000Z",
    "autor": "Water Pokémon Master",
    "en": {
     "titulo": "“Aura Seeker” All 78 Main Set Cards Revealed!",
@@ -157,20 +171,6 @@
    "es": {
     "titulo": "Ya se conocen todas las cartas de megaevolución antes del lanzamiento de la última colección MEGA; es posible que algunas nunca lleguen a imprimirse",
     "resumen": "¡Podemos revelar en exclusiva que Mega Glimmora ex y Floatzel ex aparecerán en «Aura Seeker»! Aún no se han publicado imágenes. Teniendo en cuenta su tipo Roca/Veneno en los videojuegos, Mega Glimmora ex será una carta de tipo Lucha u Oscuridad."
-   }
-  },
-  {
-   "id": "156625",
-   "url": "https://www.pokebeach.com/forums/threads/official-artwork-of-all-%E2%80%9Clegends-z-a%E2%80%9D-mega-evolutions-revealed.156625/",
-   "fecha": "2026-11-14T13:34:50.000Z",
-   "autor": "Water Pokémon Master",
-   "en": {
-    "titulo": "Official Artwork of All “Legends: Z-A” Mega Evolutions Revealed!",
-    "resumen": "All of the \"Ken Sugimori\" artwork of the new Mega Evolutions from Legends: Z-A have been revealed by the official Japanese Pokedex. The base game released 90 days ago while the DLC, Mega Dimension, released 34 days ago. Mega Garchomp Z's artwork hasn't been revealed yet, so it's the only one missing."
-   },
-   "es": {
-    "titulo": "¡Se han revelado las ilustraciones oficiales de todas las megaevoluciones de «Legends: Z-A»!",
-    "resumen": "La Pokédex oficial japonesa ha revelado todas las ilustraciones de «Ken Sugimori» correspondientes a las nuevas megaevoluciones de Legends: Z-A. El juego base salió a la venta hace 90 días, mientras que el contenido descargable, Mega Dimension, salió hace 34 días. Aún no se ha revelado la ilustración de Mega Garchomp Z, por lo que es la única que falta."
    }
   }
  ]
