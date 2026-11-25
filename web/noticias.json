@@ -3,8 +3,36 @@
   "nombre": "PokéBeach",
   "url": "https://www.pokebeach.com/"
  },
- "actualizado": "2026-11-24T23:52:32.376Z",
+ "actualizado": "2026-11-25T08:25:37.995Z",
  "noticias": [
+  {
+   "id": "157163",
+   "url": "https://www.pokebeach.com/forums/threads/pokemon-china-unveils-30-pure-gold-pikachu-cards-for-30th-anniversary-celebration.157163/",
+   "fecha": "2026-11-25T02:59:25.000Z",
+   "autor": "Water Pokémon Master",
+   "en": {
+    "titulo": "Pokemon China Unveils 30 Pure Gold Pikachu Cards for 30th Anniversary Celebration!",
+    "resumen": "As part of Pokemon's 30th anniversary celebrations, Pokemon China has created pure gold versions of all 30 Pikachu cards from 30th Celebration. The cards will be displayed at a \" Pokemon Card Art Illustration Exhibition \" at Shanghai's Lafayette Culture and Arts Center from November 28th through December 27th. ..."
+   },
+   "es": {
+    "titulo": "¡Pokémon China presenta 30 cartas de Pikachu de oro puro para celebrar el 30.º aniversario!",
+    "resumen": "Como parte de las celebraciones del 30.º aniversario de Pokémon, Pokémon China ha creado versiones de oro puro de las 30 cartas de Pikachu de la colección «30th Celebration». Las cartas se expondrán en la «Exposición de ilustraciones artísticas de cartas de Pokémon», que tendrá lugar en el Centro Cultural y Artístico Lafayette de Shanghái del 28 de noviembre al 27 de diciembre. ..."
+   }
+  },
+  {
+   "id": "157154",
+   "url": "https://www.pokebeach.com/forums/threads/gold-silver-tcg-products-to-release-alongside-pokemon-ex%E2%98%85-series.157154/",
+   "fecha": "2026-11-25T01:03:40.000Z",
+   "autor": "Water Pokémon Master",
+   "en": {
+    "titulo": "Gold & Silver TCG Products to Release Alongside Pokemon ex★ Series!",
+    "resumen": "As reported earlier this week, the new Pokemon ex★ series will launch in Japan on May 21st with three sets: Magma Heartbeat, Lightning Impact, and Aurora Ripples, featuring Entei, Raikou, and Suicune, respectively. This marks the first time three TCG sets will release on the same day. ..."
+   },
+   "es": {
+    "titulo": "¡Los productos de la colección de cartas de Oro y Plata saldrán a la venta junto con la serie Pokémon ex★!",
+    "resumen": "Tal y como se informó a principios de esta semana, la nueva serie Pokémon ex★ saldrá a la venta en Japón el 21 de mayo con tres colecciones: «Magma Heartbeat», «Lightning Impact» y «Aurora Ripples», protagonizadas por Entei, Raikou y Suicune, respectivamente. Esta es la primera vez que se lanzan tres colecciones del juego de cartas el mismo día. ..."
+   }
+  },
   {
    "id": "157165",
    "url": "https://www.pokebeach.com/forums/threads/talonflame-ex-takes-flight-%E2%80%94-a-look-into-delta-reign%E2%80%99s-strongest-card.157165/",
@@ -31,20 +59,6 @@
    "es": {
     "titulo": "«30.º aniversario»: índices de obtención y las cartas más valiosas a nivel mundial: ¡los índices de obtención más generosos de la era moderna!",
     "resumen": "Las tasas de aparición de «30th Celebration» las han determinado nuestros amigos de TCGplayer tras abrir 3.000 sobres en inglés. Como era de esperar, al igual que las «Celebrations» de 2021, esta colección ofrece a los aficionados un fácil acceso a la mayoría de las rarezas, ¡lo que la convierte en una auténtica celebración!"
-   }
-  },
-  {
-   "id": "157163",
-   "url": "https://www.pokebeach.com/forums/threads/pokemon-china-unveils-30-pure-gold-pikachu-cards-for-30th-anniversary-celebration.157163/",
-   "fecha": "2026-11-24T15:11:51.000Z",
-   "autor": "Water Pokémon Master",
-   "en": {
-    "titulo": "Pokemon China Unveils 30 Pure Gold Pikachu Cards for 30th Anniversary Celebration!",
-    "resumen": "As part of Pokemon's 30th anniversary celebrations, Pokemon China has created pure gold versions of all 30 Pikachu cards from 30th Celebration. The cards will be displayed at a \" Pokemon Card Art Illustration Exhibition \" at Shanghai's Lafayette Culture and Arts Center from November 28th through December 27th. ..."
-   },
-   "es": {
-    "titulo": "¡Pokémon China presenta 30 cartas de Pikachu de oro puro para celebrar el 30.º aniversario!",
-    "resumen": "Como parte de las celebraciones del 30.º aniversario de Pokémon, Pokémon China ha creado versiones de oro puro de las 30 cartas de Pikachu de la colección «30th Celebration». Las cartas se expondrán en la «Exposición de ilustraciones artísticas de cartas de Pokémon», que tendrá lugar en el Centro Cultural y Artístico Lafayette de Shanghái del 28 de noviembre al 27 de diciembre. ..."
    }
   },
   {
@@ -87,20 +101,6 @@
    "es": {
     "titulo": "¡Se ha presentado oficialmente la colección de cartas «Flowing Fists» para febrero y se ha desvelado la gama completa de productos!",
     "resumen": "¡Ya se ha presentado oficialmente «Flowing Fists», protagonizada por Mega Lucario Z ex! Saldrá a la venta el sábado 6 de febrero como nuestra séptima colección de megaevoluciones en inglés. Es la primera vez que una colección sale a la venta un sábado. TPCi ha anunciado que las futuras colecciones del Juego de Cartas de Pokémon también saldrán a la venta los sábados."
-   }
-  },
-  {
-   "id": "157154",
-   "url": "https://www.pokebeach.com/forums/threads/gold-silver-tcg-products-to-release-alongside-pokemon-ex%E2%98%85-series.157154/",
-   "fecha": "2026-11-20T09:52:15.000Z",
-   "autor": "Water Pokémon Master",
-   "en": {
-    "titulo": "Gold & Silver TCG Products to Release Alongside Pokemon ex★ Series!",
-    "resumen": "As reported earlier this week, the new Pokemon ex★ series will launch in Japan on May 21st with three sets: Magma Heartbeat, Lightning Impact, and Aurora Ripples, featuring Entei, Raikou, and Suicune, respectively. This marks the first time three TCG sets will release on the same day. ..."
-   },
-   "es": {
-    "titulo": "¡Los productos de la colección de cartas de Oro y Plata saldrán a la venta junto con la serie Pokémon ex★!",
-    "resumen": "Tal y como se informó a principios de esta semana, la nueva serie Pokémon ex★ saldrá a la venta en Japón el 21 de mayo con tres colecciones: «Magma Heartbeat», «Lightning Impact» y «Aurora Ripples», protagonizadas por Entei, Raikou y Suicune, respectivamente. Esta es la primera vez que se lanzan tres colecciones del juego de cartas el mismo día. ..."
    }
   },
   {
