@@ -3,12 +3,12 @@
   "nombre": "PokéBeach",
   "url": "https://www.pokebeach.com/"
  },
- "actualizado": "2026-11-26T16:50:08.289Z",
+ "actualizado": "2026-11-27T01:41:59.146Z",
  "noticias": [
   {
    "id": "157169",
    "url": "https://www.pokebeach.com/forums/threads/%E2%80%9Caura-seeker%E2%80%9D-all-36-secret-rares-revealed-tcg-release-schedule-through-mid-2027.157169/",
-   "fecha": "2026-11-26T16:49:35.000Z",
+   "fecha": "2026-11-27T01:41:31.000Z",
    "autor": "Water Pokémon Master",
    "en": {
     "titulo": "“Aura Seeker” All 36 Secret Rares Revealed, TCG Release Schedule Through Mid-2027",
@@ -17,6 +17,20 @@
    "es": {
     "titulo": "«Aura Seeker»: se revelan las 36 cartas raras secretas; calendario de lanzamientos del juego de cartas hasta mediados de 2027",
     "resumen": "¡Ya tenemos las 36 cartas raras secretas de «Aura Seeker»! La expansión sale a la venta en Japón este viernes, 27 de noviembre, como la última expansión regular de la serie MEGA. Todas las cartas de la expansión principal se revelaron oficialmente la semana pasada. #079: Bellsprout[/b]Rareza: ARIllus. okayamatakatoshi ..."
+   }
+  },
+  {
+   "id": "157163",
+   "url": "https://www.pokebeach.com/forums/threads/pokemon-china-unveils-30-pure-gold-pikachu-cards-for-30th-anniversary-celebration.157163/",
+   "fecha": "2026-11-26T17:13:56.000Z",
+   "autor": "Water Pokémon Master",
+   "en": {
+    "titulo": "Pokemon China Unveils 30 Pure Gold Pikachu Cards for 30th Anniversary Celebration!",
+    "resumen": "As part of Pokemon's 30th anniversary celebrations, Pokemon China has created pure gold versions of all 30 Pikachu cards from 30th Celebration. The cards will be displayed at a \" Pokemon Card Art Illustration Exhibition \" at Shanghai's Lafayette Culture and Arts Center from November 28th through December 27th. ..."
+   },
+   "es": {
+    "titulo": "¡Pokémon China presenta 30 cartas de Pikachu de oro puro para celebrar el 30.º aniversario!",
+    "resumen": "Como parte de las celebraciones del 30.º aniversario de Pokémon, Pokémon China ha creado versiones de oro puro de las 30 cartas de Pikachu de la colección «30th Celebration». Las cartas se expondrán en la «Exposición de ilustraciones artísticas de cartas de Pokémon», que tendrá lugar en el Centro Cultural y Artístico Lafayette de Shanghái del 28 de noviembre al 27 de diciembre. ..."
    }
   },
   {
@@ -45,20 +59,6 @@
    "es": {
     "titulo": "«Aura Seeker»: ¡Se han revelado las 78 cartas de la colección principal!",
     "resumen": "¡Ya se han revelado oficialmente las 78 cartas principales de la expansión «Aura Seeker»! La expansión tiene como protagonista a Mega Lucario Z ex y saldrá a la venta en Japón el 27 de noviembre como su séptima expansión de megaevoluciones. Se trata de la primera expansión que incluye las megaevoluciones Z del DLC «Mega Dimension». ..."
-   }
-  },
-  {
-   "id": "157163",
-   "url": "https://www.pokebeach.com/forums/threads/pokemon-china-unveils-30-pure-gold-pikachu-cards-for-30th-anniversary-celebration.157163/",
-   "fecha": "2026-11-26T02:57:04.000Z",
-   "autor": "Water Pokémon Master",
-   "en": {
-    "titulo": "Pokemon China Unveils 30 Pure Gold Pikachu Cards for 30th Anniversary Celebration!",
-    "resumen": "As part of Pokemon's 30th anniversary celebrations, Pokemon China has created pure gold versions of all 30 Pikachu cards from 30th Celebration. The cards will be displayed at a \" Pokemon Card Art Illustration Exhibition \" at Shanghai's Lafayette Culture and Arts Center from November 28th through December 27th. ..."
-   },
-   "es": {
-    "titulo": "¡Pokémon China presenta 30 cartas de Pikachu de oro puro para celebrar el 30.º aniversario!",
-    "resumen": "Como parte de las celebraciones del 30.º aniversario de Pokémon, Pokémon China ha creado versiones de oro puro de las 30 cartas de Pikachu de la colección «30th Celebration». Las cartas se expondrán en la «Exposición de ilustraciones artísticas de cartas de Pokémon», que tendrá lugar en el Centro Cultural y Artístico Lafayette de Shanghái del 28 de noviembre al 27 de diciembre. ..."
    }
   },
   {
